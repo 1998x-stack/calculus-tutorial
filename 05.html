@@ -6,7 +6,8 @@
 <article class="article-body">
 <section id="definition"><h2>连续的三个条件：值、极限、相等</h2><p>函数 f 在 x=a 处连续，需要同时满足三件事：f(a) 有定义；limₓ→ₐ f(x) 存在；这个极限等于 f(a)。少一项都不连续。</p>
 <div class="math-equation"><div class="math-scroll" tabindex="0" role="region" aria-label="连续性的三个条件"><math display="block" aria-label="函数在 a 连续，当且仅当 f a 有定义，极限存在，且极限等于 f a"><mtable><mtr><mtd><mn>1</mn></mtd><mtd><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo><mtext> 有定义</mtext></mtd></mtr><mtr><mtd><mn>2</mn></mtd><mtd><munder><mi>lim</mi><mrow><mi>x</mi><mo>→</mo><mi>a</mi></mrow></munder><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mtext> 存在</mtext></mtd></mtr><mtr><mtd><mn>3</mn></mtd><mtd><munder><mi>lim</mi><mrow><mi>x</mi><mo>→</mo><mi>a</mi></mrow></munder><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mtd></mtr></mtable></math></div></div>
-<p>可以把它记成一句话：函数在这个点“接得上”，不仅左右趋势要汇合，而且函数实际取值也要落在汇合的位置。</p></section>
+<p>可以把它记成一句话：函数在这个点“接得上”，不仅左右趋势要汇合，而且函数实际取值也要落在汇合的位置。</p>
+<div class="math-equation"><div class="math-scroll" tabindex="0" role="region" aria-label="连续性极限等式"><math display="block" aria-label="函数在 a 连续等价于极限等于函数值"><mrow><munder><mi>lim</mi><mrow><mi>x</mi><mo>→</mo><mi>a</mi></mrow></munder><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow></math></div></div></section>
 <section id="epsilon"><h2>连续性的 ε–δ 表达</h2><p>与极限定义相比，连续性定义不再排除 x=a，因为此时函数值 f(a) 本身也参与比较。</p>
 <div class="math-equation"><div class="math-scroll" tabindex="0" role="region" aria-label="连续性的 epsilon delta 定义"><math display="block" aria-label="对任意 epsilon 大于零，存在 delta 大于零，使得 x 与 a 的距离小于 delta 时，f x 与 f a 的距离小于 epsilon"><mrow><mo>∀</mo><mi>ε</mi><mo>&gt;</mo><mn>0</mn><mo>,</mo><mo>∃</mo><mi>δ</mi><mo>&gt;</mo><mn>0</mn><mo>:</mo><mo>|</mo><mi>x</mi><mo>−</mo><mi>a</mi><mo>|</mo><mo>&lt;</mo><mi>δ</mi><mo>⇒</mo><mo>|</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>|</mo><mo>&lt;</mo><mi>ε</mi></mrow></math></div></div>
 <p>如果函数在一个区间内每一点都连续，就称它在该区间连续。闭区间端点使用单侧连续：在左端点只从右边逼近，在右端点只从左边逼近。</p></section>
@@ -20,6 +21,7 @@
 <tr><td>无穷间断</td><td>至少一侧函数值无界增大或减小。</td><td>1/x 在 0 处。</td></tr>
 <tr><td>振荡间断</td><td>函数在任意小邻域内持续振荡，没有有限极限。</td><td>sin(1/x) 在 0 处。</td></tr>
 </tbody></table></div>
+<div class="math-equation"><div class="math-scroll" tabindex="0" role="region" aria-label="跳跃间断的左右极限条件"><math display="block" aria-label="左极限不等于右极限时，双侧极限不存在"><mrow><munder><mi>lim</mi><mrow><mi>x</mi><mo>→</mo><msup><mi>a</mi><mo>−</mo></msup></mrow></munder><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>≠</mo><munder><mi>lim</mi><mrow><mi>x</mi><mo>→</mo><msup><mi>a</mi><mo>+</mo></msup></mrow></munder><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math></div></div>
 <p>分类时先分别求左、右极限，再判断函数值。不要只凭图像“看起来断开”就下结论；图像是线索，极限条件才是定义。</p></section>
 <section id="examples"><h2>三个值得记住的例子</h2>
 <h3>例 1：补上一个点，修复可去间断</h3><p>令 f(x)=sin x/x（x≠0）。由于 limₓ→₀ sin x/x=1，若再定义 f(0)=1，新的函数就在 0 处连续。</p>
