@@ -1,0 +1,1 @@
+{"name":"calculus-tutorial","private":true,"version":"1.0.0","description":"Static Chinese calculus course with MathML and interactive SVG lessons","scripts":{"test":"playwright test"},"devDependencies":{"@playwright/test":"^1.56.0"}}

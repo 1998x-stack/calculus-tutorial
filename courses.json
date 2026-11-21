@@ -1,36 +1,451 @@
 {
   "title": "微积分 · 从入门到精通",
-  "emoji": "📐",
-  "subtitle": "📘 28章 实战体系",
+  "subtitle": "从直觉走向严谨的 28 章互动课程",
   "chapterCount": 28,
+  "stages": [
+    {
+      "id": "foundation",
+      "title": "函数与极限",
+      "eyebrow": "01 — 07",
+      "desc": "先建立函数语言，再理解趋近、连续与极限计算。",
+      "icon": "∿"
+    },
+    {
+      "id": "derivative",
+      "title": "导数与应用",
+      "eyebrow": "08 — 14",
+      "desc": "从瞬时变化率出发，进入求导法则、近似与优化。",
+      "icon": "d/dx"
+    },
+    {
+      "id": "integral",
+      "title": "积分与累积",
+      "eyebrow": "15 — 18",
+      "desc": "把微小变化累积起来，连接面积、体积与总量。",
+      "icon": "∫"
+    },
+    {
+      "id": "multivariable",
+      "title": "多元与空间",
+      "eyebrow": "19 — 25",
+      "desc": "从一维走向多维，理解空间几何、偏导与多重积分。",
+      "icon": "∇"
+    },
+    {
+      "id": "advanced",
+      "title": "级数与建模",
+      "eyebrow": "26 — 28",
+      "desc": "用无穷过程和微分方程描述更复杂的数学模型。",
+      "icon": "Σ"
+    }
+  ],
   "chapters": [
-    { "num": "01", "title": "函数：微积分的语言", "topics": ["基本初等函数", "复合函数", "反函数", "分段函数"], "file": "01.html" },
-    { "num": "02", "title": "数列的极限", "topics": ["ε-N语言", "收敛与发散", "夹逼定理", "单调有界原理"], "file": "02.html" },
-    { "num": "03", "title": "函数的极限", "topics": ["ε-δ语言", "左右极限", "极限四则运算", "无穷大"], "file": "03.html" },
-    { "num": "04", "title": "无穷小与两个重要极限", "topics": ["无穷小阶的比较", "等价无穷小替换", "两个重要极限"], "file": "04.html" },
-    { "num": "05", "title": "函数的连续性", "topics": ["连续定义", "间断点分类", "初等函数的连续性"], "file": "05.html" },
-    { "num": "06", "title": "闭区间上的连续函数", "topics": ["有界性与最值定理", "介值定理", "零点定理", "一致连续"], "file": "06.html" },
-    { "num": "07", "title": "极限计算综合实战", "topics": ["未定式处理", "等价替换技巧", "极限存在的判定"], "file": "07.html" },
-    { "num": "08", "title": "导数的定义与几何意义", "topics": ["切线斜率", "瞬时变化率", "可导与连续的关系"], "file": "08.html" },
-    { "num": "09", "title": "求导法则与基本公式", "topics": ["四则求导", "链式法则", "基本导数表"], "file": "09.html" },
-    { "num": "10", "title": "隐函数与参数方程求导", "topics": ["隐函数求导法", "对数求导法", "参数方程求导"], "file": "10.html" },
-    { "num": "11", "title": "高阶导数与微分", "topics": ["n阶导数", "莱布尼茨公式", "微分的概念"], "file": "11.html" },
-    { "num": "12", "title": "微分中值定理", "topics": ["罗尔定理", "拉格朗日中值定理", "柯西中值定理"], "file": "12.html" },
-    { "num": "13", "title": "泰勒公式", "topics": ["泰勒多项式", "拉格朗日余项", "麦克劳林展开"], "file": "13.html" },
-    { "num": "14", "title": "导数的应用", "topics": ["单调性与极值", "凹凸性与拐点", "渐近线", "函数作图"], "file": "14.html" },
-    { "num": "15", "title": "不定积分的概念", "topics": ["原函数", "不定积分定义", "基本积分公式"], "file": "15.html" },
-    { "num": "16", "title": "换元积分法", "topics": ["第一类换元", "第二类换元", "三角代换"], "file": "16.html" },
-    { "num": "17", "title": "分部积分法与有理函数积分", "topics": ["分部积分", "LIATE选择原则", "部分分式分解"], "file": "17.html" },
-    { "num": "18", "title": "定积分与微积分基本定理", "topics": ["黎曼和", "牛顿-莱布尼茨公式", "变上限积分"], "file": "18.html" },
-    { "num": "19", "title": "空间解析几何与向量", "topics": ["向量运算", "平面方程", "直线方程", "二次曲面"], "file": "19.html" },
-    { "num": "20", "title": "多元函数的偏导数", "topics": ["偏导数定义", "全微分", "链式法则", "隐函数求导"], "file": "20.html" },
-    { "num": "21", "title": "多元函数的极值", "topics": ["无条件极值", "Hessian判别法", "拉格朗日乘数法"], "file": "21.html" },
-    { "num": "22", "title": "重积分", "topics": ["二重积分计算", "极坐标变换", "三重积分"], "file": "22.html" },
-    { "num": "23", "title": "曲线积分与曲面积分", "topics": ["第一/二类曲线积分", "第一/二类曲面积分"], "file": "23.html" },
-    { "num": "24", "title": "三大积分定理", "topics": ["格林公式", "高斯公式", "斯托克斯公式"], "file": "24.html" },
-    { "num": "25", "title": "积分的几何与物理应用", "topics": ["面积", "体积", "弧长", "质心与转动惯量"], "file": "25.html" },
-    { "num": "26", "title": "无穷级数", "topics": ["常数项级数审敛", "幂级数", "泰勒级数", "傅里叶级数"], "file": "26.html" },
-    { "num": "27", "title": "常微分方程", "topics": ["分离变量法", "一阶线性", "二阶常系数", "建模应用"], "file": "27.html" },
-    { "num": "28", "title": "微积分与机器学习", "topics": ["梯度下降", "反向传播", "Jacobian与Hessian", "概率积分"], "file": "28.html" }
+    {
+      "num": "01",
+      "title": "函数：微积分的语言",
+      "stage": "foundation",
+      "stageLabel": "函数与极限",
+      "summary": "用定义域、值域、映射与图像描述变量之间的关系。",
+      "topics": [
+        "函数映射",
+        "基本函数族",
+        "复合与反函数",
+        "分段函数"
+      ],
+      "file": "01.html",
+      "enhanced": true
+    },
+    {
+      "num": "02",
+      "title": "数列的极限",
+      "stage": "foundation",
+      "stageLabel": "函数与极限",
+      "summary": "从离散序列出发，用 ε–N 语言精确表达趋近。",
+      "topics": [
+        "收敛定义",
+        "极限性质",
+        "夹逼定理",
+        "单调有界"
+      ],
+      "file": "02.html",
+      "enhanced": true
+    },
+    {
+      "num": "03",
+      "title": "函数的极限",
+      "stage": "foundation",
+      "stageLabel": "函数与极限",
+      "summary": "把数列极限推广到连续变量，理解 ε–δ、左右极限与海涅定理。",
+      "topics": [
+        "ε–δ 定义",
+        "左右极限",
+        "无穷极限",
+        "海涅定理"
+      ],
+      "file": "03.html",
+      "enhanced": true
+    },
+    {
+      "num": "04",
+      "title": "无穷小与两个重要极限",
+      "stage": "foundation",
+      "stageLabel": "函数与极限",
+      "summary": "比较趋零速度，建立 sin x / x 与 e 的极限工具。",
+      "topics": [
+        "无穷小阶",
+        "等价替换",
+        "夹逼证明",
+        "自然常数 e"
+      ],
+      "file": "04.html",
+      "enhanced": true
+    },
+    {
+      "num": "05",
+      "title": "函数的连续性",
+      "stage": "foundation",
+      "stageLabel": "函数与极限",
+      "summary": "把极限与函数值连接起来，识别可去、跳跃、无穷与振荡间断。",
+      "topics": [
+        "连续三条件",
+        "左右连续",
+        "间断分类",
+        "分段函数"
+      ],
+      "file": "05.html",
+      "enhanced": true
+    },
+    {
+      "num": "06",
+      "title": "闭区间上的连续函数",
+      "stage": "foundation",
+      "stageLabel": "函数与极限",
+      "summary": "理解最值定理、介值定理、零点定理和一致连续。",
+      "topics": [
+        "最值定理",
+        "介值定理",
+        "二分法",
+        "一致连续"
+      ],
+      "file": "06.html",
+      "enhanced": true
+    },
+    {
+      "num": "07",
+      "title": "极限计算综合实战",
+      "stage": "foundation",
+      "stageLabel": "函数与极限",
+      "summary": "先识别未定式，再按结构选择因式分解、有理化、等价替换或取对数。",
+      "topics": [
+        "七种未定式",
+        "因式分解",
+        "有理化",
+        "取对数"
+      ],
+      "file": "07.html",
+      "enhanced": true
+    },
+    {
+      "num": "08",
+      "title": "导数的定义与几何意义",
+      "stage": "derivative",
+      "stageLabel": "导数与应用",
+      "summary": "从割线到切线，从平均变化率到瞬时变化率。",
+      "topics": [
+        "差商",
+        "导数定义",
+        "切线方程",
+        "可导与连续"
+      ],
+      "file": "08.html",
+      "enhanced": true
+    },
+    {
+      "num": "09",
+      "title": "求导法则与基本公式",
+      "stage": "derivative",
+      "stageLabel": "导数与应用",
+      "summary": "建立和、积、商、链式法则与常用导数表。",
+      "topics": [
+        "四则求导",
+        "链式法则",
+        "基本导数表"
+      ],
+      "file": "09.html",
+      "enhanced": false
+    },
+    {
+      "num": "10",
+      "title": "隐函数与参数方程求导",
+      "stage": "derivative",
+      "stageLabel": "导数与应用",
+      "summary": "不显式解出 y，也能通过关系式求导。",
+      "topics": [
+        "隐函数求导",
+        "对数求导",
+        "参数方程"
+      ],
+      "file": "10.html",
+      "enhanced": false
+    },
+    {
+      "num": "11",
+      "title": "高阶导数与微分",
+      "stage": "derivative",
+      "stageLabel": "导数与应用",
+      "summary": "从一阶变化率扩展到高阶变化与局部线性增量。",
+      "topics": [
+        "n 阶导数",
+        "莱布尼茨公式",
+        "微分"
+      ],
+      "file": "11.html",
+      "enhanced": false
+    },
+    {
+      "num": "12",
+      "title": "微分中值定理",
+      "stage": "derivative",
+      "stageLabel": "导数与应用",
+      "summary": "理解罗尔、拉格朗日与柯西中值定理的几何含义。",
+      "topics": [
+        "罗尔定理",
+        "拉格朗日定理",
+        "柯西定理"
+      ],
+      "file": "12.html",
+      "enhanced": false
+    },
+    {
+      "num": "13",
+      "title": "泰勒公式",
+      "stage": "derivative",
+      "stageLabel": "导数与应用",
+      "summary": "用多项式在一点附近逼近函数，并估计余项。",
+      "topics": [
+        "泰勒多项式",
+        "拉格朗日余项",
+        "麦克劳林展开"
+      ],
+      "file": "13.html",
+      "enhanced": false
+    },
+    {
+      "num": "14",
+      "title": "导数的应用",
+      "stage": "derivative",
+      "stageLabel": "导数与应用",
+      "summary": "用导数分析单调性、极值、凹凸性与函数图像。",
+      "topics": [
+        "单调与极值",
+        "凹凸与拐点",
+        "渐近线",
+        "函数作图"
+      ],
+      "file": "14.html",
+      "enhanced": false
+    },
+    {
+      "num": "15",
+      "title": "不定积分的概念",
+      "stage": "integral",
+      "stageLabel": "积分与累积",
+      "summary": "把积分理解为求导的逆过程，并辨析积分常数。",
+      "topics": [
+        "原函数",
+        "不定积分",
+        "基本公式"
+      ],
+      "file": "15.html",
+      "enhanced": false
+    },
+    {
+      "num": "16",
+      "title": "换元积分法",
+      "stage": "integral",
+      "stageLabel": "积分与累积",
+      "summary": "通过变量替换识别复合结构，降低积分难度。",
+      "topics": [
+        "第一类换元",
+        "第二类换元",
+        "三角代换"
+      ],
+      "file": "16.html",
+      "enhanced": false
+    },
+    {
+      "num": "17",
+      "title": "分部积分法与有理函数积分",
+      "stage": "integral",
+      "stageLabel": "积分与累积",
+      "summary": "拆分乘积结构，结合部分分式处理有理函数。",
+      "topics": [
+        "分部积分",
+        "LIATE",
+        "部分分式"
+      ],
+      "file": "17.html",
+      "enhanced": false
+    },
+    {
+      "num": "18",
+      "title": "定积分与微积分基本定理",
+      "stage": "integral",
+      "stageLabel": "积分与累积",
+      "summary": "从黎曼和理解累积量，再连接原函数与定积分。",
+      "topics": [
+        "黎曼和",
+        "牛顿–莱布尼茨",
+        "变上限积分"
+      ],
+      "file": "18.html",
+      "enhanced": false
+    },
+    {
+      "num": "19",
+      "title": "空间解析几何与向量",
+      "stage": "multivariable",
+      "stageLabel": "多元与空间",
+      "summary": "用向量、平面和曲面描述三维空间中的几何关系。",
+      "topics": [
+        "向量运算",
+        "平面方程",
+        "直线方程",
+        "二次曲面"
+      ],
+      "file": "19.html",
+      "enhanced": false
+    },
+    {
+      "num": "20",
+      "title": "多元函数的偏导数",
+      "stage": "multivariable",
+      "stageLabel": "多元与空间",
+      "summary": "研究多个变量分别变化时函数的局部响应。",
+      "topics": [
+        "偏导数",
+        "全微分",
+        "链式法则",
+        "隐函数"
+      ],
+      "file": "20.html",
+      "enhanced": false
+    },
+    {
+      "num": "21",
+      "title": "多元函数的极值",
+      "stage": "multivariable",
+      "stageLabel": "多元与空间",
+      "summary": "用梯度、Hessian 与约束条件分析多变量优化。",
+      "topics": [
+        "无条件极值",
+        "Hessian",
+        "拉格朗日乘数"
+      ],
+      "file": "21.html",
+      "enhanced": false
+    },
+    {
+      "num": "22",
+      "title": "重积分",
+      "stage": "multivariable",
+      "stageLabel": "多元与空间",
+      "summary": "把一维累积推广到平面区域和三维区域。",
+      "topics": [
+        "二重积分",
+        "极坐标",
+        "三重积分"
+      ],
+      "file": "22.html",
+      "enhanced": false
+    },
+    {
+      "num": "23",
+      "title": "曲线积分与曲面积分",
+      "stage": "multivariable",
+      "stageLabel": "多元与空间",
+      "summary": "沿曲线或曲面累积标量场与向量场。",
+      "topics": [
+        "第一类曲线积分",
+        "第二类曲线积分",
+        "曲面积分"
+      ],
+      "file": "23.html",
+      "enhanced": false
+    },
+    {
+      "num": "24",
+      "title": "三大积分定理",
+      "stage": "multivariable",
+      "stageLabel": "多元与空间",
+      "summary": "理解格林、高斯与斯托克斯定理的统一结构。",
+      "topics": [
+        "格林公式",
+        "高斯公式",
+        "斯托克斯公式"
+      ],
+      "file": "24.html",
+      "enhanced": false
+    },
+    {
+      "num": "25",
+      "title": "积分的几何与物理应用",
+      "stage": "multivariable",
+      "stageLabel": "多元与空间",
+      "summary": "用积分计算面积、体积、弧长、质心与转动惯量。",
+      "topics": [
+        "面积与体积",
+        "弧长",
+        "质心",
+        "转动惯量"
+      ],
+      "file": "25.html",
+      "enhanced": false
+    },
+    {
+      "num": "26",
+      "title": "无穷级数",
+      "stage": "advanced",
+      "stageLabel": "级数与建模",
+      "summary": "研究无穷求和的收敛性、幂级数与傅里叶级数。",
+      "topics": [
+        "审敛法",
+        "幂级数",
+        "泰勒级数",
+        "傅里叶级数"
+      ],
+      "file": "26.html",
+      "enhanced": false
+    },
+    {
+      "num": "27",
+      "title": "常微分方程",
+      "stage": "advanced",
+      "stageLabel": "级数与建模",
+      "summary": "从微分关系出发建立动态系统的解析模型。",
+      "topics": [
+        "分离变量",
+        "一阶线性",
+        "二阶常系数",
+        "建模"
+      ],
+      "file": "27.html",
+      "enhanced": false
+    },
+    {
+      "num": "28",
+      "title": "微积分与机器学习",
+      "stage": "advanced",
+      "stageLabel": "级数与建模",
+      "summary": "把梯度、Jacobian、Hessian 与积分连接到优化和学习。",
+      "topics": [
+        "梯度下降",
+        "反向传播",
+        "Jacobian",
+        "Hessian"
+      ],
+      "file": "28.html",
+      "enhanced": false
+    }
   ]
 }

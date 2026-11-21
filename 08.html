@@ -1,295 +1,36 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-    <title>第8章 导数的定义与几何意义</title>
-    <link rel="stylesheet" href="theme.css">
-</head>
-<body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>📐 课程目录</h3>
-        <ul class="chapter-list">
-            <li><a href="01.html">第1章 函数：微积分的语言</a></li>
-            <li><a href="02.html">第2章 数列的极限</a></li>
-            <li><a href="03.html">第3章 函数的极限</a></li>
-            <li><a href="04.html">第4章 无穷小与两个重要极限</a></li>
-            <li><a href="05.html">第5章 函数的连续性</a></li>
-            <li><a href="06.html">第6章 闭区间上的连续函数</a></li>
-            <li><a href="07.html">第7章 极限计算综合实战</a></li>
-            <li><a href="08.html" class="active">第8章 导数的定义与几何意义</a></li>
-            <li><a href="09.html">第9章 求导法则与基本公式</a></li>
-            <li><a href="10.html">第10章 隐函数与参数方程求导</a></li>
-            <li><a href="11.html">第11章 高阶导数与微分</a></li>
-            <li><a href="12.html">第12章 微分中值定理</a></li>
-            <li><a href="13.html">第13章 泰勒公式</a></li>
-            <li><a href="14.html">第14章 导数的应用</a></li>
-            <li><a href="15.html">第15章 不定积分的概念</a></li>
-            <li><a href="16.html">第16章 换元积分法</a></li>
-            <li><a href="17.html">第17章 分部积分法与有理函数积分</a></li>
-            <li><a href="18.html">第18章 定积分与微积分基本定理</a></li>
-            <li><a href="19.html">第19章 空间解析几何与向量</a></li>
-            <li><a href="20.html">第20章 多元函数的偏导数</a></li>
-            <li><a href="21.html">第21章 多元函数的极值</a></li>
-            <li><a href="22.html">第22章 重积分</a></li>
-            <li><a href="23.html">第23章 曲线积分与曲面积分</a></li>
-            <li><a href="24.html">第24章 三大积分定理</a></li>
-            <li><a href="25.html">第25章 积分的几何与物理应用</a></li>
-            <li><a href="26.html">第26章 无穷级数</a></li>
-            <li><a href="27.html">第27章 常微分方程</a></li>
-            <li><a href="28.html">第28章 微积分与机器学习</a></li>
-        </ul>
-    </div>
-    <div class="main-content">
-        <h2>切线问题：导数的诞生</h2>
-
-        <p>大家好，我是你们的讲师。如果你问一个学完微积分的人"你觉得微积分里哪个概念最重要"，十有八九的回答是<strong>导数</strong>。导数就像是微积分世界里的"速度计"——它告诉我们每一件事物在每一瞬间的变化有多快。</p>
-
-        <p>但你知道吗？导数的诞生其实源于一个非常实际的问题：如何求一条曲线在某一点的<strong>切线斜率</strong>？古希腊的阿波罗尼奥斯和阿基米德已经会求圆和圆锥曲线的切线，但面对任意曲线（比如 <code>y = sin x</code> 或 <code>y = e^x</code>），古人束手无策了两千年。直到17世纪，牛顿和莱布尼茨分别独立地给出了答案——而这个答案，就是我们今天要学习的<strong>导数</strong>。</p>
-
-        <p>这个故事告诉我们一个深刻的道理：数学中那些最伟大的发现，往往来自最朴素的问题。切线斜率——听起来像是初中几何的内容——却成了整个微积分的起点之一。本章我们就从"如何求切线的斜率"这个朴素问题出发，一步步揭开导数的神秘面纱。</p>
-
-        <h2>从平均变化率到瞬时变化率</h2>
-
-        <h3>平均变化率：割线的斜率</h3>
-
-        <p>假设你开着一辆车，记录下它在不同时刻的位置。如果 <code>t = 1</code> 秒时在 <code>s = 10</code> 米处，<code>t = 3</code> 秒时在 <code>s = 50</code> 米处，那么这段时间内的<strong>平均速度</strong>就是 <code>(50 - 10) / (3 - 1) = 20</code> 米/秒。</p>
-
-        <p>用数学语言表达：对于函数 <code>y = f(x)</code>，当自变量从 <code>x0</code> 变化到 <code>x0 + Δx</code>（<code>Δx</code> 读作"delta x"，表示 x 的改变量），函数值的改变量是 <code>Δy = f(x0 + Δx) - f(x0)</code>。<strong>平均变化率</strong>就是：</p>
-
-        <pre><code>平均变化率 = Δy / Δx = [f(x0 + Δx) - f(x0)] / Δx</code></pre>
-
-        <p>几何上，这个比值就是经过点 <code>(x0, f(x0))</code> 和 <code>(x0 + Δx, f(x0 + Δx))</code> 的<strong>割线</strong>（secant line）的斜率。你在中学就学过：两点确定一条直线，斜率等于纵坐标之差除以横坐标之差。</p>
-
-        <h3>瞬时变化率：让Δx趋于0</h3>
-
-        <p>但平均速度只告诉我们"整体"跑多快，没办法回答"在 t = 1 秒那一瞬间，车速是多少"这个问题。为了得到<strong>瞬时速度</strong>，我们需要让时间间隔 <code>Δt</code> 无限缩小——从 1 秒缩到 0.1 秒，再到 0.01 秒，再到 0.0001 秒……当 <code>Δt → 0</code> 时，平均速度的极限就是瞬时速度。</p>
-
-        <p>这是一个典型的<strong>极限</strong>过程——正是在第7章中我们反复练习的那类计算。导数的定义就是：让 <code>Δx → 0</code>，求平均变化率的极限：</p>
-
-        <pre><code>f'(x0) = lim_{Δx→0} [f(x0 + Δx) - f(x0)] / Δx</code></pre>
-
-        <p>这个极限（如果存在）就是函数 <code>f</code> 在点 <code>x0</code> 处的<strong>导数</strong>（derivative）。</p>
-
-        <p>导数有多种等价的记号，你要习惯它们：</p>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>记号</th>
-                    <th>读法</th>
-                    <th>提出者</th>
-                    <th>使用场景</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><code>f'(x0)</code></td>
-                    <td>f prime of x0</td>
-                    <td>拉格朗日</td>
-                    <td>函数形式，最常用</td>
-                </tr>
-                <tr>
-                    <td><code>dy/dx|_{x=x0}</code></td>
-                    <td>dy over dx</td>
-                    <td>莱布尼茨</td>
-                    <td>微分形式，链式法则方便</td>
-                </tr>
-                <tr>
-                    <td><code>y'(x0)</code></td>
-                    <td>y prime</td>
-                    <td>拉格朗日</td>
-                    <td>与 f' 类似</td>
-                </tr>
-                <tr>
-                    <td><code>df/dx|_{x=x0}</code></td>
-                    <td>d f over d x</td>
-                    <td>莱布尼茨</td>
-                    <td>强调变量关系</td>
-                </tr>
-                <tr>
-                    <td><code>Df(x0)</code></td>
-                    <td>D f</td>
-                    <td>欧拉</td>
-                    <td>微分算子形式</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="tip">
-            <strong>用极限理解导数</strong><br>
-            导数定义的本质是一个极限——平均变化率在 Δx→0 时的极限。如果你在第3-7章扎实地掌握了极限的计算，那么导数的定义对你来说只是在"老朋友"的肩膀上往前走了一步。反之，如果极限计算还没熟练，建议回头翻翻第7章的极限综合实战。
-        </div>
-
-        <h2>左导数与右导数</h2>
-
-        <p>与极限类似，导数也有"从哪边逼近"的问题。<strong>左导数</strong>是 <code>Δx → 0^-</code> 时平均变化率的极限，<strong>右导数</strong>是 <code>Δx → 0^+</code> 时的极限。函数在某点可导的充要条件是：<strong>左导数 = 右导数</strong>。</p>
-
-        <p>让我们看一个经典例子：绝对值函数 <code>f(x) = |x|</code> 在 <code>x = 0</code> 处的可导性。</p>
-
-        <pre><code>左导数：f'_-(0) = lim_{h→0^-} [|0 + h| - |0|] / h
-                 = lim_{h→0^-} |h| / h
-                 = lim_{h→0^-} (-h) / h    （因为 h < 0 时 |h| = -h）
-                 = -1
-
-右导数：f'_+(0) = lim_{h→0^+} [|0 + h| - |0|] / h
-                 = lim_{h→0^+} |h| / h
-                 = lim_{h→0^+} h / h        （因为 h > 0 时 |h| = h）
-                 = 1</code></pre>
-
-        <p>左导数是 -1，右导数是 +1，两者不相等——所以 <code>f(x) = |x|</code> 在 <code>x = 0</code> 处<strong>不可导</strong>。这个尖点就是所谓的"不可导点"。</p>
-
-        <div class="highlight">
-            <strong>一个真实的面试题</strong><br>
-            我曾经看到一个大厂算法岗的面试题，第一问就是"<code>f(x) = |x - 3|</code> 在 x = 3 处是否可导？"很多候选人脱口而出"可导"，因为在 x = 3 两侧函数值的差是一样的。但实际上，按照左导数等于右导数的判断标准，它和 |x| 在 0 处完全一样，是不可导的。面试官正是用这道题来考察候选人的基本功是否扎实——当你觉得问题"太简单了"的时候，往往就是最需要警惕的时候。
-        </div>
-
-        <h2>导数的几何意义：切线方程</h2>
-
-        <h3>切线的定义</h3>
-
-        <p>在中学数学里，你学到的"圆的切线"定义是：与圆只有一个交点的直线。但这个定义对一般曲线不适用——比如 <code>y = x^3</code> 在 <code>x = 0</code> 处，<code>x</code> 轴就是它的切线，但 <code>x</code> 轴与曲线相交于 <code>(0,0)</code>，并且还会在别处再次相交吗？不，但这里的关键是：切线的现代定义不是"只有一个交点"，而是<strong>割线的极限位置</strong>。</p>
-
-        <p>当你让 <code>Δx → 0</code> 时，割线绕着点 <code>(x0, f(x0))</code> 旋转，越来越逼近一个固定的位置——这个极限位置就是<strong>切线</strong>（tangent line）。而导数 <code>f'(x0)</code> 就是这条切线的<strong>斜率</strong>。</p>
-
-        <h3>切线方程</h3>
-
-        <p>已知斜率和一点，你马上就能写出切线方程：</p>
-
-        <pre><code>切线方程：y - f(x0) = f'(x0) · (x - x0)</code></pre>
-
-        <p>也就是说，在点 <code>x0</code> 附近，函数值可以用切线来近似：</p>
-
-        <pre><code>f(x) ≈ f(x0) + f'(x0) · (x - x0),  当 x → x0 时</code></pre>
-
-        <p>这个简单的近似公式是整个微积分的核心思想之一：<strong>用直线（线性函数）来近似曲线</strong>。在你学习第13章泰勒公式时，会发现这实际上就是泰勒公式的一阶近似。</p>
-
-        <h2>可导与连续的关系</h2>
-
-        <p>这是微积分里一个极其重要的关系，很多初学者会搞混，咱们一次性说清楚。</p>
-
-        <p><strong>定理：如果一个函数在某点可导，那么它在该点一定连续。</strong></p>
-
-        <p>证明其实很简洁：如果 <code>f'(x0)</code> 存在，那么当 <code>Δx → 0</code> 时，</p>
-
-        <pre><code>Δy = [f(x0 + Δx) - f(x0)]
-    = [Δy / Δx] · Δx
-    → f'(x0) · 0 = 0   （当 Δx → 0 时）
-
-所以 lim_{Δx→0} f(x0 + Δx) = f(x0)，即函数在 x0 处连续。</code></pre>
-
-        <p>但反过来呢？<strong>连续不一定可导！</strong></p>
-
-        <p>最经典的例子就是前面的 <code>f(x) = |x|</code> ——它在 <code>x = 0</code> 处连续（因为 <code>lim |x| = 0 = |0|</code>），但左右导数不相等，所以不可导。连续是"没有断点"，可导是"没有尖点"——这是两个不同的光滑层次。</p>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>关系</th>
-                    <th>成立吗？</th>
-                    <th>反例</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>可导 ⇒ 连续</td>
-                    <td>✅ 成立</td>
-                    <td>可导必然连续</td>
-                </tr>
-                <tr>
-                    <td>连续 ⇒ 可导</td>
-                    <td>❌ 不成立</td>
-                    <td><code>f(x) = |x|</code> 在 x=0</td>
-                </tr>
-                <tr>
-                    <td>不连续 ⇒ 不可导</td>
-                    <td>✅ 成立（逆否命题）</td>
-                    <td>——</td>
-                </tr>
-                <tr>
-                    <td>不可导 ⇒ 不一定不连续</td>
-                    <td>✅ 成立</td>
-                    <td><code>f(x) = |x|</code> 在 x=0</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="warning">
-            <strong>一个常见的"想当然"错误</strong><br>
-            有些同学在做了大量光滑函数（多项式、指数函数等）的求导练习后，会产生一种错觉："所有连续函数的图像都是光滑曲线，所以都应该是可导的。"但事实远非如此——维尔斯特拉斯构造了一个处处连续但处处不可导的函数（维尔斯特拉斯函数）。这个函数的图像在任何尺度下都是锯齿状的，无论你怎么放大，都找不到一条光滑的切线。它告诉我们：连续和可导之间的差距，比大多数人想象的要大得多。
-        </div>
-
-        <h2>用定义求几个简单函数的导数</h2>
-
-        <p>在进入第9章的求导法则之前，让我们先用定义（差商极限）求几个简单函数的导数。这有助于你真正理解导数的含义，而不是机械地套用公式。</p>
-
-        <h3>例1：常数函数 f(x) = C</h3>
-
-        <pre><code>f'(x) = lim_{h→0} [C - C] / h = lim_{h→0} 0 / h = 0</code></pre>
-
-        <p>常数函数的导数为0——这是直观的：一条水平线的斜率处处是0。</p>
-
-        <h3>例2：线性函数 f(x) = kx + b</h3>
-
-        <pre><code>f'(x) = lim_{h→0} [k(x+h) + b - (kx + b)] / h
-       = lim_{h→0} (kh) / h
-       = k</code></pre>
-
-        <p>线性函数的导数等于斜率 k，且与 x 无关——直线的斜率处处相等，合情合理。</p>
-
-        <h3>例3：二次函数 f(x) = x^2</h3>
-
-        <pre><code>f'(x) = lim_{h→0} [(x+h)^2 - x^2] / h
-       = lim_{h→0} [x^2 + 2xh + h^2 - x^2] / h
-       = lim_{h→0} (2xh + h^2) / h
-       = lim_{h→0} (2x + h)
-       = 2x</code></pre>
-
-        <p><code>f(x) = x^2</code> 的导数是 <code>2x</code>。注意这里的关键技巧：展开 <code>(x+h)^2</code> 后，<code>x^2</code> 被消掉了，剩下的项都有公因子 <code>h</code>，约掉后令 <code>h → 0</code> 即可。这个过程体现了导数定义计算的<strong>核心套路</strong>：展开 → 抵消 → 约掉 h → 求极限。</p>
-
-        <h3>例4：f(x) = 1/x</h3>
-
-        <pre><code>f'(x) = lim_{h→0} [1/(x+h) - 1/x] / h
-       = lim_{h→0} [(x - (x+h)) / (x(x+h))] / h
-       = lim_{h→0} [-h / (x(x+h))] / h
-       = lim_{h→0} -1 / [x(x+h)]
-       = -1 / x^2</code></pre>
-
-        <p>注意，这里 <code>x ≠ 0</code>——反比例函数在 0 处根本无定义，自然不可导。</p>
-
-        <h3>例5：f(x) = sin x（极限形式）</h3>
-
-        <pre><code>sin'(x) = lim_{h→0} [sin(x+h) - sin x] / h
-         = lim_{h→0} [sin x cos h + cos x sin h - sin x] / h
-         = lim_{h→0} [sin x (cos h - 1) / h + cos x (sin h / h)]
-
-利用 lim_{h→0} sin h / h = 1（第4章的重要极限）和
-    lim_{h→0} (cos h - 1) / h = 0（可推导），得到：
-
-sin'(x) = cos x</code></pre>
-
-        <p>这个结果非常漂亮——正弦函数的导数竟然是余弦函数。</p>
-
-        <div class="tip">
-            <strong>一个小窍门</strong><br>
-            用定义求导时，如果遇到分式，先通分再化简；如果遇到根号，用有理化（乘以共轭）；如果遇到三角，用和差化积公式。这些"预处理"操作的共同目标只有一个：<strong>把 h 从分母中消掉</strong>，这样才能安全地令 h → 0。
-        </div>
-
-        <h2>本章小结</h2>
-
-        <p>本章我们完成了从极限到导数的关键跨越。你学到了：导数就是平均变化率在 <code>Δx → 0</code> 时的极限，也就是切线斜率；左导数和右导数必须相等才能说"可导"；可导一定连续，但连续不一定可导；以及如何用定义求简单函数的导数。</p>
-
-        <p>现在你手中已经握着微积分最核心的工具——导数的定义。从下一章开始，我们不再每次都从定义出发了——第9章将教你一套高效的<strong>求导法则</strong>，让你能够快速求出任意初等函数的导数。想象一下：不用每次求 <code>sin x</code> 的导数都做一次极限计算，而是直接写出 <code>cos x</code>——这就是标准求导法则带来的效率提升。</p>
-
-        <div class="footer-nav">
-            <a href="07.html">← 上一章</a>
-            <a href="index.html">📖 返回目录</a>
-            <a href="09.html">下一章 →</a>
-        </div>
-    </div>
-</div>
-</div>
-</body>
-</html>
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="description" content="导数不是一条公式，而是平均变化率在时间间隔或输入间隔趋于零时的极限。几何上，它是切线斜率；应用上，它是瞬时变化率。"><title>第 08 章 · 导数的定义与几何意义 | 微积分教程</title><link rel="stylesheet" href="theme.css"><script src="assets/js/calculus.js" defer></script></head>
+<body class="chapter-page"><a class="skip-link" href="#main-content">跳转至正文</a><header class="chapter-topbar"><a class="brand" href="index.html"><span class="brand-mark">∫</span><span>微积分 · 从入门到精通</span></a><span class="chapter-position">第 08 / 28 章 · 导数与应用</span></header>
+<div class="chapter-layout"><aside class="chapter-toc"><div class="toc-label">本章路线</div><details open><summary>本章目录</summary><nav aria-label="本章目录"><a href="#secant">从割线到切线</a><a href="#definition">导数的定义</a><a href="#tangent">切线方程与局部线性</a><a href="#one-sided">左右导数与尖点</a><a href="#continuity">可导推出连续</a><a href="#examples">用定义计算</a><a href="#check">检查理解</a></nav></details></aside>
+<main id="main-content" class="article-main"><header class="chapter-hero"><p class="eyebrow">导数与应用 / CHAPTER 08</p><h1>导数的定义与几何意义</h1><p class="chapter-deck">导数不是一条公式，而是平均变化率在时间间隔或输入间隔趋于零时的极限。几何上，它是切线斜率；应用上，它是瞬时变化率。</p><div class="chapter-meta"><span>核心概念</span><span>逐步推导</span><span>交互实验</span><span>自测与边界</span></div></header>
+<article class="article-body">
+<section id="secant"><h2>从割线到切线：先看平均变化率</h2><p>对函数 y=f(x)，取两个输入 x₀ 与 x₀+h。它们之间的平均变化率是函数值变化量除以输入变化量，也就是两点连线（割线）的斜率。</p>
+<div class="math-equation"><div class="math-scroll" tabindex="0" role="region" aria-label="平均变化率公式"><math display="block" aria-label="平均变化率等于 f of x 零加 h 减 f of x 零，再除以 h"><mrow><mfrac><mrow><mi>Δ</mi><mi>y</mi></mrow><mrow><mi>Δ</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo></mrow><mi>h</mi></mfrac></mrow></math></div></div>
+<p>当 h 越来越接近 0，第二个点沿曲线靠近第一个点。若割线斜率有极限，割线就趋向切线，极限值就是该点的导数。</p>
+</section>
+<section id="definition"><h2>导数的定义：差商的极限</h2><p>函数 f 在 x₀ 处的导数，定义为差商在 h→0 时的极限（如果这个极限存在）：</p>
+<div class="math-equation"><div class="math-scroll" tabindex="0" role="region" aria-label="导数定义"><math display="block" aria-label="f 撇 x 零等于当 h 趋于零时 f x 零加 h 减 f x 零除以 h 的极限"><mrow><msup><mi>f</mi><mo>′</mo></msup><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo></mrow><mi>h</mi></mfrac></mrow></math></div></div>
+<p>这里的 h 不是“等于零”，而是趋近零。若直接把 h=0 代入差商，会出现 0/0；导数恰恰是通过极限绕开这个问题。</p>
+<div class="callout note"><strong>物理解释：</strong>若 s(t) 表示位置，那么 s′(t₀) 是 t₀ 时刻的瞬时速度；若 v(t) 表示速度，v′(t₀) 就是瞬时加速度。</div>
+</section>
+<section id="tangent"><h2>切线方程与局部线性</h2><p>若 f 在 x₀ 处可导，切点是 (x₀,f(x₀))，切线斜率为 f′(x₀)，所以切线方程为：</p>
+<div class="math-equation"><div class="math-scroll" tabindex="0" role="region" aria-label="切线方程"><math display="block" aria-label="y 减 f x 零等于 f 撇 x 零乘以 x 减 x 零"><mrow><mi>y</mi><mo>−</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo><mo>=</mo><msup><mi>f</mi><mo>′</mo></msup><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo></mrow></math></div></div>
+<p>在 x₀ 附近，函数图像可以用切线作局部近似：</p>
+<div class="math-equation"><div class="math-scroll" tabindex="0" role="region" aria-label="局部线性近似"><math display="block" aria-label="f of x 零加 h 约等于 f of x 零加 f 撇 of x 零乘 h"><mrow><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>+</mo><mi>h</mi><mo>)</mo><mo>≈</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo><mo>+</mo><msup><mi>f</mi><mo>′</mo></msup><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo><mi>h</mi></mrow></math></div></div>
+<div class="demo-panel" data-demo="derivative"><div class="demo-heading"><strong>实验 8 · 割线斜率如何趋近切线斜率</strong><span>函数 f(x)=x²，固定切点 x₀=1</span></div>
+<svg viewBox="0 0 640 285" role="img" aria-labelledby="derivative-title derivative-desc"><title id="derivative-title">抛物线的割线与切线</title><desc id="derivative-desc">固定点 x 等于一，移动第二个点，观察割线逐渐接近切线。</desc><path class="axis" d="M58 244H590M58 24V244"/><path class="gridline" d="M58 189H578M58 134H578M58 79H578"/><path class="curve" d="M58 244 Q190 210 320 160 Q450 80 578 24"/><path class="curve-secondary" data-tangent d="M58 244L578 24"/><path data-secant d="M320 160L450 80" stroke="#bd8b35" stroke-width="2.5" fill="none"/><circle class="point" cx="320" cy="160" r="6"/><circle class="point" data-moving-point cx="450" cy="80" r="6"/><text x="328" y="150" font-size="12" fill="#5b6c70">x₀=1</text></svg>
+<div class="demo-controls"><label for="derivative-h">输入间隔 h</label><output data-h-value>0.80</output><input id="derivative-h" data-h type="range" min="0.05" max="1.50" step="0.05" value="0.80"></div><p class="demo-status" data-demo-status role="status" aria-live="polite">缩小 h，观察割线斜率靠近 2。</p></div>
+</section>
+<section id="one-sided"><h2>左右导数：尖点处可能没有导数</h2><p>导数也可以从左、右分别定义。函数在 x₀ 处可导，当且仅当左右导数都存在且相等。</p>
+<div class="math-equation"><div class="math-scroll" tabindex="0" role="region" aria-label="左右导数定义"><math display="block" aria-label="左导数是 h 从负侧趋零的差商极限，右导数是 h 从正侧趋零的差商极限"><mrow><msub><mi>f</mi><mo>′</mo></msub><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><msup><mo>)</mo><mo>−</mo></msup><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><msup><mn>0</mn><mo>−</mo></msup></mrow></munder><mfrac><mrow><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>+</mo><mi>h</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo></mrow><mi>h</mi></mfrac></mrow></math></div></div>
+<p>看 f(x)=|x| 在 0 处。左侧 h&lt;0 时 |h|=−h，所以左导数为 −1；右侧 h&gt;0 时 |h|=h，所以右导数为 +1：</p>
+<div class="math-equation"><div class="math-scroll" tabindex="0" role="region" aria-label="绝对值函数左右导数"><math display="block" aria-label="绝对值在零点的左导数为负一，右导数为正一"><mrow><msub><mi>f</mi><mo>′</mo></msub><mo>(</mo><mn>0</mn><msup><mo>)</mo><mo>−</mo></msup><mo>=</mo><mo>−</mo><mn>1</mn><mo>≠</mo><mn>1</mn><mo>=</mo><msub><mi>f</mi><mo>′</mo></msub><mo>(</mo><mn>0</mn><msup><mo>)</mo><mo>+</mo></msup></mrow></math></div></div>
+<div class="callout warning"><strong>结论：</strong>|x| 在 0 处连续，但不可导。原稿将左导数写成 +1，符号错误；左侧差商应为 (−h)/h=−1。</div></section>
+<section id="continuity"><h2>可导推出连续，但连续不一定可导</h2><p>如果 f 在 a 处可导，那么差商趋于有限值 f′(a)。将函数增量拆成“差商 × 输入增量”，即可得到函数增量趋于 0：</p>
+<div class="math-equation"><div class="math-scroll" tabindex="0" role="region" aria-label="可导推出连续的证明"><math display="block" aria-label="f x 减 f a 等于差商乘以 x 减 a，极限等于 f 撇 a 乘零等于零"><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow><mrow><mi>x</mi><mo>−</mo><mi>a</mi></mrow></mfrac><mo>(</mo><mi>x</mi><mo>−</mo><mi>a</mi><mo>)</mo><mo>→</mo><mi>f</mi><mo>′</mo><mo>(</mo><mi>a</mi><mo>)</mo><mo>·</mo><mn>0</mn><mo>=</mo><mn>0</mn></mrow></math></div></div>
+<p>因此 limₓ→ₐ f(x)=f(a)，函数连续。反过来不成立：|x| 在 0 处连续，却因左右导数不同而不可导。</p></section>
+<section id="examples"><h2>用定义计算：f(x)=x²</h2><p>直接从差商出发，不调用求导法则：</p>
+<div class="math-equation"><div class="math-scroll" tabindex="0" role="region" aria-label="平方函数求导定义推导"><math display="block" aria-label="平方函数差商等于二 x 加 h，令 h 趋零得到二 x"><mrow><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mfrac><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mi>h</mi><msup><mo>)</mo><mn>2</mn></msup><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></mrow><mi>h</mi></mfrac><mo>=</mo><munder><mi>lim</mi><mrow><mi>h</mi><mo>→</mo><mn>0</mn></mrow></munder><mo>(</mo><mn>2</mn><mi>x</mi><mo>+</mo><mi>h</mi><mo>)</mo><mo>=</mo><mn>2</mn><mi>x</mi></mrow></math></div></div>
+<p>同理可由定义推出常数函数导数为 0、线性函数导数为斜率。对 sin x 求导时必须使用弧度制；这也是三角函数导数公式成立的前提。</p></section>
+<section id="check"><h2>检查理解</h2><ol><li>导数为什么是差商的极限，而不是把 h 直接设为 0？</li><li>函数在一点可导，是否一定连续？反过来呢？</li><li>f(x)=|x| 在 0 处为什么不可导？</li></ol><details class="solution"><summary>展开参考答案</summary><p>1. 直接代入得到 0/0，必须研究差商在 h 趋近 0 时的极限。2. 可导一定连续；连续不一定可导。3. 左导数 −1、右导数 +1，不相等。</p></details></section><section class="further-reading" aria-label="延伸阅读"><h2>延伸阅读</h2><ul><li><a href="https://openstax.org/details/books/calculus-volume-1" target="_blank" rel="noopener">OpenStax · Calculus Volume 1</a>：函数、极限、连续性与导数的系统教材。</li><li><a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/" target="_blank" rel="noopener">MIT OpenCourseWare · 18.01SC</a>：单变量微积分讲义、例题、习题与互动材料。</li></ul></section></article>
+<nav class="chapter-footer" aria-label="章节导航"><a href="index.html">← 课程总览</a><a href="index.html">课程总览</a><a class="primary" href="index.html">课程总览 →</a></nav></main></div></body></html>

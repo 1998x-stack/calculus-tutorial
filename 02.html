@@ -1,271 +1,30 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-    <title>第2章 数列的极限</title>
-    <link rel="stylesheet" href="theme.css">
-</head>
-<body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>📐 课程目录</h3>
-        <ul class="chapter-list">
-            <li><a href="01.html">第1章 函数：微积分的语言</a></li>
-            <li><a href="02.html" class="active">第2章 数列的极限</a></li>
-            <li><a href="03.html">第3章 函数的极限</a></li>
-            <li><a href="04.html">第4章 无穷小与两个重要极限</a></li>
-            <li><a href="05.html">第5章 函数的连续性</a></li>
-            <li><a href="06.html">第6章 闭区间上的连续函数</a></li>
-            <li><a href="07.html">第7章 极限计算综合实战</a></li>
-            <li><a href="08.html">第8章 导数的定义与几何意义</a></li>
-            <li><a href="09.html">第9章 求导法则与基本公式</a></li>
-            <li><a href="10.html">第10章 隐函数与参数方程求导</a></li>
-            <li><a href="11.html">第11章 高阶导数与微分</a></li>
-            <li><a href="12.html">第12章 微分中值定理</a></li>
-            <li><a href="13.html">第13章 泰勒公式</a></li>
-            <li><a href="14.html">第14章 导数的应用</a></li>
-            <li><a href="15.html">第15章 不定积分的概念</a></li>
-            <li><a href="16.html">第16章 换元积分法</a></li>
-            <li><a href="17.html">第17章 分部积分法与有理函数积分</a></li>
-            <li><a href="18.html">第18章 定积分与微积分基本定理</a></li>
-            <li><a href="19.html">第19章 空间解析几何与向量</a></li>
-            <li><a href="20.html">第20章 多元函数的偏导数</a></li>
-            <li><a href="21.html">第21章 多元函数的极值</a></li>
-            <li><a href="22.html">第22章 重积分</a></li>
-            <li><a href="23.html">第23章 曲线积分与曲面积分</a></li>
-            <li><a href="24.html">第24章 三大积分定理</a></li>
-            <li><a href="25.html">第25章 积分的几何与物理应用</a></li>
-            <li><a href="26.html">第26章 无穷级数</a></li>
-            <li><a href="27.html">第27章 常微分方程</a></li>
-            <li><a href="28.html">第28章 微积分与机器学习</a></li>
-        </ul>
-    </div>
-    <div class="main-content">
-        <h2>从割圆术看极限思想</h2>
-
-        <p>大家好，我是你们的讲师。在上一章中我们建立了函数这个微积分的语言工具。那么，微积分的研究究竟从哪里开始的呢？一切的开端，是一个看似简单的问题：<strong>如何用直边图形精确地度量曲边图形？</strong></p>
-
-        <p>公元3世纪，中国数学家刘徽提出了一个天才的构想——<strong>割圆术</strong>。他想计算圆的面积，但他手里只有计算多边形面积的工具。怎么办？刘徽的想法是：在圆内接一个正六边形，它的面积比圆小；再内接正十二边形，面积更接近圆了；正二十四边形，更小了；如此继续，"割之弥细，所失弥少，割之又割，以至于不可割，则与圆周合体而无所失矣"。</p>
-
-        <p>这段话翻译成现代语言就是：你把圆内接正多边形的边数不断增加，这个多边形的面积就越来越接近圆的面积。当边数趋向无穷大时，多边形的面积就<strong>等于</strong>圆的面积。刘徽用这个方法，把圆周率 π 算到了 3.1416，比西方早了近千年。</p>
-
-        <p>这个思想就是<strong>极限</strong>的雏形。虽然刘徽没有提出"极限"这个术语，但他所做的正是人类历史上最早的系统性极限思考。所谓极限，就是我们用一个越来越精确的<strong>序列</strong>去逼近一个目标，当逼近到"足够远"时，序列的值和目标之间的差距可以任意小。</p>
-
-        <p>在数学中，这个"序列"通常用<strong>数列</strong>来表示。本章的任务，就是把刘徽这种朴素的极限思想，转化为严格精确的数学语言。</p>
-
-        <h2>数列的直观理解：一个会跑的数字序列</h2>
-
-        <p>什么是数列？简单说，数列就是一串按顺序排列的数。每一个数都有一个位置编号（下标），比如 <code>a_1, a_2, a_3, ..., a_n, ...</code>。数列可以有限也可以无限——微积分中我们关心的是<strong>无穷数列</strong>，也就是有无限多项的数列。</p>
-
-        <p>一个数列通常由<strong>通项公式</strong>定义：</p>
-
-        <pre><code>a_n = 1/n     →    1, 1/2, 1/3, 1/4, 1/5, ...
-a_n = n^2    →    1, 4, 9, 16, 25, ...
-a_n = (-1)^n →    -1, 1, -1, 1, -1, 1, ...</code></pre>
-
-        <p>第一个数列 <code>1/n</code> 随着 n 增大，不断向 0 靠近。第二个数列 <code>n^2</code> 随着 n 增大，跑向无穷大。第三个数列 <code>(-1)^n</code> 则在 -1 和 1 之间来回震荡，不向任何固定的数靠近。</p>
-
-        <p>这三种行为对应了极限理论的三个核心概念：<strong>收敛</strong>（向某个有限数靠近）、<strong>发散到无穷</strong>（趋向无穷大）、<strong>振荡发散</strong>（不趋向任何确定的值）。我们的首要任务，就是精确刻画"靠近"这个直观感觉。</p>
-
-        <div class="tip">
-            <strong>直观理解极限</strong><br>
-            想象你站在一面墙前，每走一步，都走到你和墙之间距离的一半。第一步你走了全程的一半，第二步走剩下的一半，第三步再走剩下的一半……理论上你永远到达不了墙（因为每次只走一半），但实际上你离墙可以"任意近"——这就是极限的直觉。<br><br>
-            这个<strong>二分法</strong>悖论（芝诺悖论之一）恰恰说明了为什么我们需要精确的极限语言：直觉上我们知道你"最终"会到达墙，但纯逻辑告诉我们每一步都只走一半。只有极限理论能调和这个矛盾——<strong>极限不是你"到达"，而是你能无限逼近到任意程度</strong>。
-        </div>
-
-        <h2>ε-N 语言：极限的精确化</h2>
-
-        <p>直观地，我们说数列 <code>{a_n}</code> 的极限是 <code>L</code>，意思是当 n 越来越大时，<code>a_n</code> 越来越接近 <code>L</code>。但"越来越接近"不够精确——多近才算"足够近"？</p>
-
-        <p>这个问题的答案来自 19 世纪德国数学家魏尔斯特拉斯（Weierstrass），他给出了数列极限的<strong>ε-N 定义</strong>：</p>
-
-        <div class="highlight">
-            <strong>数列极限的 ε-N 定义</strong><br>
-            如果对于任意给定的正数 ε，都存在一个正整数 N，使得当 n > N 时，都有 <code>|a_n - L| &lt; ε</code>，那么我们就说数列 <code>{a_n}</code> 的极限是 L，记作 <code>lim_{n→∞} a_n = L</code>。<br><br>
-            如果一个数列有极限，我们说这个数列<strong>收敛</strong>；否则称为<strong>发散</strong>。
-        </div>
-
-        <p>这个定义可能看起来有些抽象，我们来拆解一下：</p>
-
-        <ul>
-            <li><strong>ε</strong> 是你允许的误差范围。你说"要让 a_n 离 L 有多近？"——随便你指定，多远都可以，比如 0.1、0.001、0.000001。</li>
-            <li><strong>N</strong> 是我们给你的回答："从第 N 项往后，所有 a_n 都在你要求的误差范围内。"</li>
-            <li>关键是：不管你把 ε 设得多小，我们总能找到一个 N，让后面的所有项都满足条件。</li>
-        </ul>
-
-        <p>让我用一个具体例子来说明这个定义是怎么工作的。</p>
-
-        <p><strong>例：证明 lim_{n→∞} 1/n = 0</strong></p>
-
-        <p>给定任意 ε > 0，我们需要找到一个正整数 N，使得当 n > N 时，<code>|1/n - 0| = 1/n &lt; ε</code>。</p>
-        <p>解不等式 <code>1/n &lt; ε</code>，得 <code>n &gt; 1/ε</code>。所以我们取 <code>N = ⌈1/ε⌉</code>（向上取整），那么当 n > N 时，<code>1/n &lt; ε</code> 自然成立。</p>
-        <p>比如你取 ε = 0.01，那么 N = 100。从第 101 项开始，<code>a_n = 1/n</code> 全部小于 0.01。你取 ε = 0.0001，N = 10000，后面全都小于 0.0001。不管 ε 多小，我们都能找到这样的 N。所以极限就是 0。</p>
-
-        <pre><code>ε-N 证明的标准格式（以 a_n = 1/n 为例）：
-
-        对 ∀ ε > 0，
-        令 N = ⌈1/ε⌉，
-        则当 n > N 时，有
-        |a_n - 0| = 1/n &lt; 1/N = 1/⌈1/ε⌉ ≤ ε
-        因此 lim_{n→∞} 1/n = 0</code></pre>
-
-        <h2>收敛数列的性质</h2>
-
-        <p>一个数列如果收敛，它会表现出一些很好的性质。这些性质在后续的极限计算中会频繁用到。</p>
-
-        <h3>唯一性：收敛数列只有一个极限</h3>
-
-        <p>如果一个数列收敛，它的极限是<strong>唯一</strong>的。这很直观：如果一个数列同时趋近于两个不同的数 L 和 M，那它不可能同时和两者都"任意接近"。证明用反证法——假设有两个极限 L ≠ M，取 ε = |L-M|/2，则数列不可能同时满足与 L 和 M 的距离都小于 ε。</p>
-
-        <h3>有界性：收敛数列一定有界</h3>
-
-        <p>如果一个数列收敛到 L，那么从某个 N 开始，所有项都落在 (L-1, L+1) 这个小区间里。前面的有限项 <code>a_1, a_2, ..., a_(N-1)</code> 中取最大最小值。综合起来，整个数列就被"框"在一个范围内了——这就是<strong>有界性</strong>。</p>
-
-        <p>反过来要注意：有界不一定收敛。比如 <code>(-1)^n</code> 始终在 -1 和 1 之间，是有界的，但它不收敛（一直在振荡）。</p>
-
-        <h3>保号性：极限的正负传递</h3>
-
-        <p>如果数列收敛到 L，且 L > 0，那么从某个 N 之后，数列的所有项也都是正的。这个性质在证明很多定理时非常有用。</p>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>性质</th>
-                    <th>内容</th>
-                    <th>直观含义</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>唯一性</td>
-                    <td>收敛数列的极限唯一</td>
-                    <td>不能"脚踩两条船"</td>
-                </tr>
-                <tr>
-                    <td>有界性</td>
-                    <td>收敛 ⇒ 有界</td>
-                    <td>收敛数列被框在一个范围内</td>
-                </tr>
-                <tr>
-                    <td>保号性</td>
-                    <td>极限 > 0 ⇒ 从某项后全 > 0</td>
-                    <td>正的极限"带动"后面所有项</td>
-                </tr>
-                <tr>
-                    <td>四则运算</td>
-                    <td>收敛数列的和/差/积/商仍收敛</td>
-                    <td>可以"分别取极限"再运算</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="warning">
-            <strong>踩坑提醒：四则运算的前提是每个数列都收敛</strong><br>
-            很多初学者会在计算 <code>lim (n^2 - n)</code> 时犯这个错误：写成 <code>lim n^2 - lim n</code>，然后说这是 ∞ - ∞，无法处理。<br><br>
-            这里的问题不是 ∞ - ∞ 没定义，而是从一开始就不能"分别取极限"——因为 <code>n^2</code> 和 <code>n</code> 都不收敛！极限四则运算法则只适用于<strong>收敛数列</strong>。对发散数列分别取极限再做运算，这是完全错误的。<br><br>
-            正确做法是把 <code>n^2 - n</code> 写成 <code>n(n-1)</code>，然后整体判断它的趋势——它发散的，极限是 ∞。
-        </div>
-
-        <h2>夹逼定理与单调有界准则</h2>
-
-        <p>上面讨论了数列极限的性质，但一个更关键的问题是：<strong>如何判断一个数列是否收敛？</strong>有两个最有力的工具。</p>
-
-        <h3>夹逼定理（挤压定理）</h3>
-
-        <p>夹逼定理的直观思想很容易理解：如果你把我的左路和右路都堵死了，那我只能走中间那条路。数学上就是：</p>
-
-        <div class="highlight">
-            <strong>夹逼定理</strong><br>
-            如果存在正整数 N₀，使得当 n > N₀ 时，有 <code>b_n ≤ a_n ≤ c_n</code>，且 <code>lim b_n = lim c_n = L</code>，那么 <code>lim a_n = L</code>。
-        </div>
-
-        <p>这个定理的强大之处在于：你不用直接计算 a_n 的极限，只要找到一个比它小的数列和一个比它大的数列，它们极限相同，a_n 的极限就被迫"夹"出来了。</p>
-
-        <p><strong>典型例子：求 lim_{n→∞} (sin n)/n</strong></p>
-
-        <p>我们知道 sin n 的值在 -1 和 1 之间，所以 <code>-1/n ≤ (sin n)/n ≤ 1/n</code>。而 <code>lim (-1/n) = lim (1/n) = 0</code>，所以 <code>lim (sin n)/n = 0</code>。</p>
-
-        <p>这个例子看起来简单，却揭示了极限理论中一个很重要的策略：当数列被"有界量×无穷小"的形式包裹时，结果一定是无穷小。</p>
-
-        <h3>单调有界准则</h3>
-
-        <p>第二个重要工具是<strong>单调有界准则</strong>：单调增加且有上界的数列一定收敛；单调减少且有下界的数列一定收敛。</p>
-
-        <p>逻辑非常直白：一个数列一直在增加但不是无限增加（被一个天花板限制住了），那它肯定会"挤"向某个最大值——这个最大值就是它的极限。反过来，一直在减小但不是无限减小，那它也会"挤"向某个最小值。</p>
-
-        <p>这个准则的一个重要应用就是证明<strong>自然常数 e</strong> 的存在性。数列 <code>a_n = (1 + 1/n)^n</code> 是单调增加且有上界的（实际上限就是 e），所以它收敛。第4章我们会详细展开这个数列极限的故事。</p>
-
-        <pre><code>单调有界准则应用示例：
-
-        数列 a_n = 1 - 1/2^n
-
-        a_1 = 0.5
-        a_2 = 0.75
-        a_3 = 0.875
-        a_4 = 0.9375
-        ...
-
-        ① 单调增加：a_(n+1) - a_n = 1/2^(n+1) > 0 ✓
-        ② 有上界：a_n &lt; 1（对所有 n） ✓
-
-        根据准则，数列收敛，且 limit ≤ 1。
-        实际上直接看也明白：lim_{n→∞} (1 - 1/2^n) = 1</code></pre>
-
-        <h2>数列极限的计算入门</h2>
-
-        <p>有了前面的理论基础，现在我们可以实际计算一些数列的极限了。</p>
-
-        <h3>有理型数列极限</h3>
-
-        <p>对于形如 <code>a_n = (多项式)/(多项式)</code> 的数列，处理技巧是<strong>抓大头</strong>——分子分母同时除以 n 的最高次幂：</p>
-
-        <ul>
-            <li><code>lim (2n + 1)/(3n - 2)</code>：分子分母同除以 n，得 <code>lim (2 + 1/n)/(3 - 2/n) = 2/3</code></li>
-            <li><code>lim (n^2 + 1)/(2n^2 + 3n)</code>：同除以 n^2，得 <code>lim (1 + 1/n^2)/(2 + 3/n) = 1/2</code></li>
-            <li><code>lim (n^3 + 2n)/(n^2 + 1)</code>：同除以 n^2，得 <code>lim (n + 2/n)/(1 + 1/n^2) = ∞</code>（发散）</li>
-        </ul>
-
-        <h3>根式型数列极限</h3>
-
-        <p>当遇到根式时，常用的技巧是<strong>有理化</strong>：</p>
-
-        <p><code>lim (√(n+1) - √n)</code></p>
-        <p>直接算不好办，但分子有理化后：<code>(√(n+1) - √n) × (√(n+1) + √n) / (√(n+1) + √n) = (n+1 - n)/(√(n+1) + √n) = 1/(√(n+1) + √n) → 0</code></p>
-
-        <h3>递推型数列极限</h3>
-
-        <p>有些数列不是用通项公式直接给出的，而是通过<strong>递推关系</strong>定义。比如：</p>
-
-        <pre><code>已知 a_1 = 1，a_(n+1) = √(2 + a_n)
-
-        求解步骤：
-        ① 先证明数列单调增加且有上界（用单调有界准则）
-        ② 设极限为 L，对递推式两边取极限：
-           L = √(2 + L)
-        ③ 解方程：L^2 = 2 + L → L^2 - L - 2 = 0 → L = 2 或 L = -1
-        ④ 由保号性，负数舍去，所以极限 L = 2</code></pre>
-
-        <p>递推数列的极限计算是微积分考试中常见的中等难度题型。核心步骤就是上述三步：证收敛（单调有界）、设极限、解方程。其中第一步最关键——你必须先确认极限存在，才能假设它存在。这也正是单调有界准则的价值所在。</p>
-
-        <div class="tip">
-            <strong>一句话总结数列极限的计算策略</strong><br>
-            看到有理分式抓大头，看到根式差就有理化，看到递推用单调有界。<br><br>
-            但比技巧更重要的是理解：极限的核心不是"算出来多少"，而是<strong>"如何判断它存在"</strong>。所以本章的前半部分——ε-N 语言、收敛的性质、夹逼定理、单调有界准则——才是真正的核心。计算技巧只是锦上添花。
-        </div>
-
-        <p>在本章中，我们从刘徽的割圆术出发，一路走到 ε-N 的精确极限定义。我们看到了收敛数列的四种基本性质，掌握了夹逼定理和单调有界准则这两个判断收敛的利器，也初步接触了数列极限的三种常见计算类型。数列的极限是整个微积分的<strong>基石</strong>——导数、积分、级数，无一不建立在极限概念之上。</p>
-
-        <p>从下一章开始，我们将把极限的概念从<strong>离散的数列</strong>延伸到<strong>连续的函数</strong>。你会发现，数列极限和函数极限的思想一脉相承，但函数极限的 ε-δ 语言在处理"连续变化"时更加精巧——这也是微积分真正开始展现其强大的地方。</p>
-
-        <div class="footer-nav">
-            <a href="01.html">← 上一章</a>
-            <a href="index.html">📖 返回目录</a>
-            <a href="03.html">下一章 →</a>
-        </div>
-    </div>
-</div>
-</div>
-</body>
-</html>
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="description" content="极限不是“最后一项”，而是整个数列后面所有项都能进入任意小的误差范围。ε–N 语言把这件事说得精确。"><title>第 02 章 · 数列的极限 | 微积分教程</title><link rel="stylesheet" href="theme.css"><script src="assets/js/calculus.js" defer></script></head>
+<body class="chapter-page"><a class="skip-link" href="#main-content">跳转至正文</a>
+<header class="chapter-topbar"><a class="brand" href="index.html"><span class="brand-mark">∫</span><span>微积分 · 从入门到精通</span></a><span class="chapter-position">第 02 / 28 章 · 函数与极限</span></header>
+<div class="chapter-layout"><aside class="chapter-toc"><div class="toc-label">本章路线</div><details open><summary>本章目录</summary><nav aria-label="本章目录"><a href="#sequence">数列如何逼近</a><a href="#definition">ε–N 定义</a><a href="#properties">收敛数列的性质</a><a href="#squeeze">夹逼定理</a><a href="#monotone">单调有界准则</a><a href="#recurrence">递推数列示例</a><a href="#practice">练习与检查</a></nav></details></aside>
+<main id="main-content" class="article-main"><header class="chapter-hero"><p class="eyebrow">函数与极限 / CHAPTER 02</p><h1>数列的极限</h1><p class="chapter-deck">极限不是“最后一项”，而是整个数列后面所有项都能进入任意小的误差范围。ε–N 语言把这件事说得精确。</p><div class="chapter-meta"><span>核心概念</span><span>逐步推导</span><span>交互实验</span><span>自测与边界</span></div></header>
+<article class="article-body">
+<section id="sequence"><h2>数列如何逼近一个目标？</h2><p>数列是一列按正整数编号的数：a₁,a₂,a₃,…。它可以收敛、发散到无穷，也可能一直振荡。判断极限时，观察的是后面所有项的整体趋势，而不是前几项看起来像什么。</p>
+<div class="table-scroll"><table><thead><tr><th>数列</th><th>行为</th><th>结论</th></tr></thead><tbody><tr><td>aₙ=1/n</td><td>从正侧越来越靠近 0</td><td>收敛到 0</td></tr><tr><td>aₙ=n²</td><td>数值无界增大</td><td>趋于 +∞</td></tr><tr><td>aₙ=(−1)ⁿ</td><td>在 −1 与 1 之间振荡</td><td>不收敛</td></tr></tbody></table></div>
+<div class="demo-panel" data-demo="sequence"><div class="demo-heading"><strong>实验 2 · 观察 aₙ=1−1/n 如何逼近 1</strong><span>圆点表示已显示的数列项</span></div>
+<svg viewBox="0 0 640 285" role="img" aria-labelledby="sequence-title sequence-desc"><title id="sequence-title">数列逼近 1 的点图</title><desc id="sequence-desc">随着显示项数增加，数列点沿竖直方向趋近 y 等于 1 的水平线。</desc><path class="axis" d="M58 245H590M58 35V245"/><path class="guide" d="M58 35H590"/><text x="594" y="39" font-size="12" fill="#bd8b35">L=1</text><g data-points></g><text x="54" y="267" font-size="11" fill="#5b6c70">n=1</text><text x="555" y="267" font-size="11" fill="#5b6c70">n=20</text></svg>
+<div class="demo-controls"><label for="sequence-n">显示前 N 项</label><output data-n-value>6</output><input id="sequence-n" data-n type="range" min="1" max="20" step="1" value="6"></div><p class="demo-status" data-demo-status role="status" aria-live="polite">拖动滑块增加数列项。</p></div></section>
+<section id="definition"><h2>ε–N 定义：把“越来越接近”变成可证明的命题</h2><p>我们说数列 aₙ 收敛到 L，意思是：不管你要求误差 ε 多小，总能找到一个足够靠后的编号 N，使得从 N 之后，所有项都与 L 相差不到 ε。</p>
+<div class="math-equation"><div class="math-scroll" tabindex="0" role="region" aria-label="数列极限的 epsilon N 定义"><math display="block" aria-label="对任意正 epsilon，存在正整数 N，使得当 n 大于 N 时，a n 与 L 的距离小于 epsilon"><mrow><mo>∀</mo><mi>ε</mi><mo>&gt;</mo><mn>0</mn><mo>,</mo><mo>∃</mo><mi>N</mi><mo>∈</mo><mi>ℕ</mi><mo>,</mo><mo>∀</mo><mi>n</mi><mo>&gt;</mo><mi>N</mi><mo>:</mo><mo>|</mo><msub><mi>a</mi><mi>n</mi></msub><mo>−</mo><mi>L</mi><mo>|</mo><mo>&lt;</mo><mi>ε</mi></mrow></math></div></div>
+<p>量词顺序不能颠倒：先给任意 ε，再找到 N；这个 N 可以依赖 ε，但不能依赖某一个特定的 n。最关键的是“对所有 n&gt;N”，它保证了尾部整段都进入误差带。</p>
+<h3>例：证明 aₙ=1/n → 0</h3><p>给定任意 ε&gt;0，我们需要 1/n&lt;ε。解这个不等式得到 n&gt;1/ε，因此可以取：</p>
+<div class="math-equation"><div class="math-scroll" tabindex="0" role="region" aria-label="epsilon N 证明中 N 的选取"><math display="block" aria-label="N 取大于一除以 epsilon 的正整数"><mrow><mi>N</mi><mo>=</mo><mo>⌊</mo><mfrac><mn>1</mn><mi>ε</mi></mfrac><mo>⌋</mo><mo>+</mo><mn>1</mn></mrow></math></div></div>
+<p>当 n&gt;N 时，1/n&lt;1/N&lt;ε。于是证明完成。注意：我们没有要求某一项等于 0；我们证明的是后面所有项都能进入任意小的误差带。</p></section>
+<section id="properties"><h2>收敛数列的基本性质</h2><ul><li><strong>唯一性：</strong>一个收敛数列不可能有两个不同的极限。</li><li><strong>有界性：</strong>收敛数列一定有界；反过来不成立，例如 (−1)ⁿ。</li><li><strong>保号性：</strong>若极限 L&gt;0，则从某一项起，aₙ&gt;0；若 L&lt;0，则最终为负。</li><li><strong>四则运算：</strong>在相关极限存在且分母极限不为 0 时，可以对和、差、积、商分别取极限。</li></ul><div class="callout note">有界并不意味着收敛。数列 (−1)ⁿ 有界，但始终在两个值之间跳动；单调也不单独保证收敛，必须与有界条件一起使用。</div></section>
+<section id="squeeze"><h2>夹逼定理：把目标夹在两条已知序列之间</h2><p>若从某一项开始，aₙ≤bₙ≤cₙ，且两侧数列都收敛到同一个 L，那么中间数列也只能收敛到 L。</p>
+<div class="math-equation"><div class="math-scroll" tabindex="0" role="region" aria-label="夹逼定理公式"><math display="block" aria-label="若 a n 小于等于 b n 小于等于 c n，且两侧极限均为 L，则 b n 的极限为 L"><mrow><msub><mi>a</mi><mi>n</mi></msub><mo>≤</mo><msub><mi>b</mi><mi>n</mi></msub><mo>≤</mo><msub><mi>c</mi><mi>n</mi></msub><mo>,</mo><mi>a</mi><mo>→</mo><mi>L</mi><mo>,</mo><mi>c</mi><mo>→</mo><mi>L</mi><mo>⇒</mo><mi>b</mi><mo>→</mo><mi>L</mi></mrow></math></div></div>
+<p>例如 |sin n|≤1，所以：</p><div class="math-equation"><div class="math-scroll" tabindex="0" role="region" aria-label="正弦 n 除以 n 的夹逼"><math display="block" aria-label="负一除以 n 小于等于正弦 n 除以 n 小于等于一除以 n，左右都趋于零"><mrow><mo>−</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mo>≤</mo><mfrac><mrow><mi>sin</mi><mi>n</mi></mrow><mi>n</mi></mfrac><mo>≤</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mo>→</mo><mn>0</mn></mrow></math></div></div>
+<p>因此 sin n / n → 0。这里的关键不是 sin n 本身收敛，而是它被一个趋于 0 的上下界夹住。</p></section>
+<section id="monotone"><h2>单调有界准则：用方向和边界保证收敛</h2><p>单调递增且有上界的数列必收敛；单调递减且有下界的数列也必收敛。它是证明递推数列收敛的常用工具。</p><p>注意“单调”和“有界”缺一不可：1,2,3,… 单调递增但无上界；(−1)ⁿ 有界却不单调。</p></section>
+<section id="recurrence"><h2>递推数列示例：aₙ₊₁=√(2+aₙ)</h2><p>设 a₁=1。先证明 1≤aₙ&lt;2：若 1≤aₙ&lt;2，则 aₙ₊₁=√(2+aₙ)&lt;2；同时 aₙ₊₁≥aₙ，因为在 1≤aₙ≤2 时，2+aₙ≥aₙ²。于是数列递增且被 2 约束，必有极限 L。</p><p>对递推式两边取极限，得到：</p>
+<div class="math-equation"><div class="math-scroll" tabindex="0" role="region" aria-label="递推数列极限方程"><math display="block" aria-label="L 等于根号下二加 L，解得 L 等于二"><mrow><mi>L</mi><mo>=</mo><msqrt><mrow><mn>2</mn><mo>+</mo><mi>L</mi></mrow></msqrt><mo>⇒</mo><msup><mi>L</mi><mn>2</mn></msup><mo>−</mo><mi>L</mi><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn><mo>⇒</mo><mi>L</mi><mo>=</mo><mn>2</mn></mrow></math></div></div>
+<p>另一个代数根 −1 与数列的非负性矛盾，因此舍去。完整逻辑是：先证明收敛，再对递推式取极限，最后利用范围排除不合理根。</p></section>
+<section id="practice"><h2>练习与检查</h2><ol><li>数列 aₙ=3+1/n 的极限是多少？写出 ε–N 证明中的 N。</li><li>为什么“有界”不能推出“收敛”？给出反例。</li><li>若 aₙ≤bₙ≤cₙ，但两侧极限不同，能否直接使用夹逼定理？</li></ol><details class="solution"><summary>展开参考答案</summary><p>1. 极限为 3。给定 ε&gt;0，取 N=⌊1/ε⌋+1，则 n&gt;N 时 |aₙ−3|=1/n&lt;ε。2. (−1)ⁿ 有界但不收敛。3. 不能；夹逼定理要求两侧极限相同。</p></details></section>
+<section class="further-reading" aria-label="延伸阅读"><h2>延伸阅读</h2><ul><li><a href="https://openstax.org/details/books/calculus-volume-1" target="_blank" rel="noopener">OpenStax · Calculus Volume 1</a>：函数、极限、连续性与导数的系统教材。</li><li><a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/" target="_blank" rel="noopener">MIT OpenCourseWare · 18.01SC</a>：单变量微积分讲义、例题、习题与互动材料。</li></ul></section>
+</article><nav class="chapter-footer" aria-label="章节导航"><a href="index.html">← 课程总览</a><a href="index.html">课程总览</a><a class="primary" href="index.html">课程总览 →</a></nav></main></div></body></html>
