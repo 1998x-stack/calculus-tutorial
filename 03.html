@@ -5,11 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第3章 函数的极限</title>
     <link rel="stylesheet" href="theme.css">
+    <style>
+        /* 本章新增组件；同时兜底保证无主题样式时仍不横向溢出 */
+        .main-content img, .main-content svg { max-width: 100%; height: auto; }
+        .main-content pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+        body { overflow-wrap: anywhere; }
+        .article-header .dek { color: #475569; font-size: 1.05rem; line-height: 1.8; }
+        .page-toc { background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 18px; margin:16px 0 8px; }
+        .page-toc ol { margin:0 0 0 20px; }
+        figure { margin: 22px 0; }
+        figure svg { display:block; width:100%; height:auto; background:#fffdf9; border:1px solid #e2e8f0; border-radius:16px; }
+        figure figcaption { font-size:.9rem; color:#475569; margin-top:8px; line-height:1.7; }
+        .math-inline { font-family:"Cambria Math","STIX Two Math","Latin Modern Math",serif; }
+        .math-scroll { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+        .math-scroll:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        .math-scroll math[display="block"] { width:max-content; min-width:100%; font-size:1.15rem; padding:6px 0; }
+        .widget { border:1px solid #c4b5fd; border-radius:18px; padding:16px 18px; margin:20px 0; background:#faf8ff; }
+        .widget output { font-family:"JetBrains Mono",monospace; }
+        .widget .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:10px 0; }
+        .widget button { padding:6px 16px; border-radius:999px; border:1px solid #8b5cf6; background:#fff; color:#5b21b6; font-weight:600; cursor:pointer; }
+        .widget button[aria-pressed="true"] { background:#7c3aed; color:#fff; }
+        .widget button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+        @media (max-width:820px) { .main-content table { display:block; overflow-x:auto; } }
+    </style>
 </head>
 <body>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程目录">
         <h3>📐 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 函数：微积分的语言</a></li>
@@ -42,8 +66,26 @@
             <li><a href="28.html">第28章 微积分与机器学习</a></li>
         </ul>
     </div>
-    <div class="main-content">
-        <h2>从离散到连续：为什么需要函数极限</h2>
+        </ul>
+    </nav>
+    <main class="main-content" id="content">
+    <article>
+        <header class="article-header">
+            <h1>函数的极限</h1>
+            <p class="dek">从离散数列到连续函数：本章用 ε-δ 语言刻画“x 靠近 x₀ 时 f(x) 的趋势”，给出 ε-δ 的几何图示（误差带与 δ 邻域）、左右极限、x→∞ 的极限、四则运算与海涅定理，并含一个可调 ε 读 δ 的演示。</p>
+            <nav class="page-toc" aria-label="本章目录">
+                <ol>
+                    <li><a href="#intro">从离散到连续</a></li>
+                    <li><a href="#epsilon-delta">x→x₀ 时的极限：ε-δ 语言</a></li>
+                    <li><a href="#one-sided">左右极限与极限存在的条件</a></li>
+                    <li><a href="#infinity">x→∞ 时的极限</a></li>
+                    <li><a href="#algebra">极限的四则运算法则</a></li>
+                    <li><a href="#heine">函数极限与数列极限：海涅定理</a></li>
+                    <li><a href="#references">参考资料</a></li>
+                </ol>
+            </nav>
+        </header>
+        <h2 id="intro">从离散到连续：为什么需要函数极限</h2>
 
         <p>大家好，我是你们的讲师。上一章我们学习了数列的极限——数列是一系列<strong>离散</strong>的点：a₁, a₂, a₃, ...，自变量 n 只能取正整数。但现实世界中的变化是<strong>连续</strong>的：时间从 0 到 1 秒，中间经过了每一个实数时刻，而不是只经过"第 1 秒、第 2 秒"这样的离散点。</p>
 
@@ -57,7 +99,7 @@
             这是刚开始学极限时最容易混淆的概念。之后学习函数的连续性时，你会发现"连续"和"有极限"的区别正在于此。
         </div>
 
-        <h2>x→x₀ 时的极限：ε-δ 语言</h2>
+        <h2 id="epsilon-delta">x→x₀ 时的极限：ε-δ 语言</h2>
 
         <p>数列极限用 ε-N 语言描述的是"当 n 足够大时，a_n 与 L 任意接近"。函数极限则需要一种新的精确语言——<strong>ε-δ 语言</strong>，同样由魏尔斯特拉斯完成严格化。</p>
 
@@ -100,7 +142,45 @@
             </tbody>
         </table>
 
-        <p>两种定义的逻辑结构完全一致：你给我一个容忍度 ε，我给出一个保证范围（N 或 δ），让在此范围外的所有点都在 ε 容忍度内。这就是"任意给定—存在"的极限语言框架。</p>
+        <div class="math-equation" role="group" aria-label="函数极限的 ε-δ 条件">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="函数极限的 ε-δ 条件，可横向滚动">
+                <math display="block" aria-label="对任意 ε 大于 0，存在 δ 大于 0，使 0 小于 x 减 x0 的绝对值小于 δ 时，f(x) 减 L 的绝对值小于 ε">
+                    <mrow>
+                        <mo>∀</mo><mi>ε</mi><mo>&gt;</mo><mn>0</mn><mo>,</mo>
+                        <mo>∃</mo><mi>δ</mi><mo>&gt;</mo><mn>0</mn><mo>:</mo>
+                        <mn>0</mn><mo>&lt;</mo><mo>|</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>0</mn></msub><mo>|</mo><mo>&lt;</mo><mi>δ</mi>
+                        <mo>⇒</mo>
+                        <mo>|</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mi>L</mi><mo>|</mo><mo>&lt;</mo><mi>ε</mi>
+                    </mrow>
+                </math>
+            </div>
+        </div>
+
+        <p>两种定义的逻辑结构完全一致：你给我一个容忍度 ε，我给出一个保证范围（N 或 δ），让在此范围内的所有点都在 ε 容忍度内。这就是“任意给定—存在”的极限语言框架。</p>
+
+        <figure id="fig-eps-delta">
+            <svg viewBox="0 0 720 380" role="img" aria-labelledby="fig-epsd-title fig-epsd-desc">
+                <title id="fig-epsd-title">ε-δ 定义的几何意义</title>
+                <desc id="fig-epsd-desc">对 f(x)=3x−1、x₀=2、L=5，给定 ε=1 得到水平误差带，取 δ=ε/3 得到竖直邻域，使邻域内曲线的纵坐标全部落入误差带。</desc>
+                <rect x="60" y="160" width="440" height="80" fill="#e0f2fe"/>
+                <rect x="193" y="110" width="114" height="190" fill="#fef9c3" opacity="0.8"/>
+                <line x1="60" y1="200" x2="500" y2="200" stroke="#147f80" stroke-width="1.5" stroke-dasharray="7 5"/>
+                <line x1="250" y1="80" x2="250" y2="340" stroke="#147f80" stroke-width="1.5" stroke-dasharray="7 5"/>
+                <line x1="80" y1="320" x2="454" y2="56" stroke="#d06d4d" stroke-width="3"/>
+                <line x1="193" y1="240" x2="307" y2="160" stroke="#7461ba" stroke-width="3"/>
+                <circle cx="250" cy="200" r="5" fill="#fffdf9" stroke="#0f172a" stroke-width="2"/>
+                <text x="64" y="156" font-size="13" fill="#0ea5e9">L + ε</text>
+                <text x="64" y="252" font-size="13" fill="#0ea5e9">L − ε</text>
+                <text x="420" y="194" font-size="14" fill="#147f80">L = 5</text>
+                <text x="256" y="340" font-size="14" fill="#147f80">x₀ = 2</text>
+                <text x="168" y="330" font-size="13" fill="#916c22">x₀−δ</text>
+                <text x="300" y="330" font-size="13" fill="#916c22">x₀+δ</text>
+                <text x="256" y="196" font-size="13" fill="#0f172a">(2, 5) 可空心</text>
+                <text x="470" y="92" font-size="14" fill="#d06d4d">f(x)=3x−1</text>
+                <text x="230" y="132" font-size="13" fill="#7461ba">δ 邻域内曲线段</text>
+            </svg>
+            <figcaption>图 3-1（教学示意）：对 f(x)=3x−1、x₀=2、L=5，给定 ε=1（蓝色水平带）。只要取 δ=ε/3，当 0&lt;|x−2|&lt;δ（黄色竖带）时，紫色曲线段全部落在蓝色带内，即 |f(x)−5|&lt;ε。注意空心点：f 在 x₀ 处是否有定义、取值多少，与极限无关。</figcaption>
+        </figure>
 
         <p><strong>例：证明 lim_{x→2} (3x - 1) = 5</strong></p>
 
@@ -118,7 +198,22 @@
                      = 3·(ε/3) = ε
         因此 lim_{x→2} (3x - 1) = 5</code></pre>
 
-        <h2>左右极限与极限存在的条件</h2>
+        <div class="widget" id="delta-widget">
+            <p><strong>动手试一下：对 lim_{x→2}(3x−1)=5，选一个 ε，看需要多小的 δ 才能保证 |f(x)−5| &lt; ε。</strong></p>
+            <div class="row">
+                <label for="eps2-range">ε =</label>
+                <input id="eps2-range" type="range" min="0.01" max="1" step="0.01" value="1">
+                <output id="eps2-out" for="eps2-range">1.00</output>
+            </div>
+            <div class="row">
+                <button type="button" data-eps="1">ε = 1</button>
+                <button type="button" data-eps="0.3">ε = 0.3</button>
+                <button type="button" data-eps="0.03">ε = 0.03</button>
+            </div>
+            <p id="delta-status" aria-live="polite"></p>
+        </div>
+
+        <h2 id="one-sided">左右极限与极限存在的条件</h2>
 
         <p>函数可以从 x₀ 的<strong>左侧</strong>靠近，也可以从<strong>右侧</strong>靠近。这就引出了左极限和右极限的概念：</p>
 
@@ -146,7 +241,7 @@
             这件事告诉我们：<strong>不要凭图像的"直观感觉"判断极限</strong>。极限是精确的数学概念，需要用数学工具（ε-δ、夹逼、四则运算）来精确判断。
         </div>
 
-        <h2>x→∞ 时的极限</h2>
+        <h2 id="infinity">x→∞ 时的极限</h2>
 
         <p>除了 x → x₀，函数极限的另一种重要情形是 x → ∞（或 x → -∞）。这时我们关心的是当自变量无限增大时，函数值趋向何处。</p>
 
@@ -171,7 +266,7 @@
 
         <p>特别要注意的是，x→∞ 时的极限和 x→x₀ 时的极限在几何上有不同的含义：前者给出了<strong>水平渐近线</strong>的信息，后者则描述了函数在某个点附近的局部行为。</p>
 
-        <h2>极限的四则运算法则</h2>
+        <h2 id="algebra">极限的四则运算法则</h2>
 
         <p>和数列极限一样，函数极限也满足四则运算法则——这是实际计算中用到最多的工具。</p>
 
@@ -219,7 +314,7 @@
 
         <p>但要注意除法的条件——分母的极限不能是 0。如果分母趋于 0，情况就复杂了，这就是我们将在第7章讨论的"未定式"问题。</p>
 
-        <h2>函数极限与数列极限的关系：海涅定理</h2>
+        <h2 id="heine">函数极限与数列极限的关系：海涅定理</h2>
 
         <p>函数极限和数列极限之间有一个深刻的联系——<strong>海涅定理</strong>（Heine's Theorem）：</p>
 
@@ -248,12 +343,44 @@
 
         <p>在下一章中，我们将学习两个在微积分史上具有里程碑意义的极限——<code>lim sin x/x = 1</code> 和 <code>lim (1 + 1/x)^x = e</code>。它们不仅是考试中的常客，更在数学和自然科学的各个领域中扮演着核心角色。</p>
 
+        <h2 id="references">参考资料</h2>
+
+        <p>本章的 ε-δ 定义、左右极限、四则运算与海涅定理均与标准微积分教材一致；图 3-1 与 δ 控件为本章原创的教学示意，取线性函数 f(x)=3x−1 使 δ=ε/3 可精确给出，不含实验数据。</p>
+
+        <ul>
+            <li>MIT OpenCourseWare，<a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/">18.01SC Single Variable Calculus</a>（函数极限与 ε-δ 部分）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Limit_of_a_function">Limit of a function</a>（ε-δ 定义、单侧极限与海涅判别）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/(%CE%B5,_%CE%B4)-definition_of_limit">(ε, δ)-definition of limit</a>（量词顺序与几何意义）。</li>
+        </ul>
+
+        <script>
+        (function () {
+            var r = document.getElementById('eps2-range');
+            var o = document.getElementById('eps2-out');
+            var s = document.getElementById('delta-status');
+            if (!r || !o || !s) { return; }
+            function update() {
+                var eps = parseFloat(r.value);
+                var delta = eps / 3;
+                o.textContent = eps.toFixed(2);
+                s.textContent = '取 δ = ε/3 = ' + delta.toFixed(4) + '；当 0 < |x−2| < ' + delta.toFixed(4)
+                    + ' 时，|（3x−1）−5| = 3|x−2| < 3δ = ε = ' + eps.toFixed(2) + '。';
+            }
+            r.addEventListener('input', update);
+            Array.prototype.forEach.call(document.querySelectorAll('#delta-widget button[data-eps]'), function (btn) {
+                btn.addEventListener('click', function () { r.value = btn.getAttribute('data-eps'); update(); });
+            });
+            update();
+        })();
+        </script>
+
         <div class="footer-nav">
             <a href="02.html">← 上一章</a>
             <a href="index.html">📖 返回目录</a>
             <a href="04.html">下一章 →</a>
-        </div>
-    </div>
+            </div>
+        </article>
+    </main>
 </div>
 </div>
 </body>
