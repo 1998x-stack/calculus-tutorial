@@ -5,11 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第8章 导数的定义与几何意义</title>
     <link rel="stylesheet" href="theme.css">
+    <style>
+        /* 本章新增组件；同时兜底保证无主题样式时仍不横向溢出 */
+        .main-content img, .main-content svg { max-width: 100%; height: auto; }
+        .main-content pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+        body { overflow-wrap: anywhere; }
+        .article-header .dek { color: #475569; font-size: 1.05rem; line-height: 1.8; }
+        .page-toc { background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 18px; margin:16px 0 8px; }
+        .page-toc ol { margin:0 0 0 20px; }
+        figure { margin: 22px 0; }
+        figure svg { display:block; width:100%; height:auto; background:#fffdf9; border:1px solid #e2e8f0; border-radius:16px; }
+        figure figcaption { font-size:.9rem; color:#475569; margin-top:8px; line-height:1.7; }
+        .math-inline { font-family:"Cambria Math","STIX Two Math","Latin Modern Math",serif; }
+        .math-scroll { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+        .math-scroll:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        .math-scroll math[display="block"] { width:max-content; min-width:100%; font-size:1.15rem; padding:6px 0; }
+        .widget { border:1px solid #c4b5fd; border-radius:18px; padding:16px 18px; margin:20px 0; background:#faf8ff; }
+        .widget output { font-family:"JetBrains Mono",monospace; }
+        .widget .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:10px 0; }
+        .widget button { padding:6px 16px; border-radius:999px; border:1px solid #8b5cf6; background:#fff; color:#5b21b6; font-weight:600; cursor:pointer; }
+        .widget button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+        @media (max-width:820px) { .main-content table { display:block; overflow-x:auto; } }
+    </style>
 </head>
 <body>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程目录">
         <h3>📐 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 函数：微积分的语言</a></li>
@@ -41,9 +64,25 @@
             <li><a href="27.html">第27章 常微分方程</a></li>
             <li><a href="28.html">第28章 微积分与机器学习</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>切线问题：导数的诞生</h2>
+    </nav>
+    <main class="main-content" id="content">
+    <article>
+        <header class="article-header">
+            <h1>导数的定义与几何意义</h1>
+            <p class="dek">导数就是平均变化率在 Δx→0 时的极限，也就是曲线在该点处切线的斜率。本章从“如何求切线斜率”出发，连接极限、左/右导数、可导与连续，并给出一个可动手调节的割线→切线示意。</p>
+            <nav class="page-toc" aria-label="本章目录">
+                <ol>
+                    <li><a href="#tangent-problem">切线问题：导数的诞生</a></li>
+                    <li><a href="#rate">从平均变化率到瞬时变化率</a></li>
+                    <li><a href="#one-sided">左导数与右导数</a></li>
+                    <li><a href="#geometry">导数的几何意义：切线方程</a></li>
+                    <li><a href="#continuity">可导与连续的关系</a></li>
+                    <li><a href="#from-definition">用定义求几个简单函数的导数</a></li>
+                    <li><a href="#references">参考资料</a></li>
+                </ol>
+            </nav>
+        </header>
+        <h2 id="tangent-problem">切线问题：导数的诞生</h2>
 
         <p>大家好，我是你们的讲师。如果你问一个学完微积分的人"你觉得微积分里哪个概念最重要"，十有八九的回答是<strong>导数</strong>。导数就像是微积分世界里的"速度计"——它告诉我们每一件事物在每一瞬间的变化有多快。</p>
 
@@ -51,17 +90,41 @@
 
         <p>这个故事告诉我们一个深刻的道理：数学中那些最伟大的发现，往往来自最朴素的问题。切线斜率——听起来像是初中几何的内容——却成了整个微积分的起点之一。本章我们就从"如何求切线的斜率"这个朴素问题出发，一步步揭开导数的神秘面纱。</p>
 
-        <h2>从平均变化率到瞬时变化率</h2>
+        <h2 id="rate">从平均变化率到瞬时变化率</h2>
 
         <h3>平均变化率：割线的斜率</h3>
 
         <p>假设你开着一辆车，记录下它在不同时刻的位置。如果 <code>t = 1</code> 秒时在 <code>s = 10</code> 米处，<code>t = 3</code> 秒时在 <code>s = 50</code> 米处，那么这段时间内的<strong>平均速度</strong>就是 <code>(50 - 10) / (3 - 1) = 20</code> 米/秒。</p>
 
-        <p>用数学语言表达：对于函数 <code>y = f(x)</code>，当自变量从 <code>x0</code> 变化到 <code>x0 + Δx</code>（<code>Δx</code> 读作"delta x"，表示 x 的改变量），函数值的改变量是 <code>Δy = f(x0 + Δx) - f(x0)</code>。<strong>平均变化率</strong>就是：</p>
+        <p>用数学语言表达：对于函数 <code>y = f(x)</code>，当自变量从 <code>x0</code> 变化到 <code>x0 + Δx</code>（<code>Δx</code> 读作“delta x”，表示 x 的改变量），函数值的改变量是 <math class="math-inline" aria-label="Δy 等于 f 在 x0 加 Δx 处的值减去 f 在 x0 处的值"><mrow><mi>Δ</mi><mi>y</mi><mo>=</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>+</mo><mi>Δ</mi><mi>x</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo></mrow></math>。<strong>平均变化率</strong>就是：</p>
 
         <pre><code>平均变化率 = Δy / Δx = [f(x0 + Δx) - f(x0)] / Δx</code></pre>
 
         <p>几何上，这个比值就是经过点 <code>(x0, f(x0))</code> 和 <code>(x0 + Δx, f(x0 + Δx))</code> 的<strong>割线</strong>（secant line）的斜率。你在中学就学过：两点确定一条直线，斜率等于纵坐标之差除以横坐标之差。</p>
+
+        <figure id="fig-secant">
+            <svg viewBox="0 0 720 360" role="img" aria-labelledby="fig-secant-title fig-secant-desc">
+                <title id="fig-secant-title">割线斜率随 Δx 缩小而趋于切线斜率</title>
+                <desc id="fig-secant-desc">曲线 y = x² 上固定点 P，动点 Q 向 P 移动，割线 PQ 的斜率趋于点 P 处切线的斜率 2。</desc>
+                <line x1="80" y1="320" x2="690" y2="320" stroke="#94a3b8"/>
+                <line x1="80" y1="40" x2="80" y2="320" stroke="#94a3b8"/>
+                <text x="676" y="340" font-size="14" fill="#475569">x</text>
+                <text x="58" y="52" font-size="14" fill="#475569">y</text>
+                <polyline fill="none" stroke="#147f80" stroke-width="3" points="80,320 137.5,317.3 195,309 252.5,295.3 310,276 367.5,251.3 425,221 482.5,185.3 540,144 597.5,97.3 655,45"/>
+                <line x1="195" y1="320" x2="540" y2="188" stroke="#d06d4d" stroke-width="2.5" stroke-dasharray="7 5"/>
+                <line x1="310" y1="276" x2="540" y2="144" stroke="#7461ba" stroke-width="2.5"/>
+                <line x1="540" y1="276" x2="540" y2="144" stroke="#916c22" stroke-width="1.6" stroke-dasharray="4 4"/>
+                <line x1="310" y1="276" x2="540" y2="276" stroke="#916c22" stroke-width="1.6" stroke-dasharray="4 4"/>
+                <circle cx="310" cy="276" r="5" fill="#147f80"/>
+                <circle cx="540" cy="144" r="5" fill="#7461ba"/>
+                <text x="288" y="297" font-size="14" fill="#0f172a">P(x₀, f(x₀))</text>
+                <text x="548" y="138" font-size="14" fill="#0f172a">Q(x₀+Δx, f(x₀+Δx))</text>
+                <text x="360" y="314" font-size="13" fill="#916c22">Δx</text>
+                <text x="150" y="150" font-size="14" fill="#7461ba">割线 PQ：斜率 = Δy/Δx</text>
+                <text x="432" y="214" font-size="14" fill="#d06d4d">切线：斜率 = f′(x₀)</text>
+            </svg>
+            <figcaption>图 8-1（教学示意）：以 f(x)=x² 为例，固定点 P(x₀=1) 与动点 Q(x₀+Δx)。当 Δx 减小，割线 PQ（紫色）的斜率 Δy/Δx 趋近点 P 处切线（橙色虚线）的斜率 f′(x₀)。颜色含义贯穿本章：绿色为函数曲线，紫色为割线，橙色为切线。</figcaption>
+        </figure>
 
         <h3>瞬时变化率：让Δx趋于0</h3>
 
@@ -69,9 +132,38 @@
 
         <p>这是一个典型的<strong>极限</strong>过程——正是在第7章中我们反复练习的那类计算。导数的定义就是：让 <code>Δx → 0</code>，求平均变化率的极限：</p>
 
-        <pre><code>f'(x0) = lim_{Δx→0} [f(x0 + Δx) - f(x0)] / Δx</code></pre>
+        <div class="math-equation" role="group" aria-label="导数的定义式">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="导数定义公式，可横向滚动">
+                <math display="block" aria-label="f prime x0 等于：当 Δx 趋于 0 时，f(x0+Δx) 减 f(x0) 除以 Δx 的极限">
+                    <mrow>
+                        <msup><mi>f</mi><mo>′</mo></msup><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo>
+                        <mo>=</mo>
+                        <munder><mo>lim</mo><mrow><mi>Δ</mi><mi>x</mi><mo>→</mo><mn>0</mn></mrow></munder>
+                        <mfrac>
+                            <mrow><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>+</mo><mi>Δ</mi><mi>x</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo></mrow>
+                            <mrow><mi>Δ</mi><mi>x</mi></mrow>
+                        </mfrac>
+                    </mrow>
+                </math>
+            </div>
+        </div>
 
         <p>这个极限（如果存在）就是函数 <code>f</code> 在点 <code>x0</code> 处的<strong>导数</strong>（derivative）。</p>
+
+        <div class="widget" id="secant-widget">
+            <p><strong>动手试一下：把 Δx 压小，看割线斜率如何逼近切线斜率。</strong>取 f(x)=x²，x₀=1。</p>
+            <div class="row">
+                <label for="dx-range">Δx =</label>
+                <input id="dx-range" type="range" min="0.01" max="1.5" step="0.01" value="1">
+                <output id="dx-out" for="dx-range">1.00</output>
+            </div>
+            <div class="row">
+                <button type="button" data-dx="0.5">Δx = 0.5</button>
+                <button type="button" data-dx="0.1">Δx = 0.1</button>
+                <button type="button" data-dx="0.01">Δx = 0.01</button>
+            </div>
+            <p id="secant-status" aria-live="polite"></p>
+        </div>
 
         <p>导数有多种等价的记号，你要习惯它们：</p>
 
@@ -123,7 +215,7 @@
             导数定义的本质是一个极限——平均变化率在 Δx→0 时的极限。如果你在第3-7章扎实地掌握了极限的计算，那么导数的定义对你来说只是在"老朋友"的肩膀上往前走了一步。反之，如果极限计算还没熟练，建议回头翻翻第7章的极限综合实战。
         </div>
 
-        <h2>左导数与右导数</h2>
+        <h2 id="one-sided">左导数与右导数</h2>
 
         <p>与极限类似，导数也有"从哪边逼近"的问题。<strong>左导数</strong>是 <code>Δx → 0^-</code> 时平均变化率的极限，<strong>右导数</strong>是 <code>Δx → 0^+</code> 时的极限。函数在某点可导的充要条件是：<strong>左导数 = 右导数</strong>。</p>
 
@@ -146,7 +238,7 @@
             我曾经看到一个大厂算法岗的面试题，第一问就是"<code>f(x) = |x - 3|</code> 在 x = 3 处是否可导？"很多候选人脱口而出"可导"，因为在 x = 3 两侧函数值的差是一样的。但实际上，按照左导数等于右导数的判断标准，它和 |x| 在 0 处完全一样，是不可导的。面试官正是用这道题来考察候选人的基本功是否扎实——当你觉得问题"太简单了"的时候，往往就是最需要警惕的时候。
         </div>
 
-        <h2>导数的几何意义：切线方程</h2>
+        <h2 id="geometry">导数的几何意义：切线方程</h2>
 
         <h3>切线的定义</h3>
 
@@ -166,7 +258,7 @@
 
         <p>这个简单的近似公式是整个微积分的核心思想之一：<strong>用直线（线性函数）来近似曲线</strong>。在你学习第13章泰勒公式时，会发现这实际上就是泰勒公式的一阶近似。</p>
 
-        <h2>可导与连续的关系</h2>
+        <h2 id="continuity">可导与连续的关系</h2>
 
         <p>这是微积分里一个极其重要的关系，很多初学者会搞混，咱们一次性说清楚。</p>
 
@@ -221,7 +313,7 @@
             有些同学在做了大量光滑函数（多项式、指数函数等）的求导练习后，会产生一种错觉："所有连续函数的图像都是光滑曲线，所以都应该是可导的。"但事实远非如此——维尔斯特拉斯构造了一个处处连续但处处不可导的函数（维尔斯特拉斯函数）。这个函数的图像在任何尺度下都是锯齿状的，无论你怎么放大，都找不到一条光滑的切线。它告诉我们：连续和可导之间的差距，比大多数人想象的要大得多。
         </div>
 
-        <h2>用定义求几个简单函数的导数</h2>
+        <h2 id="from-definition">用定义求几个简单函数的导数</h2>
 
         <p>在进入第9章的求导法则之前，让我们先用定义（差商极限）求几个简单函数的导数。这有助于你真正理解导数的含义，而不是机械地套用公式。</p>
 
@@ -277,18 +369,49 @@ sin'(x) = cos x</code></pre>
             用定义求导时，如果遇到分式，先通分再化简；如果遇到根号，用有理化（乘以共轭）；如果遇到三角，用和差化积公式。这些"预处理"操作的共同目标只有一个：<strong>把 h 从分母中消掉</strong>，这样才能安全地令 h → 0。
         </div>
 
-        <h2>本章小结</h2>
+        <h2 id="summary">本章小结</h2>
 
         <p>本章我们完成了从极限到导数的关键跨越。你学到了：导数就是平均变化率在 <code>Δx → 0</code> 时的极限，也就是切线斜率；左导数和右导数必须相等才能说"可导"；可导一定连续，但连续不一定可导；以及如何用定义求简单函数的导数。</p>
 
         <p>现在你手中已经握着微积分最核心的工具——导数的定义。从下一章开始，我们不再每次都从定义出发了——第9章将教你一套高效的<strong>求导法则</strong>，让你能够快速求出任意初等函数的导数。想象一下：不用每次求 <code>sin x</code> 的导数都做一次极限计算，而是直接写出 <code>cos x</code>——这就是标准求导法则带来的效率提升。</p>
 
+        <script>
+        (function () {
+            var r = document.getElementById('dx-range');
+            var o = document.getElementById('dx-out');
+            var s = document.getElementById('secant-status');
+            if (!r || !o || !s) { return; }
+            function update() {
+                var h = parseFloat(r.value);
+                o.textContent = h.toFixed(2);
+                s.textContent = '割线斜率 = (f(1+Δx) − f(1)) / Δx = 2 + Δx = ' + (2 + h).toFixed(2)
+                    + '；切线斜率 f′(1) = 2。';
+            }
+            r.addEventListener('input', update);
+            Array.prototype.forEach.call(document.querySelectorAll('#secant-widget button[data-dx]'), function (b) {
+                b.addEventListener('click', function () { r.value = b.getAttribute('data-dx'); update(); });
+            });
+            update();
+        })();
+        </script>
+
+        <h2 id="references">参考资料</h2>
+
+        <p>本章定义、左/右导数与“可导 ⇒ 连续”的推导均与标准教材一致；图 8-1 与交互控件为本章原创的教学示意，用 f(x)=x² 演示构造过程，不含任何实验数据。</p>
+
+        <ul>
+            <li>MIT OpenCourseWare，<a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/">18.01SC Single Variable Calculus</a>（导数定义与几何意义部分）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Derivative">Derivative</a>（定义、记号与历史的对照）。</li>
+            <li>维基百科，<a href="https://zh.wikipedia.org/wiki/%E5%AF%BC%E6%95%B0">导数</a>（中文术语与记号）。</li>
+        </ul>
+
         <div class="footer-nav">
             <a href="07.html">← 上一章</a>
             <a href="index.html">📖 返回目录</a>
             <a href="09.html">下一章 →</a>
-        </div>
-    </div>
+            </div>
+        </article>
+    </main>
 </div>
 </div>
 </body>
