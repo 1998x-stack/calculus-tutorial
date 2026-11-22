@@ -5,11 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第13章 泰勒公式</title>
     <link rel="stylesheet" href="theme.css">
+    <style>
+        /* 本章新增组件；同时兜底保证无主题样式时仍不横向溢出 */
+        .main-content img, .main-content svg { max-width: 100%; height: auto; }
+        .main-content pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+        body { overflow-wrap: anywhere; }
+        .article-header .dek { color: #475569; font-size: 1.05rem; line-height: 1.8; }
+        .page-toc { background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 18px; margin:16px 0 8px; }
+        .page-toc ol { margin:0 0 0 20px; }
+        figure { margin: 22px 0; }
+        figure svg { display:block; width:100%; height:auto; background:#fffdf9; border:1px solid #e2e8f0; border-radius:16px; }
+        figure figcaption { font-size:.9rem; color:#475569; margin-top:8px; line-height:1.7; }
+        .math-inline { font-family:"Cambria Math","STIX Two Math","Latin Modern Math",serif; }
+        .math-scroll { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+        .math-scroll:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        .math-scroll math[display="block"] { width:max-content; min-width:100%; font-size:1.15rem; padding:6px 0; }
+        .widget { border:1px solid #c4b5fd; border-radius:18px; padding:16px 18px; margin:20px 0; background:#faf8ff; }
+        .widget output { font-family:"JetBrains Mono",monospace; }
+        .widget .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:10px 0; }
+        .widget button { padding:6px 16px; border-radius:999px; border:1px solid #8b5cf6; background:#fff; color:#5b21b6; font-weight:600; cursor:pointer; }
+        .widget button[aria-pressed="true"] { background:#7c3aed; color:#fff; }
+        .widget button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+        @media (max-width:820px) { .main-content table { display:block; overflow-x:auto; } }
+    </style>
 </head>
 <body>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程目录">
         <h3>📐 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 函数：微积分的语言</a></li>
@@ -42,8 +66,27 @@
             <li><a href="28.html">第28章 微积分与机器学习</a></li>
         </ul>
     </div>
-    <div class="main-content">
-        <h2>用多项式"模拟"整个世界</h2>
+        </ul>
+    </nav>
+    <main class="main-content" id="content">
+    <article>
+        <header class="article-header">
+            <h1>泰勒公式</h1>
+            <p class="dek">直线不够用，就用多项式。本章从“用切线近似曲线”出发，说明泰勒系数为何由各阶导数决定，对比拉格朗日余项与皮亚诺余项，并给出 sin 的逐阶逼近图与可切换阶数的近似控件。</p>
+            <nav class="page-toc" aria-label="本章目录">
+                <ol>
+                    <li><a href="#intro">用多项式模拟整个世界</a></li>
+                    <li><a href="#why">为什么需要多项式逼近</a></li>
+                    <li><a href="#coefficients">泰勒公式的系数推导</a></li>
+                    <li><a href="#remainder">拉格朗日余项与皮亚诺余项</a></li>
+                    <li><a href="#maclaurin">麦克劳林展开</a></li>
+                    <li><a href="#limit-approx">用泰勒公式求极限和近似计算</a></li>
+                    <li><a href="#order">泰勒展开的阶数选择原则</a></li>
+                    <li><a href="#references">参考资料</a></li>
+                </ol>
+            </nav>
+        </header>
+        <h2 id="intro">用多项式“模拟”整个世界</h2>
 
         <p>大家好，我是你们的讲师。在之前的章节里，我们反复看到这样一个思想：用<strong>直线</strong>（一阶线性函数）来近似曲线。微分 <code>dy = f'(x)dx</code> 就是这种思想的体现——在微小范围内，用切线代替曲线。但如果你问一个工程师："用直线近似够吗？"他大概率会摇头。因为很多问题是<strong>非线性</strong>的，直线近似误差太大。</p>
 
@@ -51,7 +94,30 @@
 
         <p>我对泰勒公式的感情非常深。大二那年上数值分析课，教授打开 MATLAB，画出了 <code>sin x</code> 和它的各阶泰勒展开——当展开到第 5 项时，近似曲线几乎完美地贴合了正弦曲线；到第 9 项时，肉眼已经看不出任何误差。那一刻我真实地感受到了数学公式的"魔力"。泰勒公式让我明白了一件事：<strong>世界上的复杂函数，其实都可以用简单的多项式"模拟"出来</strong>——这不正是机器学习里"用简单模型拟合复杂函数"的数学基础吗？</p>
 
-        <h2>为什么需要多项式逼近</h2>
+        <figure id="fig-taylor">
+            <svg viewBox="0 0 720 360" role="img" aria-labelledby="fig-taylor-title fig-taylor-desc">
+                <title id="fig-taylor-title">sin x 与其逐阶泰勒多项式在 0 附近的贴合程度</title>
+                <desc id="fig-taylor-desc">在 0 附近，P₁=x、P₃=x−x³/6、P₅=x−x³/6+x⁵/120 依次逼近曲线 y=sin x；阶数越高，贴合区间越宽。</desc>
+                <defs><clipPath id="clip13"><rect x="40" y="20" width="655" height="320"/></clipPath></defs>
+                <line x1="40" y1="180" x2="690" y2="180" stroke="#94a3b8"/>
+                <line x1="360" y1="25" x2="360" y2="335" stroke="#94a3b8"/>
+                <g clip-path="url(#clip13)" fill="none">
+                    <polyline stroke="#147f80" stroke-width="3.5" points="56,174 86,205 117,232 147,255 178,269 208,275 238,271 269,258 299,237 330,210 360,180 390,150 421,123 451,102 482,89 512,85 542,91 573,105 603,128 634,155 664,186"/>
+                    <polyline stroke="#916c22" stroke-width="2" stroke-dasharray="6 4" points="56,484 86,454 117,423 147,393 178,362 208,332 238,302 269,271 299,241 330,210 360,180 390,150 421,119 451,89 482,58 512,28 542,-2 573,-33 603,-63 634,-94 664,-124"/>
+                    <polyline stroke="#7461ba" stroke-width="2" points="56,-35 86,75 117,158 147,215 178,250 208,267 238,268 269,257 299,237 330,210 360,180 390,150 421,123 451,103 482,92 512,93 542,110 573,145 603,202 634,285 664,395"/>
+                    <polyline stroke="#d06d4d" stroke-width="2" points="56,231 86,232 117,245 147,259 178,271 208,275 238,271 269,258 299,237 330,210 360,180 390,150 421,123 451,102 482,89 512,85 542,89 573,101 603,115 634,128 664,129"/>
+                </g>
+                <text x="672" y="200" font-size="14" fill="#475569">x</text>
+                <text x="370" y="38" font-size="14" fill="#475569">y</text>
+                <text x="66" y="42" font-size="14" fill="#147f80">y = sin x</text>
+                <text x="66" y="62" font-size="13" fill="#916c22">P₁ = x</text>
+                <text x="66" y="82" font-size="13" fill="#7461ba">P₃ = x − x³/6</text>
+                <text x="66" y="102" font-size="13" fill="#d06d4d">P₅ = x − x³/6 + x⁵/120</text>
+            </svg>
+            <figcaption>图 13-1（教学示意）：在 x=0 附近，一次多项式 P₁=x 仅在很小的范围内贴合 sin x；加入 x³ 项（P₃）后贴合区间明显变宽；再加入 x⁵ 项（P₅）后在 |x|≤π 内已几乎重合。阶数越高、余项阶越高，离 0 越远也越准。</figcaption>
+        </figure>
+
+        <h2 id="why">为什么需要多项式逼近</h2>
 
         <p>多项式是"最简单的函数"之一：</p>
         <ul>
@@ -99,7 +165,7 @@
             </tbody>
         </table>
 
-        <h2>泰勒公式的系数推导</h2>
+        <h2 id="coefficients">泰勒公式的系数推导</h2>
 
         <p>假设我们要在 <code>x0</code> 附近用 n 次多项式 <code>Pn(x)</code> 来逼近函数 <code>f(x)</code>。设：</p>
 
@@ -116,12 +182,27 @@ Pn^(n)(x0) = f^(n)(x0) → n!·an = f^(n)(x0) → an = f^(n)(x0)/n!</code></pre>
 
         <p>由此得到泰勒公式：</p>
 
-        <pre><code>f(x) = f(x0) + f'(x0)(x-x0) + f''(x0)/2! · (x-x0)² + ...
-         + f^(n)(x0)/n! · (x-x0)^n + Rn(x)</code></pre>
+        <div class="math-equation" role="group" aria-label="带余项的泰勒公式">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="泰勒公式，可横向滚动">
+                <math display="block" aria-label="f(x) 等于 f 的各阶导数在 x0 处的值乘以 (x 减 x0) 的幂除以 k 的阶乘、从 k 等于 0 到 n 求和，再加余项 Rn(x)">
+                    <mrow>
+                        <mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo>
+                        <munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mi>n</mi></munderover>
+                        <mfrac>
+                            <mrow><msup><mi>f</mi><mrow><mo>(</mo><mi>k</mi><mo>)</mo></mrow></msup><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo></mrow>
+                            <mrow><mi>k</mi><mo>!</mo></mrow>
+                        </mfrac>
+                        <msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo></mrow><mi>k</mi></msup>
+                        <mo>+</mo>
+                        <msub><mi>R</mi><mi>n</mi></msub><mo>(</mo><mi>x</mi><mo>)</mo>
+                    </mrow>
+                </math>
+            </div>
+        </div>
 
         <p>其中 <code>Pn(x)</code> 是<strong>泰勒多项式</strong>（Taylor polynomial），<code>Rn(x)</code> 是<strong>余项</strong>。</p>
 
-        <h2>拉格朗日余项与皮亚诺余项</h2>
+        <h2 id="remainder">拉格朗日余项与皮亚诺余项</h2>
 
         <p>余项刻画了用多项式近似代替原函数的<strong>误差</strong>。两种最常见的余项形式：</p>
 
@@ -133,9 +214,22 @@ Pn^(n)(x0) = f^(n)(x0) → n!·an = f^(n)(x0) → an = f^(n)(x0)/n!</code></pre>
 
         <h3>拉格朗日余项</h3>
 
-        <pre><code>Rn(x) = f^(n+1)(ξ) / (n+1)! · (x-x0)^(n+1)
+        <div class="math-equation" role="group" aria-label="拉格朗日余项">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="拉格朗日余项公式，可横向滚动">
+                <math display="block" aria-label="Rn(x) 等于 f 的 n+1 阶导数在 ξ 处的值除以 n+1 的阶乘再乘以 (x 减 x0) 的 n+1 次方">
+                    <mrow>
+                        <msub><mi>R</mi><mi>n</mi></msub><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo>
+                        <mfrac>
+                            <mrow><msup><mi>f</mi><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></msup><mo>(</mo><mi>ξ</mi><mo>)</mo></mrow>
+                            <mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>!</mo></mrow>
+                        </mfrac>
+                        <msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo></mrow><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msup>
+                    </mrow>
+                </math>
+            </div>
+        </div>
 
-其中 ξ 介于 x 和 x0 之间。</code></pre>
+        <p>其中 <code>ξ</code> 介于 <code>x</code> 和 <code>x0</code> 之间。</p>
 
         <p>拉格朗日余项给出了误差的<strong>具体定量形式</strong>——它和第12章拉格朗日中值定理的思想一脉相承（实际上，当 n=0 时，泰勒公式就是拉格朗日中值定理！）。拉格朗日余项适用于需要估计具体误差大小的情况——比如在数值计算中判断近似是否满足精度要求。</p>
 
@@ -146,7 +240,7 @@ Pn^(n)(x0) = f^(n)(x0) → n!·an = f^(n)(x0) → an = f^(n)(x0)/n!</code></pre>
             - 一个简单的记忆方法：拉格朗日余项里有个 <code>ξ</code>（未知的中间点），所以能给出"最大可能的误差"
         </div>
 
-        <h2>麦克劳林展开：泰勒在零点处的特例</h2>
+        <h2 id="maclaurin">麦克劳林展开：泰勒在零点处的特例</h2>
 
         <p>当 <code>x0 = 0</code> 时，泰勒公式称为<strong>麦克劳林公式</strong>（Maclaurin series）。这是最常用的形式——因为大多数函数在 0 附近的性质最"干净"。</p>
 
@@ -214,7 +308,7 @@ Pn^(n)(x0) = f^(n)(x0) → n!·an = f^(n)(x0) → an = f^(n)(x0)/n!</code></pre>
             一旦你记住了这个统一点，就不需要单独记忆 <code>sin x</code> 和 <code>cos x</code> 的展开了。
         </div>
 
-        <h2>用泰勒公式求极限和近似计算</h2>
+        <h2 id="limit-approx">用泰勒公式求极限和近似计算</h2>
 
         <h3>求极限</h3>
 
@@ -264,7 +358,18 @@ e^(0.5) = 1 + 0.5 + 0.5²/2 + 0.5³/6 + 0.5⁴/24 + ...
             另外，在复合函数中使用泰勒展开时要小心——比如对 <code>sin(e^x - 1)</code> 展开，需要先展开内层 <code>e^x - 1</code>，再代入外层展开，每一步都要保持相同的阶数。
         </div>
 
-        <h2>泰勒展开的阶数选择原则</h2>
+        <div class="widget" id="taylor-widget">
+            <p><strong>动手试一下：在 x = 2 处用不同阶数的泰勒多项式近似 sin 2（精确值 ≈ 0.9093）。</strong></p>
+            <div class="row">
+                <button type="button" data-deg="1">1 阶（x）</button>
+                <button type="button" data-deg="3">3 阶</button>
+                <button type="button" data-deg="5">5 阶</button>
+                <button type="button" data-deg="7">7 阶</button>
+            </div>
+            <p id="taylor-status" aria-live="polite"></p>
+        </div>
+
+        <h2 id="order">泰勒展开的阶数选择原则</h2>
 
         <p>在实际使用中，如何确定展开到哪一项？下面几条"黄金法则"可以帮你快速判断：</p>
 
@@ -291,18 +396,55 @@ e^x - 1 - x - x²/2 = x³/6 + o(x³)
             在考试或实际计算中，你不需要每次都从零开始推导泰勒展开。把本节列出的 5 个常见展开背下来（<code>e^x</code>, <code>sin x</code>, <code>cos x</code>, <code>ln(1+x)</code>, <code>(1+x)^α</code>），然后复杂的函数通过变量代换（比如令 u = x²）转化为这些基本展开的组合。这就像掌握了基本单词后，可以组出任何句子。
         </div>
 
-        <h2>本章小结</h2>
+        <h2 id="summary">本章小结</h2>
 
         <p>泰勒公式是微积分中最优美的公式之一：它告诉我们任意光滑函数都可以用多项式来逼近，系数由函数在该点的各阶导数决定。拉格朗日余项给出了误差的定量估计，皮亚诺余项则更适合极限计算。五个基本函数的麦克劳林展开——<code>e^x</code>、<code>sin x</code>、<code>cos x</code>、<code>ln(1+x)</code>、<code>(1+x)^α</code>——是你需要熟练掌握的工具。</p>
 
         <p>如果说拉格朗日中值定理是用一条直线近似函数，那么泰勒公式就是把这条直线升级成了一个 n 次多项式——精度提升了几个数量级。下一章，我们将把所有这些求导工具用于实战——<strong>导数的应用</strong>：单调性、极值、凹凸性、渐近线和函数作图。你会发现，我们前面积累的所有知识，都可以用来解决一个很酷的问题：画出任意函数的图像。</p>
 
+        <h2 id="references">参考资料</h2>
+
+        <p>本章的泰勒公式、两种余项与五个麦克劳林展开均与标准微积分教材一致；图 13-1 与近似控件为本章原创的教学示意，取 sin x 以便逐阶对比，数值保留四位小数，不含实验数据。</p>
+
+        <ul>
+            <li>MIT OpenCourseWare，<a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/">18.01SC Single Variable Calculus</a>（泰勒多项式与余项部分）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Taylor_series">Taylor series</a>（一般形式、余项与收敛区间的对照）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Taylor%27s_theorem">Taylor's theorem</a>（拉格朗日余项的前提与证明思路）。</li>
+        </ul>
+
+        <script>
+        (function () {
+            var x = 2, status = document.getElementById('taylor-status');
+            var btns = document.querySelectorAll('#taylor-widget button[data-deg]');
+            if (!status || !btns.length) { return; }
+            function fact(n) { var r = 1; for (var i = 2; i <= n; i++) { r *= i; } return r; }
+            function approx(deg) {
+                var s = 0; for (var k = 0; 2 * k + 1 <= deg; k++) {
+                    var term = Math.pow(x, 2 * k + 1) / fact(2 * k + 1);
+                    s += (k % 2 === 0 ? 1 : -1) * term;
+                } return s;
+            }
+            function select(deg) {
+                Array.prototype.forEach.call(btns, function (b) {
+                    b.setAttribute('aria-pressed', b.getAttribute('data-deg') === String(deg) ? 'true' : 'false');
+                });
+                var a = approx(deg);
+                status.textContent = 'sin 2 ≈ ' + a.toFixed(4) + '，绝对误差 ≈ ' + Math.abs(a - 0.9093).toFixed(4) + '。阶数越高，多项式在离 0 较远处也越贴合。';
+            }
+            Array.prototype.forEach.call(btns, function (b) {
+                b.addEventListener('click', function () { select(b.getAttribute('data-deg')); });
+            });
+            select(3);
+        })();
+        </script>
+
         <div class="footer-nav">
             <a href="12.html">← 上一章</a>
             <a href="index.html">📖 返回目录</a>
             <a href="14.html">下一章 →</a>
-        </div>
-    </div>
+            </div>
+        </article>
+    </main>
 </div>
 </div>
 </body>
