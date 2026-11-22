@@ -5,11 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第14章 导数的应用</title>
     <link rel="stylesheet" href="theme.css">
+    <style>
+        /* 本章新增组件；同时兜底保证无主题样式时仍不横向溢出 */
+        .main-content img, .main-content svg { max-width: 100%; height: auto; }
+        .main-content pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+        body { overflow-wrap: anywhere; }
+        .article-header .dek { color: #475569; font-size: 1.05rem; line-height: 1.8; }
+        .page-toc { background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 18px; margin:16px 0 8px; }
+        .page-toc ol { margin:0 0 0 20px; }
+        figure { margin: 22px 0; }
+        figure svg { display:block; width:100%; height:auto; background:#fffdf9; border:1px solid #e2e8f0; border-radius:16px; }
+        figure figcaption { font-size:.9rem; color:#475569; margin-top:8px; line-height:1.7; }
+        .math-inline { font-family:"Cambria Math","STIX Two Math","Latin Modern Math",serif; }
+        .math-scroll { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+        .math-scroll:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        .math-scroll math[display="block"] { width:max-content; min-width:100%; font-size:1.15rem; padding:6px 0; }
+        .widget { border:1px solid #c4b5fd; border-radius:18px; padding:16px 18px; margin:20px 0; background:#faf8ff; }
+        .widget output { font-family:"JetBrains Mono",monospace; }
+        .widget .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:10px 0; }
+        .widget button { padding:6px 16px; border-radius:999px; border:1px solid #8b5cf6; background:#fff; color:#5b21b6; font-weight:600; cursor:pointer; }
+        .widget button[aria-pressed="true"] { background:#7c3aed; color:#fff; }
+        .widget button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+        @media (max-width:820px) { .main-content table { display:block; overflow-x:auto; } }
+    </style>
 </head>
 <body>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程目录">
         <h3>📐 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 函数：微积分的语言</a></li>
@@ -42,8 +66,26 @@
             <li><a href="28.html">第28章 微积分与机器学习</a></li>
         </ul>
     </div>
-    <div class="main-content">
-        <h2>从曲线到图像：导数的全面实战</h2>
+        </ul>
+    </nav>
+    <main class="main-content" id="content">
+    <article>
+        <header class="article-header">
+            <h1>导数的应用</h1>
+            <p class="dek">把求导工具投入实战：一阶导数定单调与极值，二阶导数定凹凸与拐点，渐近线描述无穷远行为，六步作图法把信息合成为图像。含一张 f(x)=x³−3x+1 的单调性示意图与一个可拖动考察点的控件。</p>
+            <nav class="page-toc" aria-label="本章目录">
+                <ol>
+                    <li><a href="#monotonicity">用一阶导数判定单调性</a></li>
+                    <li><a href="#extrema">极值的判定</a></li>
+                    <li><a href="#concavity">凹凸性与拐点</a></li>
+                    <li><a href="#asymptotes">渐近线的求法</a></li>
+                    <li><a href="#graphing">函数作图的完整流程</a></li>
+                    <li><a href="#optimization">最大值最小值的实际应用</a></li>
+                    <li><a href="#references">参考资料</a></li>
+                </ol>
+            </nav>
+        </header>
+        <h2 id="intro">从曲线到图像：导数的全面实战</h2>
 
         <p>大家好，我是你们的讲师。经过前面六章的积累，我们已经掌握了从导数定义到求导法则、从隐函数求导到泰勒公式的完整工具链。现在，是时候把这些工具<strong>投入实战</strong>了。</p>
 
@@ -51,7 +93,7 @@
 
         <p>让我讲一个我亲历的故事。本科时参加一个商业案例竞赛，题目是"为一个连锁咖啡店优化纸杯尺寸"。大多数人从市场调研入手，而我从数学入手：假设纸杯是圆锥台形，用导数求出给定容积下表面积最小的形状——这直接决定了原材料成本。最终我们组用这个"数学解法"拿到了最佳方案奖。评委说：<strong>"其他人都给了市场方案，只有你们给了数学方案。"</strong>这就是导数极值应用的力量——它不是一个抽象的数学题，而是实实在在能帮企业省钱、帮工程师优化设计的工具。</p>
 
-        <h2>用一阶导数判定单调性</h2>
+        <h2 id="monotonicity">用一阶导数判定单调性</h2>
 
         <p>这是导数最直接的应用之一。我们已经在第12章中值定理的推论中见过它：</p>
 
@@ -61,6 +103,19 @@
             <li>如果 <code>f'(x) < 0</code> 对所有 <code>x ∈ I</code> 成立，则 <code>f</code> 在 I 上<strong>严格递减</strong></li>
             <li>如果 <code>f'(x) = 0</code> 对所有 <code>x ∈ I</code> 成立，则 <code>f</code> 在 I 上为<strong>常数</strong></li>
         </ul>
+
+        <div class="math-equation" role="group" aria-label="单调性判定">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="单调性判定公式，可横向滚动">
+                <math display="block" aria-label="若在区间 I 上 f 的一阶导数大于 0，则 f 在 I 上严格递增">
+                    <mrow>
+                        <msup><mi>f</mi><mo>′</mo></msup><mo>(</mo><mi>x</mi><mo>)</mo><mo>&gt;</mo><mn>0</mn>
+                        <mo>(</mo><mi>x</mi><mo>∈</mo><mi>I</mi><mo>)</mo>
+                        <mo>⇒</mo>
+                        <mi>f</mi><mtext>在</mtext><mi>I</mi><mtext>上严格递增</mtext>
+                    </mrow>
+                </math>
+            </div>
+        </div>
 
         <pre><code>例：求 f(x) = x³ - 3x + 1 的单调区间。
 
@@ -75,7 +130,22 @@ f'(x) = 3x² - 3 = 3(x² - 1) = 3(x+1)(x-1)
 
 所以 f(x) 在 (-∞, -1) 和 (1, +∞) 上递增，在 (-1, 1) 上递减。</code></pre>
 
-        <h2>极值的判定</h2>
+        <div class="widget" id="mono-widget">
+            <p><strong>动手试一下：对 f(x)=x³−3x+1，拖动考察点 x，看 f′(x)=3x²−3 的符号如何决定增减。</strong></p>
+            <div class="row">
+                <label for="x-range">x =</label>
+                <input id="x-range" type="range" min="-2.2" max="2.2" step="0.1" value="0">
+                <output id="x-out" for="x-range">0.0</output>
+            </div>
+            <div class="row">
+                <button type="button" data-x="-1">x = −1（驻点）</button>
+                <button type="button" data-x="0">x = 0</button>
+                <button type="button" data-x="1">x = 1（驻点）</button>
+            </div>
+            <p id="mono-status" aria-live="polite"></p>
+        </div>
+
+        <h2 id="extrema">极值的判定</h2>
 
         <h3>第一充分条件</h3>
 
@@ -105,6 +175,42 @@ f'(x) = 3x² - 3 = 3(x² - 1) = 3(x+1)(x-1)
             <li><code>f''(-1) = -6 < 0</code> → 极大值 ✅</li>
             <li><code>f''(1) = 6 > 0</code> → 极小值 ✅</li>
         </ul>
+
+        <div class="math-equation" role="group" aria-label="极值第二充分条件">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="极值第二充分条件，可横向滚动">
+                <math display="block" aria-label="若 f 的一阶导数在 x0 处等于 0、且二阶导数在 x0 处小于 0，则 x0 是极大值点">
+                    <mrow>
+                        <msup><mi>f</mi><mo>′</mo></msup><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo><mo>=</mo><mn>0</mn>
+                        <mtext>且</mtext>
+                        <msup><mi>f</mi><mo>″</mo></msup><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo><mo>&lt;</mo><mn>0</mn>
+                        <mo>⇒</mo>
+                        <msub><mi>x</mi><mn>0</mn></msub><mtext>为极大值点</mtext>
+                    </mrow>
+                </math>
+            </div>
+        </div>
+
+        <figure id="fig-extrema">
+            <svg viewBox="0 0 720 400" role="img" aria-labelledby="fig-ext-title fig-ext-desc">
+                <title id="fig-ext-title">f(x)=x³−3x+1 的单调区间与极值</title>
+                <desc id="fig-ext-desc">曲线在 (−∞,−1) 递增、(−1,1) 递减、(1,+∞) 递增；在 x=−1 取极大值 3，在 x=1 取极小值 −1，两处切线水平。</desc>
+                <line x1="60" y1="250" x2="660" y2="250" stroke="#94a3b8"/>
+                <line x1="360" y1="40" x2="360" y2="380" stroke="#94a3b8"/>
+                <polyline fill="none" stroke="#147f80" stroke-width="3" points="74,366 126,228 178,157 230,136 282,152 334,190 386,235 438,272 490,288 542,267 594,196 646,58"/>
+                <line x1="180" y1="136" x2="280" y2="136" stroke="#d06d4d" stroke-width="2" stroke-dasharray="6 4"/>
+                <line x1="440" y1="288" x2="540" y2="288" stroke="#d06d4d" stroke-width="2" stroke-dasharray="6 4"/>
+                <circle cx="230" cy="136" r="5" fill="#d06d4d"/>
+                <circle cx="490" cy="288" r="5" fill="#d06d4d"/>
+                <text x="120" y="130" font-size="14" fill="#d06d4d">极大 (−1, 3)</text>
+                <text x="440" y="312" font-size="14" fill="#d06d4d">极小 (1, −1)</text>
+                <text x="96" y="330" font-size="14" fill="#0f172a">递增 ↗</text>
+                <text x="300" y="360" font-size="14" fill="#0f172a">递减 ↘</text>
+                <text x="560" y="120" font-size="14" fill="#0f172a">递增 ↗</text>
+                <text x="372" y="398" font-size="14" fill="#475569">x</text>
+                <text x="330" y="54" font-size="14" fill="#475569">y</text>
+            </svg>
+            <figcaption>图 14-1（教学示意）：f(x)=x³−3x+1，f′(x)=3(x+1)(x−1)。橙色虚线为两处水平切线；x=−1 处 f′ 由正变负故为极大值，x=1 处由负变正故为极小值。左右两段 f′&gt;0 递增，中间段 f′&lt;0 递减。</figcaption>
+        </figure>
 
         <p>第二充分条件比第一充分条件使用起来更方便——只需计算一个二阶导数值，不需要分析一阶导数在两侧的符号。但它也有局限性：当 <code>f''(x0) = 0</code> 时，这个方法失效，需要回到第一充分条件。</p>
 
@@ -139,7 +245,7 @@ f'(x) = 3x² - 3 = 3(x² - 1) = 3(x+1)(x-1)
             操作流程：① 找出所有可能的极值点（驻点 + 不可导点）→ ② 对每个点用充分条件判定。
         </div>
 
-        <h2>凹凸性与拐点</h2>
+        <h2 id="concavity">凹凸性与拐点</h2>
 
         <h3>凹凸性的判定</h3>
 
@@ -178,7 +284,7 @@ f''(x) = 12x² - 12 = 12(x² - 1)
             因此，拐点的判定规则与极值类似：不仅要检查二阶导数为零的点，还要看二阶导数在两侧的符号是否真的改变了。
         </div>
 
-        <h2>渐近线的求法</h2>
+        <h2 id="asymptotes">渐近线的求法</h2>
 
         <p>渐近线（asymptote）描述的是函数图像在无穷远处的"趋向"行为。有三种类型：</p>
 
@@ -227,7 +333,7 @@ b = lim_{x→∞} [(x² + 1)/(x-1) - x]
             垂直渐近线通常出现在分母为零且分子不为零的点。如果分子也为零，需要检查极限是否为无穷大。
         </div>
 
-        <h2>函数作图的完整流程</h2>
+        <h2 id="graphing">函数作图的完整流程</h2>
 
         <p>现在，我们把所有工具组合起来，看如何完整地绘制一个函数的图像。</p>
 
@@ -295,7 +401,7 @@ f''(x)=0 → x=0
             问题出在他跳过了"一阶导数分析"这一步，直接凭感觉画了。函数作图的价值就在于此：<strong>它强迫你系统地分析函数，而不是依赖直觉</strong>。很多"看起来应该是这样"的感觉，在导数面前不堪一击。
         </div>
 
-        <h2>最大值最小值的实际应用</h2>
+        <h2 id="optimization">最大值最小值的实际应用</h2>
 
         <p>这是导数在现实生活中最重要的应用之一。求闭区间 <code>[a, b]</code> 上连续函数的最值：</p>
 
@@ -330,18 +436,50 @@ S''(25) = -4 < 0 → 极大值（也是最大值）
             6. <strong>验证</strong>：用第二充分条件或端点值判断是最大还是最小
         </div>
 
-        <h2>本章小结</h2>
+        <h2 id="summary">本章小结</h2>
 
         <p>本章整合了前面七章的所有求导知识，将它们应用于分析函数性质这个核心任务上。一阶导数决定单调性和极值候选点，二阶导数决定凹凸性和拐点，渐近线描述了无穷远处的行为，六步作图法将所有这些信息整合成一幅完整的函数图像。最后，最值优化问题展示了导数知识在现实世界中的直接应用——从工程设计到商业决策，导数无处不在。</p>
 
         <p>至此，"微分学"的篇章告一段落。从第1章的函数语言，到第2-7章的极限计算，再到第8-14章的导数理论和应用——我们完整地走完了微积分前半程的全部内容。从下一章开始，我们将进入微积分的另一个半场：<strong>积分学</strong>。如果说微分研究的是"变化率"，那么积分研究的是"累积量"——速度的积分是路程，功率的积分是能量，密度的积分是质量。第15章，我们将从<strong>不定积分的概念</strong>开始这段新的旅程。</p>
 
+        <h2 id="references">参考资料</h2>
+
+        <p>本章的单调性判定、两种极值充分条件、凹凸与拐点、渐近线分类与六步作图法均与标准微积分教材一致；图 14-1 与考察点控件为本章原创的教学示意，取 f(x)=x³−3x+1 使驻点与极值可精确求出，不含实验数据。</p>
+
+        <ul>
+            <li>MIT OpenCourseWare，<a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/">18.01SC Single Variable Calculus</a>（单调性、极值与函数作图部分）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Derivative_test">Derivative test</a>（第一/第二充分条件的表述）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Asymptote">Asymptote</a>（水平/垂直/斜渐近线的求法）。</li>
+        </ul>
+
+        <script>
+        (function () {
+            var r = document.getElementById('x-range');
+            var o = document.getElementById('x-out');
+            var s = document.getElementById('mono-status');
+            if (!r || !o || !s) { return; }
+            function update() {
+                var x = parseFloat(r.value);
+                var d = 3 * x * x - 3;
+                o.textContent = x.toFixed(1);
+                var tag = d > 0.001 ? '递增' : (d < -0.001 ? '递减' : '驻点（极值候选）');
+                s.textContent = 'f′(' + x.toFixed(1) + ') = 3x²−3 = ' + d.toFixed(2) + '，符号为 ' + (d > 0 ? '正' : (d < 0 ? '负' : '零')) + ' → 此处' + tag + '。';
+            }
+            r.addEventListener('input', update);
+            Array.prototype.forEach.call(document.querySelectorAll('#mono-widget button[data-x]'), function (btn) {
+                btn.addEventListener('click', function () { r.value = btn.getAttribute('data-x'); update(); });
+            });
+            update();
+        })();
+        </script>
+
         <div class="footer-nav">
             <a href="13.html">← 上一章</a>
             <a href="index.html">📖 返回目录</a>
             <a href="15.html">下一章 →</a>
-        </div>
-    </div>
+            </div>
+        </article>
+    </main>
 </div>
 </div>
 </body>
