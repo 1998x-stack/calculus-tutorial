@@ -5,11 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第28章 微积分与机器学习</title>
     <link rel="stylesheet" href="theme.css">
+    <style>
+        /* 本章新增组件；同时兜底保证无主题样式时仍不横向溢出 */
+        .main-content img, .main-content svg { max-width: 100%; height: auto; }
+        .main-content pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+        body { overflow-wrap: anywhere; }
+        .article-header .dek { color: #475569; font-size: 1.05rem; line-height: 1.8; }
+        .page-toc { background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 18px; margin:16px 0 8px; }
+        .page-toc ol { margin:0 0 0 20px; }
+        figure { margin: 22px 0; }
+        figure svg { display:block; width:100%; height:auto; background:#fffdf9; border:1px solid #e2e8f0; border-radius:16px; }
+        figure figcaption { font-size:.9rem; color:#475569; margin-top:8px; line-height:1.7; }
+        .math-inline { font-family:"Cambria Math","STIX Two Math","Latin Modern Math",serif; }
+        .math-scroll { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+        .math-scroll:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        .math-scroll math[display="block"] { width:max-content; min-width:100%; font-size:1.15rem; padding:6px 0; }
+        .widget { border:1px solid #c4b5fd; border-radius:18px; padding:16px 18px; margin:20px 0; background:#faf8ff; }
+        .widget output { font-family:"JetBrains Mono",monospace; }
+        .widget .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:10px 0; }
+        .widget button { padding:6px 16px; border-radius:999px; border:1px solid #8b5cf6; background:#fff; color:#5b21b6; font-weight:600; cursor:pointer; }
+        .widget button[aria-pressed="true"] { background:#7c3aed; color:#fff; }
+        .widget button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+        @media (max-width:820px) { .main-content table { display:block; overflow-x:auto; } }
+    </style>
 </head>
 <body>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程目录">
         <h3>📐 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 函数：微积分的语言</a></li>
@@ -42,8 +66,27 @@
             <li><a href="28.html" class="active">第28章 微积分与机器学习</a></li>
         </ul>
     </div>
-    <div class="main-content">
-        <h2>微积分在 ML 中无处不在</h2>
+        </ul>
+    </nav>
+    <main class="main-content" id="content">
+    <article>
+        <header class="article-header">
+            <h1>微积分与机器学习</h1>
+            <p class="dek">本章把前 27 章的概念映射到机器学习：梯度下降是一阶优化，反向传播是链式法则的高效组织，Jacobian/Hessian 是高维导数，概率密度与期望依赖反常积分。含一张梯度下降示意图与一个可调学习率的收敛演示。</p>
+            <nav class="page-toc" aria-label="本章目录">
+                <ol>
+                    <li><a href="#intro">微积分在 ML 中无处不在</a></li>
+                    <li><a href="#gd">梯度下降：沿着导数的方向下山</a></li>
+                    <li><a href="#backprop">反向传播：链式法则的工程奇迹</a></li>
+                    <li><a href="#jacobian">Jacobian 矩阵与 Hessian 矩阵</a></li>
+                    <li><a href="#probability">概率论中的积分</a></li>
+                    <li><a href="#math-first">为什么数学家能轻松入门 ML</a></li>
+                    <li><a href="#journey">你的微积分之旅：回顾与展望</a></li>
+                    <li><a href="#references">参考资料</a></li>
+                </ol>
+            </nav>
+        </header>
+        <h2 id="intro">微积分在 ML 中无处不在</h2>
 
         <p>大家好，我是你们的讲师。欢迎来到第28章——也是这门课程的最后一章。</p>
 
@@ -55,7 +98,7 @@
 
         <p>我遇到过很多人跟我说："我不懂微积分，所以不敢碰机器学习。"我通常会告诉他们：今天这一章就是为了打破这层心理障碍而写的。你学过前面 27 章的内容之后，已经具备了理解机器学习所必需的数学基础。本章就是一座桥，把你在微积分中学到的概念，映射到机器学习中对应的应用场景。</p>
 
-        <h2>梯度下降：沿着导数的方向下山</h2>
+        <h2 id="gd">梯度下降：沿着导数的方向下山</h2>
 
         <p>机器学习中几乎所有的"学习"过程，归根到底都是<strong>优化</strong>（optimization）——找到一组参数，使某个损失函数的值尽可能小。</p>
 
@@ -63,7 +106,17 @@
 
         <p>从数学上说，如果你有一个损失函数 <code>L(w)</code>，其中 w 是模型参数，梯度下降的更新规则就是：</p>
 
-        <pre><code>w_new = w_old - η · ∇L(w_old)</code></pre>
+        <div class="math-equation" role="group" aria-label="梯度下降更新式">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="梯度下降更新公式，可横向滚动">
+                <math display="block" aria-label="参数新值等于旧值减去学习率 η 乘以损失函数在旧参数处的梯度">
+                    <mrow>
+                        <msub><mi>w</mi><mtext>new</mtext></msub><mo>=</mo>
+                        <msub><mi>w</mi><mtext>old</mtext></msub><mo>−</mo><mi>η</mi>
+                        <mo>∇</mo><mi>L</mi><mo>(</mo><msub><mi>w</mi><mtext>old</mtext></msub><mo>)</mo>
+                    </mrow>
+                </math>
+            </div>
+        </div>
 
         <p>其中 <code>∇L</code> 是损失函数的<strong>梯度</strong>（gradient）——也就是对所有参数的偏导数组成的向量。<code>η</code> 是<strong>学习率</strong>（learning rate），也就是你迈出的步长。</p>
 
@@ -77,13 +130,72 @@
             随机梯度下降的做法是：每次只随机选一个样本来算梯度。这个梯度方向"有噪音"——它不完全是下坡方向，有时甚至向上。但它的数学期望<strong>就是</strong>真正的梯度方向。就像醉汉走路——虽然每一步都歪歪扭扭，但长期来看他确实在朝着家的方向前进。而且由于每次只算一个样本，走一步的成本只有 Batch GD 的百万分之一。
         </div>
 
-        <h2>反向传播：链式法则的工程奇迹</h2>
+        <figure id="fig-gd">
+            <svg viewBox="0 0 720 320" role="img" aria-labelledby="fig-gd-title fig-gd-desc">
+                <title id="fig-gd-title">一维损失函数上的梯度下降迭代</title>
+                <desc id="fig-gd-desc">在凸损失函数 L(w)=(w−3)² 上，从 w₀=0.3 出发沿负梯度方向逐步移动，迭代点 w₁、w₂ 逐渐接近最小值 w=3。</desc>
+                <defs>
+                    <marker id="arrow28" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="#7461ba"/>
+                    </marker>
+                </defs>
+                <line x1="60" y1="280" x2="700" y2="280" stroke="#94a3b8"/>
+                <line x1="80" y1="30" x2="80" y2="280" stroke="#94a3b8"/>
+                <text x="690" y="300" font-size="14" fill="#475569">w</text>
+                <text x="58" y="40" font-size="14" fill="#475569">L(w)</text>
+                <polyline fill="none" stroke="#147f80" stroke-width="3" points="80,46 130,118 180,176 230,222 280,254 330,274 380,280 430,274 480,254 530,222 580,176 630,118 680,46"/>
+                <line x1="90" y1="62" x2="170" y2="175" stroke="#d06d4d" stroke-width="2" stroke-dasharray="6 4"/>
+                <line x1="110" y1="91" x2="326" y2="272" stroke="#7461ba" stroke-width="1.8" marker-end="url(#arrow28)"/>
+                <line x1="326" y1="272" x2="369" y2="280" stroke="#7461ba" stroke-width="1.8" marker-end="url(#arrow28)"/>
+                <circle cx="110" cy="91" r="5" fill="#7461ba"/>
+                <circle cx="326" cy="272" r="5" fill="#7461ba"/>
+                <circle cx="369" cy="280" r="5" fill="#7461ba"/>
+                <circle cx="380" cy="280" r="4" fill="#916c22"/>
+                <text x="96" y="82" font-size="14" fill="#0f172a">w₀</text>
+                <text x="330" y="264" font-size="14" fill="#0f172a">w₁</text>
+                <text x="372" y="300" font-size="14" fill="#0f172a">w₂</text>
+                <text x="384" y="300" font-size="13" fill="#916c22">min w = 3</text>
+                <text x="108" y="46" font-size="13" fill="#d06d4d">切线：斜率 = L′(w₀)</text>
+            </svg>
+            <figcaption>图 28-1（教学示意）：以 L(w)=(w−3)² 为例。从 w₀=0.3 出发，每一步沿负梯度方向（下坡）移动：w←w−ηL′(w)。橙色虚线为起点处的切线，其斜率给出最速下降方向；紫色箭头为迭代路径。学习率 η 太大时会跨过谷底振荡，太小则收敛缓慢。</figcaption>
+        </figure>
+
+        <div class="widget" id="gd-widget">
+            <p><strong>动手试一下：在 L(w) = (w−3)² 上从 w₀ = 0.3 做 20 步梯度下降，看学习率 η 如何决定收敛。</strong></p>
+            <div class="row">
+                <label for="lr-range">η =</label>
+                <input id="lr-range" type="range" min="0.05" max="1.05" step="0.05" value="0.4">
+                <output id="lr-out" for="lr-range">0.40</output>
+            </div>
+            <div class="row">
+                <button type="button" data-lr="0.1">η = 0.1（偏小）</button>
+                <button type="button" data-lr="0.4">η = 0.4（合适）</button>
+                <button type="button" data-lr="1.0">η = 1.0（临界振荡）</button>
+            </div>
+            <p id="gd-status" aria-live="polite"></p>
+        </div>
+
+        <h2 id="backprop">反向传播：链式法则的工程奇迹</h2>
 
         <p>现在我们知道梯度下降是最核心的优化方法，那么问题来了：对于一个有几百层、几亿个参数的深度神经网络，怎么高效地计算所有这些参数对损失函数的梯度？</p>
 
         <p>答案就是<strong>反向传播</strong>（backpropagation），它本质上就是微积分中<strong>链式法则</strong>的工程实现。想象一个简单的三层神经网络：输入 x → 隐藏层 h → 输出 y。如果我们把损失函数记为 L，那么根据链式法则：</p>
 
-        <pre><code>∂L/∂w = (∂L/∂y) · (∂y/∂h) · (∂h/∂w)</code></pre>
+        <div class="math-equation" role="group" aria-label="反向传播的链式法则">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="反向传播链式法则公式，可横向滚动">
+                <math display="block" aria-label="L 对 w 的偏导等于 L 对 y 的偏导、y 对 h 的偏导、h 对 w 的偏导三者相乘">
+                    <mrow>
+                        <mfrac><mrow><mo>∂</mo><mi>L</mi></mrow><mrow><mo>∂</mo><mi>w</mi></mrow></mfrac>
+                        <mo>=</mo>
+                        <mfrac><mrow><mo>∂</mo><mi>L</mi></mrow><mrow><mo>∂</mo><mi>y</mi></mrow></mfrac>
+                        <mo>·</mo>
+                        <mfrac><mrow><mo>∂</mo><mi>y</mi></mrow><mrow><mo>∂</mo><mi>h</mi></mrow></mfrac>
+                        <mo>·</mo>
+                        <mfrac><mrow><mo>∂</mo><mi>h</mi></mrow><mrow><mo>∂</mo><mi>w</mi></mrow></mfrac>
+                    </mrow>
+                </math>
+            </div>
+        </div>
 
         <p>这就是反向传播的数学本质：从输出层开始，逐层往前"传播"梯度，把每一层的局部导数乘起来。你把它拆开来看——不就是我们在第 9 章一直练习的链式法则吗？</p>
 
@@ -93,7 +205,7 @@
 
         <p>我第一次在课堂上听到反向传播算法时，最让我震撼的不是它的数学推导，而是它跟生物学之间奇妙的平行关系。生物神经网络中，突触的调整依赖于下游神经元的反馈——这不正是"反向传播"中梯度从后往前传递的过程吗？当然，生物系统实现这个过程的细节完全不同，但这种"误差信号反向传播"的功能性相似，令人不得不感叹大自然和人类工程师找到了相似的解决方案。</p>
 
-        <h2>Jacobian 矩阵与 Hessian 矩阵</h2>
+        <h2 id="jacobian">Jacobian 矩阵与 Hessian 矩阵</h2>
 
         <p>当我们把领域从一元函数扩展到多元函数时，两个重要工具出现了。</p>
 
@@ -150,7 +262,7 @@
             </tbody>
         </table>
 
-        <h2>概率论中的积分：从高斯分布到贝叶斯</h2>
+        <h2 id="probability">概率论中的积分：从高斯分布到贝叶斯</h2>
 
         <p>机器学习中除了优化，另一个核心支柱是<strong>概率</strong>。而概率密度函数的"归一化"和"期望计算"都需要积分。</p>
 
@@ -173,7 +285,7 @@
             微积分中的定积分 ∫ f(x) dx 是一个"无穷求和"操作。而机器学习中的"期望"E[f(x)] = ∫ f(x) · p(x) dx 也是一个积分——只不过多了一个概率权重 p(x)。如果你理解定积分，你就已经理解了期望的概念。剩下的只是加上一个"概率分布"的视角。
         </div>
 
-        <h2>为什么数学家能轻松入门 ML</h2>
+        <h2 id="math-first">为什么数学家能轻松入门 ML</h2>
 
         <p>我观察到一个有趣的现象：很多转行做机器学习的人中，数学背景的（特别是学过微积分、线代和概率的）通常上手最快。这不只是因为他们"数学好"，而是因为他们看到 ML 中的概念时，脑子里的反应是：</p>
 
@@ -190,7 +302,7 @@
 
         <p>反过来，我见过很多学 ML 的同学遇到了这样的困扰：花几个小时调一个学习率参数，却不理解梯度下降的数学原理；跟着教程搭了一个神经网络，却说不出反向传播到底在算什么。他们的困境不在于编码能力不够，而在于<strong>微积分基础不扎实</strong>。他们缺少的是一张"概念地图"——而你在经过前面 27 章的系统训练之后，这张地图已经刻在你脑子里了。</p>
 
-        <h2>你的微积分之旅：回顾与展望</h2>
+        <h2 id="journey">你的微积分之旅：回顾与展望</h2>
 
         <p>我们终于走到了这里。让我们花几分钟回头看看走过的路。</p>
 
@@ -210,12 +322,48 @@
 
         <p>江湖路远，后会有期。祝你在微积分赋予你的视野中，看得更高，走得更远。</p>
 
+        <h2 id="references">参考资料</h2>
+
+        <p>本章的概念映射与公式均为标准机器学习/微积分内容；图 28-1 与学习率控件为本章原创的教学示意，取 L(w)=(w−3)² 便于封闭计算，不代表具体模型训练结果。</p>
+
+        <ul>
+            <li>D. Rumelhart, G. Hinton, R. Williams, “Learning representations by back-propagating errors”, <em>Nature</em> 323, 533–536 (1986)，<a href="https://doi.org/10.1038/323533a0">doi:10.1038/323533a0</a>（反向传播的原始论文）。</li>
+            <li>A. Baydin, B. Pearlmutter, A. Radul, J. Siskind, “Automatic Differentiation in Machine Learning: a Survey”, <a href="https://arxiv.org/abs/1502.05767">arXiv:1502.05767</a>（反向模式自动微分与反向传播的关系）。</li>
+            <li>I. Goodfellow, Y. Bengio, A. Courville, <a href="https://www.deeplearningbook.org/">Deep Learning</a>, MIT Press (2016)，§6.2 反向传播算法、§8 优化。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Gradient_descent">Gradient descent</a>（学习率与收敛性）。</li>
+        </ul>
+
+        <script>
+        (function () {
+            var r = document.getElementById('lr-range');
+            var o = document.getElementById('lr-out');
+            var s = document.getElementById('gd-status');
+            var btns = document.querySelectorAll('#gd-widget button[data-lr]');
+            if (!r || !o || !s) { return; }
+            function update() {
+                var lr = parseFloat(r.value), w = 0.3;
+                for (var i = 0; i < 20; i++) { w = w - lr * 2 * (w - 3); }
+                o.textContent = lr.toFixed(2);
+                var factor = Math.abs(1 - 2 * lr);
+                var tag = factor < 0.999 ? '收敛' : (factor < 1.001 ? '等幅振荡，不收敛' : '发散');
+                s.textContent = '20 步后 w ≈ ' + w.toFixed(4) + '（最优值 3），|w−3| ≈ ' + Math.abs(w - 3).toFixed(4)
+                    + '；收敛因子 |1−2η| = ' + factor.toFixed(2) + '，判定：' + tag + '。';
+            }
+            r.addEventListener('input', update);
+            Array.prototype.forEach.call(btns, function (b) {
+                b.addEventListener('click', function () { r.value = b.getAttribute('data-lr'); update(); });
+            });
+            update();
+        })();
+        </script>
+
         <div class="footer-nav">
             <a href="27.html">← 上一章</a>
             <a href="index.html">📖 返回目录</a>
-            <a href="javascript:void(0)">下一章 →</a>
-        </div>
-    </div>
+            <span aria-hidden="true">这是最后一章 →</span>
+            </div>
+        </article>
+    </main>
 </div>
 </div>
 </body>
