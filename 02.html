@@ -5,11 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第2章 数列的极限</title>
     <link rel="stylesheet" href="theme.css">
+    <style>
+        /* 本章新增组件；同时兜底保证无主题样式时仍不横向溢出 */
+        .main-content img, .main-content svg { max-width: 100%; height: auto; }
+        .main-content pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+        body { overflow-wrap: anywhere; }
+        .article-header .dek { color: #475569; font-size: 1.05rem; line-height: 1.8; }
+        .page-toc { background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 18px; margin:16px 0 8px; }
+        .page-toc ol { margin:0 0 0 20px; }
+        figure { margin: 22px 0; }
+        figure svg { display:block; width:100%; height:auto; background:#fffdf9; border:1px solid #e2e8f0; border-radius:16px; }
+        figure figcaption { font-size:.9rem; color:#475569; margin-top:8px; line-height:1.7; }
+        .math-inline { font-family:"Cambria Math","STIX Two Math","Latin Modern Math",serif; }
+        .math-scroll { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+        .math-scroll:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        .math-scroll math[display="block"] { width:max-content; min-width:100%; font-size:1.15rem; padding:6px 0; }
+        .widget { border:1px solid #c4b5fd; border-radius:18px; padding:16px 18px; margin:20px 0; background:#faf8ff; }
+        .widget output { font-family:"JetBrains Mono",monospace; }
+        .widget .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:10px 0; }
+        .widget button { padding:6px 16px; border-radius:999px; border:1px solid #8b5cf6; background:#fff; color:#5b21b6; font-weight:600; cursor:pointer; }
+        .widget button[aria-pressed="true"] { background:#7c3aed; color:#fff; }
+        .widget button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+        @media (max-width:820px) { .main-content table { display:block; overflow-x:auto; } }
+    </style>
 </head>
 <body>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程目录">
         <h3>📐 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 函数：微积分的语言</a></li>
@@ -42,8 +66,26 @@
             <li><a href="28.html">第28章 微积分与机器学习</a></li>
         </ul>
     </div>
-    <div class="main-content">
-        <h2>从割圆术看极限思想</h2>
+        </ul>
+    </nav>
+    <main class="main-content" id="content">
+    <article>
+        <header class="article-header">
+            <h1>数列的极限</h1>
+            <p class="dek">从刘徽割圆术的直观逼近，走到魏尔斯特拉斯的 ε-N 精确语言。本章给出 ε-N 的几何图示（误差带与临界下标 N）、收敛数列的四条性质、夹逼定理与单调有界准则，并含一个可调 ε 读 N 的演示。</p>
+            <nav class="page-toc" aria-label="本章目录">
+                <ol>
+                    <li><a href="#intro">从割圆术看极限思想</a></li>
+                    <li><a href="#intuition">数列的直观理解</a></li>
+                    <li><a href="#epsilon-n">ε-N 语言：极限的精确化</a></li>
+                    <li><a href="#properties">收敛数列的性质</a></li>
+                    <li><a href="#squeeze">夹逼定理与单调有界准则</a></li>
+                    <li><a href="#compute">数列极限的计算入门</a></li>
+                    <li><a href="#references">参考资料</a></li>
+                </ol>
+            </nav>
+        </header>
+        <h2 id="intro">从割圆术看极限思想</h2>
 
         <p>大家好，我是你们的讲师。在上一章中我们建立了函数这个微积分的语言工具。那么，微积分的研究究竟从哪里开始的呢？一切的开端，是一个看似简单的问题：<strong>如何用直边图形精确地度量曲边图形？</strong></p>
 
@@ -55,7 +97,7 @@
 
         <p>在数学中，这个"序列"通常用<strong>数列</strong>来表示。本章的任务，就是把刘徽这种朴素的极限思想，转化为严格精确的数学语言。</p>
 
-        <h2>数列的直观理解：一个会跑的数字序列</h2>
+        <h2 id="intuition">数列的直观理解：一个会跑的数字序列</h2>
 
         <p>什么是数列？简单说，数列就是一串按顺序排列的数。每一个数都有一个位置编号（下标），比如 <code>a_1, a_2, a_3, ..., a_n, ...</code>。数列可以有限也可以无限——微积分中我们关心的是<strong>无穷数列</strong>，也就是有无限多项的数列。</p>
 
@@ -75,7 +117,7 @@ a_n = (-1)^n →    -1, 1, -1, 1, -1, 1, ...</code></pre>
             这个<strong>二分法</strong>悖论（芝诺悖论之一）恰恰说明了为什么我们需要精确的极限语言：直觉上我们知道你"最终"会到达墙，但纯逻辑告诉我们每一步都只走一半。只有极限理论能调和这个矛盾——<strong>极限不是你"到达"，而是你能无限逼近到任意程度</strong>。
         </div>
 
-        <h2>ε-N 语言：极限的精确化</h2>
+        <h2 id="epsilon-n">ε-N 语言：极限的精确化</h2>
 
         <p>直观地，我们说数列 <code>{a_n}</code> 的极限是 <code>L</code>，意思是当 n 越来越大时，<code>a_n</code> 越来越接近 <code>L</code>。但"越来越接近"不够精确——多近才算"足够近"？</p>
 
@@ -87,6 +129,19 @@ a_n = (-1)^n →    -1, 1, -1, 1, -1, 1, ...</code></pre>
             如果一个数列有极限，我们说这个数列<strong>收敛</strong>；否则称为<strong>发散</strong>。
         </div>
 
+        <div class="math-equation" role="group" aria-label="数列极限的 ε-N 条件">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="数列极限的 ε-N 条件，可横向滚动">
+                <math display="block" aria-label="对任意 ε 大于 0，存在正整数 N，当 n 大于 N 时 a_n 减 L 的绝对值小于 ε">
+                    <mrow>
+                        <mo>∀</mo><mi>ε</mi><mo>&gt;</mo><mn>0</mn><mo>,</mo>
+                        <mo>∃</mo><mi>N</mi><mo>∈</mo><mi>ℕ</mi><mo>,</mo>
+                        <mtext>当</mtext><mi>n</mi><mo>&gt;</mo><mi>N</mi><mtext>时</mtext>
+                        <mo>|</mo><msub><mi>a</mi><mi>n</mi></msub><mo>−</mo><mi>L</mi><mo>|</mo><mo>&lt;</mo><mi>ε</mi>
+                    </mrow>
+                </math>
+            </div>
+        </div>
+
         <p>这个定义可能看起来有些抽象，我们来拆解一下：</p>
 
         <ul>
@@ -94,6 +149,29 @@ a_n = (-1)^n →    -1, 1, -1, 1, -1, 1, ...</code></pre>
             <li><strong>N</strong> 是我们给你的回答："从第 N 项往后，所有 a_n 都在你要求的误差范围内。"</li>
             <li>关键是：不管你把 ε 设得多小，我们总能找到一个 N，让后面的所有项都满足条件。</li>
         </ul>
+
+        <figure id="fig-eps-n">
+            <svg viewBox="0 0 720 360" role="img" aria-labelledby="fig-epsn-title fig-epsn-desc">
+                <title id="fig-epsn-title">ε-N 定义的几何意义</title>
+                <desc id="fig-epsn-desc">对数列 aₙ = 1 + 1/n，给定 ε = 0.2 得到误差带 (1−ε, 1+ε)，从下标 N = 5 之后所有点都落入带内。</desc>
+                <rect x="80" y="241.5" width="576" height="52" fill="#e0f2fe"/>
+                <line x1="60" y1="300" x2="690" y2="300" stroke="#94a3b8"/>
+                <line x1="80" y1="90" x2="80" y2="305" stroke="#94a3b8"/>
+                <line x1="80" y1="267.5" x2="680" y2="267.5" stroke="#147f80" stroke-width="2" stroke-dasharray="7 5"/>
+                <line x1="320" y1="225" x2="320" y2="305" stroke="#d06d4d" stroke-width="2"/>
+                <polyline fill="none" stroke="#7461ba" stroke-width="1.5" points="128,137.5 176,202.5 224,224.3 272,235 320,241.5 368,245.8 416,247.9 464,249.4 512,250.7 560,254.5 608,255.7 656,256.7"/>
+                <g fill="#7461ba">
+                    <circle cx="128" cy="137.5" r="4"/><circle cx="176" cy="202.5" r="4"/><circle cx="224" cy="224.3" r="4"/><circle cx="272" cy="235" r="4"/><circle cx="320" cy="241.5" r="4"/><circle cx="368" cy="245.8" r="4"/><circle cx="416" cy="247.9" r="4"/><circle cx="464" cy="249.4" r="4"/><circle cx="512" cy="250.7" r="4"/><circle cx="560" cy="254.5" r="4"/><circle cx="608" cy="255.7" r="4"/><circle cx="656" cy="256.7" r="4"/>
+                </g>
+                <text x="88" y="240" font-size="13" fill="#0ea5e9">L + ε</text>
+                <text x="88" y="292" font-size="13" fill="#0ea5e9">L − ε</text>
+                <text x="300" y="262" font-size="14" fill="#147f80">L = 1</text>
+                <text x="326" y="220" font-size="14" fill="#d06d4d">N = 5</text>
+                <text x="682" y="318" font-size="14" fill="#475569">n</text>
+                <text x="88" y="104" font-size="14" fill="#475569">aₙ</text>
+            </svg>
+            <figcaption>图 2-1（教学示意）：取 aₙ = 1 + 1/n（趋于 L=1）、ε=0.2。蓝色带为 (L−ε, L+ε)；只要 n &gt; N=5，所有点（紫）都落在带内。ε 越小，需要的 N 越大——但总能找到。</figcaption>
+        </figure>
 
         <p>让我用一个具体例子来说明这个定义是怎么工作的。</p>
 
@@ -111,7 +189,22 @@ a_n = (-1)^n →    -1, 1, -1, 1, -1, 1, ...</code></pre>
         |a_n - 0| = 1/n &lt; 1/N = 1/⌈1/ε⌉ ≤ ε
         因此 lim_{n→∞} 1/n = 0</code></pre>
 
-        <h2>收敛数列的性质</h2>
+        <div class="widget" id="eps-widget">
+            <p><strong>动手试一下：对 aₙ = 1/n（极限 L = 0），选一个允许误差 ε，看需要从第几项起全部落入 (L−ε, L+ε)。</strong></p>
+            <div class="row">
+                <label for="eps-range">ε =</label>
+                <input id="eps-range" type="range" min="0.001" max="0.5" step="0.001" value="0.1">
+                <output id="eps-out" for="eps-range">0.100</output>
+            </div>
+            <div class="row">
+                <button type="button" data-eps="0.1">ε = 0.1</button>
+                <button type="button" data-eps="0.01">ε = 0.01</button>
+                <button type="button" data-eps="0.001">ε = 0.001</button>
+            </div>
+            <p id="eps-status" aria-live="polite"></p>
+        </div>
+
+        <h2 id="properties">收敛数列的性质</h2>
 
         <p>一个数列如果收敛，它会表现出一些很好的性质。这些性质在后续的极限计算中会频繁用到。</p>
 
@@ -168,7 +261,7 @@ a_n = (-1)^n →    -1, 1, -1, 1, -1, 1, ...</code></pre>
             正确做法是把 <code>n^2 - n</code> 写成 <code>n(n-1)</code>，然后整体判断它的趋势——它发散的，极限是 ∞。
         </div>
 
-        <h2>夹逼定理与单调有界准则</h2>
+        <h2 id="squeeze">夹逼定理与单调有界准则</h2>
 
         <p>上面讨论了数列极限的性质，但一个更关键的问题是：<strong>如何判断一个数列是否收敛？</strong>有两个最有力的工具。</p>
 
@@ -213,7 +306,7 @@ a_n = (-1)^n →    -1, 1, -1, 1, -1, 1, ...</code></pre>
         根据准则，数列收敛，且 limit ≤ 1。
         实际上直接看也明白：lim_{n→∞} (1 - 1/2^n) = 1</code></pre>
 
-        <h2>数列极限的计算入门</h2>
+        <h2 id="compute">数列极限的计算入门</h2>
 
         <p>有了前面的理论基础，现在我们可以实际计算一些数列的极限了。</p>
 
@@ -259,12 +352,44 @@ a_n = (-1)^n →    -1, 1, -1, 1, -1, 1, ...</code></pre>
 
         <p>从下一章开始，我们将把极限的概念从<strong>离散的数列</strong>延伸到<strong>连续的函数</strong>。你会发现，数列极限和函数极限的思想一脉相承，但函数极限的 ε-δ 语言在处理"连续变化"时更加精巧——这也是微积分真正开始展现其强大的地方。</p>
 
+        <h2 id="references">参考资料</h2>
+
+        <p>本章的 ε-N 定义、收敛性质、夹逼定理与单调有界准则均与标准微积分教材一致；图 2-1 与下标控件为本章原创的教学示意，取 aₙ=1/n 使 N 有封闭表达式 ⌈1/ε⌉，不含实验数据。</p>
+
+        <ul>
+            <li>MIT OpenCourseWare，<a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/">18.01SC Single Variable Calculus</a>（极限与收敛部分）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Limit_of_a_sequence">Limit of a sequence</a>（ε-N 定义与收敛性判据）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Squeeze_theorem">Squeeze theorem</a>（夹逼定理的表述与例证）。</li>
+        </ul>
+
+        <script>
+        (function () {
+            var r = document.getElementById('eps-range');
+            var o = document.getElementById('eps-out');
+            var s = document.getElementById('eps-status');
+            if (!r || !o || !s) { return; }
+            function update() {
+                var eps = parseFloat(r.value);
+                var N = Math.ceil(1 / eps);
+                o.textContent = eps.toFixed(3);
+                s.textContent = '取 N = ⌈1/ε⌉ = ' + N + '；当 n > ' + N + ' 时 |1/n| < ε = ' + eps.toFixed(3)
+                    + '，即从第 ' + (N + 1) + ' 项起全部落入 (−ε, ε)。ε 越小，N 越大。';
+            }
+            r.addEventListener('input', update);
+            Array.prototype.forEach.call(document.querySelectorAll('#eps-widget button[data-eps]'), function (btn) {
+                btn.addEventListener('click', function () { r.value = btn.getAttribute('data-eps'); update(); });
+            });
+            update();
+        })();
+        </script>
+
         <div class="footer-nav">
             <a href="01.html">← 上一章</a>
             <a href="index.html">📖 返回目录</a>
             <a href="03.html">下一章 →</a>
-        </div>
-    </div>
+            </div>
+        </article>
+    </main>
 </div>
 </div>
 </body>
