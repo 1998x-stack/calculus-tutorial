@@ -5,11 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第12章 微分中值定理</title>
     <link rel="stylesheet" href="theme.css">
+    <style>
+        /* 本章新增组件；同时兜底保证无主题样式时仍不横向溢出 */
+        .main-content img, .main-content svg { max-width: 100%; height: auto; }
+        .main-content pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+        body { overflow-wrap: anywhere; }
+        .article-header .dek { color: #475569; font-size: 1.05rem; line-height: 1.8; }
+        .page-toc { background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 18px; margin:16px 0 8px; }
+        .page-toc ol { margin:0 0 0 20px; }
+        figure { margin: 22px 0; }
+        figure svg { display:block; width:100%; height:auto; background:#fffdf9; border:1px solid #e2e8f0; border-radius:16px; }
+        figure figcaption { font-size:.9rem; color:#475569; margin-top:8px; line-height:1.7; }
+        .math-inline { font-family:"Cambria Math","STIX Two Math","Latin Modern Math",serif; }
+        .math-scroll { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+        .math-scroll:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        .math-scroll math[display="block"] { width:max-content; min-width:100%; font-size:1.15rem; padding:6px 0; }
+        .widget { border:1px solid #c4b5fd; border-radius:18px; padding:16px 18px; margin:20px 0; background:#faf8ff; }
+        .widget output { font-family:"JetBrains Mono",monospace; }
+        .widget .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:10px 0; }
+        .widget button { padding:6px 16px; border-radius:999px; border:1px solid #8b5cf6; background:#fff; color:#5b21b6; font-weight:600; cursor:pointer; }
+        .widget button[aria-pressed="true"] { background:#7c3aed; color:#fff; }
+        .widget button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+        @media (max-width:820px) { .main-content table { display:block; overflow-x:auto; } }
+    </style>
 </head>
 <body>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程目录">
         <h3>📐 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 函数：微积分的语言</a></li>
@@ -42,8 +66,27 @@
             <li><a href="28.html">第28章 微积分与机器学习</a></li>
         </ul>
     </div>
-    <div class="main-content">
-        <h2>连接局部与整体的桥梁</h2>
+        </ul>
+    </nav>
+    <main class="main-content" id="content">
+    <article>
+        <header class="article-header">
+            <h1>微分中值定理</h1>
+            <p class="dek">三个定理（罗尔、拉格朗日、柯西）是把局部导数信息转化为区间上整体结论的桥梁。本章给出罗尔与拉格朗日的几何图示、定理间的递进关系，并含一个可调区间端点求中值点的演示。</p>
+            <nav class="page-toc" aria-label="本章目录">
+                <ol>
+                    <li><a href="#bridge">连接局部与整体的桥梁</a></li>
+                    <li><a href="#fermat">费马引理</a></li>
+                    <li><a href="#rolle">罗尔定理</a></li>
+                    <li><a href="#lagrange">拉格朗日中值定理</a></li>
+                    <li><a href="#cauchy">柯西中值定理</a></li>
+                    <li><a href="#relations">三个定理的递进关系</a></li>
+                    <li><a href="#inequalities">用中值定理证明不等式</a></li>
+                    <li><a href="#references">参考资料</a></li>
+                </ol>
+            </nav>
+        </header>
+        <h2 id="bridge">连接局部与整体的桥梁</h2>
 
         <p>大家好，我是你们的讲师。前面几章里，我们一直在研究"点"的性质——一个函数在某一点的导数是多少。但如果我们想知道函数在一个<strong>区间</strong>上的整体行为呢？能不能用"每一点的导数"来推断"整个区间上的性质"？</p>
 
@@ -51,7 +94,7 @@
 
         <p>这三个定理——罗尔定理、拉格朗日中值定理、柯西中值定理——构成了微积分理论大厦的支柱。它们本身并不直接帮你算题，但它们是后面几乎所有重要定理（泰勒公式、洛必达法则、积分中值定理）的证明基础。我曾见过一个研究生因为中值定理没学透，卡在后续研究的推导上整整两周。所以，不要觉得理论推导"没用"——它们是微积分真正的引擎。</p>
 
-        <h2>费马引理：极值点的必要条件</h2>
+        <h2 id="fermat">费马引理：极值点的必要条件</h2>
 
         <p>在讲三个中值定理之前，我们需要一个关键的"垫脚石"——<strong>费马引理</strong>（Fermat's lemma）。</p>
 
@@ -66,7 +109,7 @@
             即"<code>f'(x0) = 0</code> 不代表 <code>x0</code> 一定是极值点"。反例：<code>f(x) = x^3</code> 在 <code>x = 0</code> 处，<code>f'(0) = 0</code>，但 <code>x = 0</code> 既不是最大值也不是最小值——这是一个<strong>拐点</strong>（驻点但非极值）。我们将在第14章详细讨论如何区分。
         </div>
 
-        <h2>罗尔定理：两端等高的水平切线</h2>
+        <h2 id="rolle">罗尔定理：两端等高的水平切线</h2>
 
         <p><strong>罗尔定理</strong>（Rolle's theorem）是三个中值定理中最基础的一个。如果函数满足：</p>
         <ol>
@@ -80,6 +123,28 @@
 
         <p>这可以想象为：你从山脚出发，沿着山路走到另一个山脚，但出发点和你到达点的高度一样。在整个过程中，你至少会经过一个水平路段——也就是坡度为零的点。</p>
 
+        <figure id="fig-rolle">
+            <svg viewBox="0 0 720 360" role="img" aria-labelledby="fig-rolle-title fig-rolle-desc">
+                <title id="fig-rolle-title">罗尔定理：两端等高时必有水平切线</title>
+                <desc id="fig-rolle-desc">曲线 f(x)=(x−1)(x−3) 在区间 [1,3] 两端取值为 0，在 ξ=2 处切线水平，斜率为 0。</desc>
+                <line x1="60" y1="200" x2="660" y2="200" stroke="#94a3b8"/>
+                <line x1="120" y1="70" x2="120" y2="340" stroke="#94a3b8"/>
+                <polyline fill="none" stroke="#147f80" stroke-width="3" points="180,200 230,252.5 280,290 330,312.5 380,320 430,312.5 480,290 530,252.5 580,200"/>
+                <line x1="180" y1="200" x2="580" y2="200" stroke="#916c22" stroke-width="1.8" stroke-dasharray="6 5"/>
+                <line x1="300" y1="320" x2="460" y2="320" stroke="#d06d4d" stroke-width="2.5"/>
+                <line x1="380" y1="320" x2="380" y2="200" stroke="#916c22" stroke-width="1.4" stroke-dasharray="4 4"/>
+                <circle cx="180" cy="200" r="5" fill="#147f80"/>
+                <circle cx="580" cy="200" r="5" fill="#147f80"/>
+                <text x="172" y="190" font-size="14" fill="#0f172a">a = 1</text>
+                <text x="566" y="190" font-size="14" fill="#0f172a">b = 3</text>
+                <text x="300" y="190" font-size="13" fill="#916c22">f(a) = f(b)</text>
+                <text x="386" y="340" font-size="14" fill="#0f172a">ξ = 2</text>
+                <text x="330" y="314" font-size="14" fill="#d06d4d">f′(ξ) = 0（水平切线）</text>
+                <text x="132" y="86" font-size="14" fill="#475569">y</text>
+            </svg>
+            <figcaption>图 12-1（教学示意）：取 f(x)=(x−1)(x−3)，两端 f(1)=f(3)=0（金色虚线等高）。罗尔定理保证存在 ξ∈(1,3) 使切线水平；此处 ξ=2，是曲线的极小值点，f′(2)=0。</figcaption>
+        </figure>
+
         <pre><code>例：验证 f(x) = x^2 - 4x + 3 在 [1, 3] 上满足罗尔定理。
 
 f(1) = 1 - 4 + 3 = 0
@@ -92,7 +157,7 @@ f'(x) = 2x - 4
 
 所以存在 ξ = 2 使得 f'(ξ) = 0。</code></pre>
 
-        <h2>拉格朗日中值定理：核心中的核心</h2>
+        <h2 id="lagrange">拉格朗日中值定理：核心中的核心</h2>
 
         <p><strong>拉格朗日中值定理</strong>（Lagrange Mean Value Theorem）是罗尔定理的推广——它去掉了"两端值相等"这个限制。如果函数满足：</p>
         <ol>
@@ -101,12 +166,42 @@ f'(x) = 2x - 4
         </ol>
         <p>那么存在至少一个 <code>ξ ∈ (a, b)</code>，使得：</p>
 
-        <pre><code>f(b) - f(a) = f'(ξ) · (b - a)
-
-或者等价地：
-f'(ξ) = [f(b) - f(a)] / (b - a)</code></pre>
+        <div class="math-equation" role="group" aria-label="拉格朗日中值定理">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="拉格朗日中值定理公式，可横向滚动">
+                <math display="block" aria-label="存在 ξ 使得 f 的一阶导数在 ξ 处等于 f(b) 减 f(a) 除以 b 减 a">
+                    <mrow>
+                        <msup><mi>f</mi><mo>′</mo></msup><mo>(</mo><mi>ξ</mi><mo>)</mo><mo>=</mo>
+                        <mfrac>
+                            <mrow><mi>f</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow>
+                            <mrow><mi>b</mi><mo>−</mo><mi>a</mi></mrow>
+                        </mfrac>
+                    </mrow>
+                </math>
+            </div>
+        </div>
 
         <p>几何意义更一般化：连接曲线两端点的割线斜率是 <code>[f(b)-f(a)]/(b-a)</code>，那么曲线上至少有一点的切线斜率等于这个割线斜率。也就是说，曲线上某点的切线平行于两端点的连线。</p>
+
+        <figure id="fig-lagrange">
+            <svg viewBox="0 0 720 360" role="img" aria-labelledby="fig-lagrange-title fig-lagrange-desc">
+                <title id="fig-lagrange-title">拉格朗日中值定理：切线平行于割线</title>
+                <desc id="fig-lagrange-desc">曲线 f(x)=x² 在区间 [0,2] 的割线斜率为 2，在 ξ=1 处切线斜率也为 2，两线平行。</desc>
+                <line x1="80" y1="320" x2="680" y2="320" stroke="#94a3b8"/>
+                <line x1="100" y1="40" x2="100" y2="320" stroke="#94a3b8"/>
+                <polyline fill="none" stroke="#147f80" stroke-width="3" points="100,320 199,315.9 254,303.8 309,283.4 364,255 419,218.4 474,173.8 529,120.9 584,60"/>
+                <line x1="100" y1="320" x2="584" y2="60" stroke="#7461ba" stroke-width="2" stroke-dasharray="7 5"/>
+                <line x1="254" y1="320" x2="474" y2="190" stroke="#d06d4d" stroke-width="2.5"/>
+                <circle cx="100" cy="320" r="5" fill="#147f80"/>
+                <circle cx="584" cy="60" r="5" fill="#147f80"/>
+                <circle cx="364" cy="255" r="5" fill="#d06d4d"/>
+                <text x="92" y="340" font-size="14" fill="#0f172a">a = 0</text>
+                <text x="574" y="52" font-size="14" fill="#0f172a">b = 2</text>
+                <text x="372" y="250" font-size="14" fill="#0f172a">ξ = 1</text>
+                <text x="150" y="150" font-size="13" fill="#7461ba">割线斜率 = (f(b)−f(a))/(b−a) = 2</text>
+                <text x="300" y="300" font-size="13" fill="#d06d4d">切线斜率 = f′(ξ) = 2</text>
+            </svg>
+            <figcaption>图 12-2（教学示意）：取 f(x)=x²、区间 [0,2]。紫色虚线为两端点割线（斜率 2）；橙色实线为 ξ=1 处的切线（f′(ξ)=2ξ=2）。拉格朗日中值定理断言这样的 ξ 一定存在，且切线平行于割线。</figcaption>
+        </figure>
 
         <div class="highlight">
             <strong>一个物理上的直白理解</strong><br>
@@ -126,7 +221,7 @@ f'(ξ) = [f(b) - f(a)] / (b - a)</code></pre>
 
         <p>推论2尤其重要——它解释了为什么不定积分的结果总是带上一个 <code>+ C</code>。如果两个函数的导数相同，它们之间只差一个常数。这个道理看似简单，但在微分方程等后续课程中会反复用到。</p>
 
-        <h2>柯西中值定理</h2>
+        <h2 id="cauchy">柯西中值定理</h2>
 
         <p><strong>柯西中值定理</strong>（Cauchy Mean Value Theorem）是拉格朗日中值定理的进一步推广。它引入了两个函数 <code>f(x)</code> 和 <code>g(x)</code>：</p>
 
@@ -137,11 +232,42 @@ f'(ξ) = [f(b) - f(a)] / (b - a)</code></pre>
         </ol>
         <p>那么存在 <code>ξ ∈ (a, b)</code>，使得：</p>
 
-        <pre><code>[f(b) - f(a)] / [g(b) - g(a)] = f'(ξ) / g'(ξ)</code></pre>
+        <div class="math-equation" role="group" aria-label="柯西中值定理">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="柯西中值定理公式，可横向滚动">
+                <math display="block" aria-label="f(b) 减 f(a) 除以 g(b) 减 g(a) 等于 f 的一阶导数在 ξ 处除以 g 的一阶导数在 ξ 处">
+                    <mrow>
+                        <mfrac>
+                            <mrow><mi>f</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow>
+                            <mrow><mi>g</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>g</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow>
+                        </mfrac>
+                        <mo>=</mo>
+                        <mfrac>
+                            <mrow><msup><mi>f</mi><mo>′</mo></msup><mo>(</mo><mi>ξ</mi><mo>)</mo></mrow>
+                            <mrow><msup><mi>g</mi><mo>′</mo></msup><mo>(</mo><mi>ξ</mi><mo>)</mo></mrow>
+                        </mfrac>
+                    </mrow>
+                </math>
+            </div>
+        </div>
 
         <p>如果令 <code>g(x) = x</code>，柯西中值定理就退化成了拉格朗日中值定理。所以三个定理是逐层推广的关系。</p>
 
-        <h2>三个定理的递进关系</h2>
+        <div class="widget" id="mvt-widget">
+            <p><strong>动手试一下：在 f(x)=x² 上取区间 [0, b]，割线斜率为 b，中值点 ξ = b/2。</strong></p>
+            <div class="row">
+                <label for="b-range">b =</label>
+                <input id="b-range" type="range" min="0.5" max="3" step="0.1" value="2">
+                <output id="b-out" for="b-range">2.0</output>
+            </div>
+            <div class="row">
+                <button type="button" data-b="1">b = 1</button>
+                <button type="button" data-b="2">b = 2</button>
+                <button type="button" data-b="3">b = 3</button>
+            </div>
+            <p id="mvt-status" aria-live="polite"></p>
+        </div>
+
+        <h2 id="relations">三个定理的递进关系</h2>
 
         <table>
             <thead>
@@ -195,7 +321,7 @@ F'(ξ) = 0 → f'(ξ) - [f(b)-f(a)]/(b-a) = 0
             上述证明中，我们凭空"造"出了一个函数 F(x)，让它满足我们需要的条件（在这里是 F(a)=F(b)=0），从而可以利用已知的定理。这种构造辅助函数的方法在高等数学中无处不在——看似"魔术"，实则有规律可循。后面的泰勒公式证明也会用到类似的想法。
         </div>
 
-        <h2>用中值定理证明不等式</h2>
+        <h2 id="inequalities">用中值定理证明不等式</h2>
 
         <p>中值定理的一个重要应用是证明函数不等式。基本思路是：在适当的区间上应用中值定理，得到某个 <code>f'(ξ)</code> 的表达式，然后利用对 <code>f'(ξ)</code> 的范围估计来推断 <code>f(b) - f(a)</code> 的范围。</p>
 
@@ -232,18 +358,50 @@ x/(1+x) < x/(1+ξ) < x
             这个例子完美展示了：中值定理不仅能证明存在性，还能用来证明<strong>唯一性</strong>。它把导数这个"局部"工具，变成了分析函数"整体"性质的利器。
         </div>
 
-        <h2>本章小结</h2>
+        <h2 id="summary">本章小结</h2>
 
         <p>微分中值定理是连接函数局部性质（导数）与整体性质（区间上的行为）的桥梁。罗尔定理说：如果两端等高，中间必有水平切线；拉格朗日中值定理把它推广为：任何可导曲线上至少有一点的切线平行于两端点的连线；柯西中值定理则进一步推广到了两个函数的参量形式。三者层层递进，构成了微积分理论的核心骨架。</p>
 
         <p>下一章我们将学习这些定理最精彩的应用之一——<strong>泰勒公式</strong>。如果说拉格朗日中值定理是用一条直线（一阶多项式）来近似函数，那么泰勒公式就是用 n 次多项式来逼近函数，精度远超线性近似。你将会看到中值定理的思想如何一步步延伸，最终形成微积分中最优美的公式之一。</p>
 
+        <h2 id="references">参考资料</h2>
+
+        <p>本章三个中值定理、费马引理及其证明均与标准微积分教材一致；图 12-1、12-2 与中值点控件为本章原创的教学示意，取多项式使 ξ 可精确求出，不含实验数据。</p>
+
+        <ul>
+            <li>MIT OpenCourseWare，<a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/">18.01SC Single Variable Calculus</a>（中值定理与应用部分）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Mean_value_theorem">Mean value theorem</a>（罗尔/拉格朗日/柯西的递进关系）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Rolle%27s_theorem">Rolle's theorem</a>（前提条件与证明思路）。</li>
+        </ul>
+
+        <script>
+        (function () {
+            var r = document.getElementById('b-range');
+            var o = document.getElementById('b-out');
+            var s = document.getElementById('mvt-status');
+            if (!r || !o || !s) { return; }
+            function update() {
+                var b = parseFloat(r.value);
+                var secant = b, xi = b / 2;
+                o.textContent = b.toFixed(1);
+                s.textContent = '割线斜率 = (f(b)−f(a))/(b−a) = b = ' + secant.toFixed(1)
+                    + '；解 f′(ξ)=2ξ=b 得中值点 ξ = b/2 = ' + xi.toFixed(2) + '，确实落在 (0, ' + b.toFixed(1) + ') 内。';
+            }
+            r.addEventListener('input', update);
+            Array.prototype.forEach.call(document.querySelectorAll('#mvt-widget button[data-b]'), function (btn) {
+                btn.addEventListener('click', function () { r.value = btn.getAttribute('data-b'); update(); });
+            });
+            update();
+        })();
+        </script>
+
         <div class="footer-nav">
             <a href="11.html">← 上一章</a>
             <a href="index.html">📖 返回目录</a>
             <a href="13.html">下一章 →</a>
-        </div>
-    </div>
+            </div>
+        </article>
+    </main>
 </div>
 </div>
 </body>
