@@ -5,11 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第22章 重积分</title>
     <link rel="stylesheet" href="theme.css">
+    <style>
+        .main-content img, .main-content svg { max-width: 100%; height: auto; }
+        .main-content pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+        body { overflow-wrap: anywhere; }
+        .article-header .dek { color:#475569; font-size:1.02rem; line-height:1.8; }
+        .page-toc { background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 18px; margin:16px 0 8px; }
+        .page-toc ol { margin:0 0 0 20px; }
+        figure { margin:22px 0; }
+        figure svg { display:block; width:100%; height:auto; background:#fffdf9; border:1px solid #e2e8f0; border-radius:16px; }
+        figure figcaption { font-size:.9rem; color:#475569; margin-top:8px; line-height:1.7; }
+        .math-scroll { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+        .math-scroll:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        .math-scroll math[display="block"] { width:max-content; min-width:100%; font-size:1.15rem; padding:6px 0; }
+        .widget { border:1px solid #c4b5fd; border-radius:18px; padding:16px 18px; margin:20px 0; background:#faf8ff; }
+        .widget output { font-family:"JetBrains Mono",monospace; }
+        .widget .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:10px 0; }
+        .widget button { padding:6px 16px; border-radius:999px; border:1px solid #8b5cf6; background:#fff; color:#5b21b6; font-weight:600; cursor:pointer; }
+        .widget button[aria-pressed="true"] { background:#7c3aed; color:#fff; }
+        .widget button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+        @media (max-width:820px) { .main-content table { display:block; overflow-x:auto; } }
+    </style>
 </head>
 <body>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程目录">
         <h3>📐 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 函数：微积分的语言</a></li>
@@ -41,9 +63,26 @@
             <li><a href="27.html">第27章 常微分方程</a></li>
             <li><a href="28.html">第28章 微积分与机器学习</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>从一重积分到多重积分</h2>
+    </nav>
+    <main class="main-content" id="content">
+    <article>
+        <header class="article-header">
+            <h1>重积分</h1>
+            <p class="dek">二重积分把定积分从「曲线下的面积」推广到「曲面下的体积」，其思想仍是分割—近似—求和—取极限。本章用一页区域分割与曲顶柱体图示，讲清直角坐标化累次积分、交换积分次序、极坐标与雅可比行列式，再推广到三重积分、柱坐标与球坐标，附坐标系选择助手。</p>
+            <nav class="page-toc" aria-label="本章目录">
+                <ol>
+                    <li><a href="#intro">从一重积分到多重积分</a></li>
+                    <li><a href="#definition">二重积分的定义与性质</a></li>
+                    <li><a href="#iterated">直角坐标下化累次积分</a></li>
+                    <li><a href="#order">积分次序的选择</a></li>
+                    <li><a href="#polar">极坐标变换与雅可比行列式</a></li>
+                    <li><a href="#triple">三重积分的概念与计算</a></li>
+                    <li><a href="#coords">柱坐标与球坐标变换</a></li>
+                    <li><a href="#references">参考资料</a></li>
+                </ol>
+            </nav>
+        </header>
+        <h2 id="intro">从一重积分到多重积分</h2>
 
         <p>大家好，我是你们的讲师。欢迎回到微积分课程。</p>
 
@@ -57,13 +96,41 @@
 
         <p>我在大二学二重积分时，始终觉得"曲顶柱体的体积"这个概念太抽象了——曲面下的体积到底怎么切、怎么加？直到有一次去参观一个建筑工地，工程师用全站仪测量了一片地基的每个格点的高程数据，然后直接用"每个小格子面积 × 高程"加起来算出土方量。那一刻我恍然大悟：这不就是二重积分吗？不过我们数学课上用的是 <strong>Riemann 和</strong> 取极限，工地上用的是有限个格点的数值近似，但核心思想完全一样。</p>
 
-        <h2>二重积分的定义与性质</h2>
+        <h2 id="definition">二重积分的定义与性质</h2>
 
         <p>严格来说，二重积分定义为 <strong>Riemann 和</strong>的极限：将区域 D 划分为 n 个小区域 ΔD_k，每个小区域的面积为 ΔA_k，在 ΔD_k 中任取一点 (ξ_k, η_k)，则：</p>
 
         <pre><code>∬<sub>D</sub> f(x, y) dA = lim<sub>max diam(ΔD_k)→0</sub> Σ<sub>k=1</sub><sup>n</sup> f(ξ_k, η_k) · ΔA_k</code></pre>
 
         <p>如果这个极限存在，称 f 在 D 上<strong>可积</strong>（integrable）。和一元情形类似，连续函数在有界闭区域上一定是可积的。</p>
+
+        <figure id="fig-double">
+            <svg viewBox="0 0 640 340" role="img" aria-labelledby="fig-db-title fig-db-desc">
+                <title id="fig-db-title">二重积分：区域分割与曲顶柱体</title>
+                <desc id="fig-db-desc">左：将平面区域 D 划分为许多小方格，取其中一个小方格 dA 在点 (xi, eta) 处；右：每个小方格上方是一个高 f 的柱体，所有柱体体积之和取极限就是二重积分。</desc>
+                <polygon points="70,250 300,190 380,290 150,320" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2"/>
+                <g stroke="#93c5fd" stroke-width="1">
+                    <line x1="140" y1="262" x2="215" y2="240"/><line x1="210" y1="287" x2="285" y2="263"/>
+                    <line x1="110" y1="270" x2="180" y2="245"/><line x1="175" y1="295" x2="245" y2="270"/><line x1="240" y1="315" x2="310" y2="290"/>
+                    <line x1="120" y1="300" x2="160" y2="196"/><line x1="190" y1="280" x2="230" y2="180"/><line x1="260" y1="260" x2="300" y2="180"/><line x1="320" y1="250" x2="360" y2="190"/>
+                </g>
+                <rect x="190" y="252" width="40" height="26" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
+                <text x="200" y="270" font-size="12" fill="#92400e">dA</text>
+                <text x="230" y="210" font-size="14" fill="#0369a1">区域 D</text>
+                <text x="95" y="335" font-size="12" fill="#475569">取点 (ξ, η)</text>
+                <path d="M470 300 L560 270 L600 300 L510 330 Z" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+                <line x1="470" y1="300" x2="470" y2="180" stroke="#16a34a" stroke-width="1.5"/>
+                <line x1="560" y1="270" x2="560" y2="150" stroke="#16a34a" stroke-width="1.5"/>
+                <line x1="600" y1="300" x2="600" y2="180" stroke="#16a34a" stroke-width="1.5"/>
+                <line x1="510" y1="330" x2="510" y2="210" stroke="#16a34a" stroke-width="1.5"/>
+                <polygon points="470,180 560,150 600,180 510,210" fill="#bbf7d0" stroke="#16a34a" stroke-width="1.5"/>
+                <line x1="500" y1="195" x2="500" y2="315" stroke="#0f766e" stroke-width="1" stroke-dasharray="4 3"/>
+                <text x="360" y="200" font-size="13" fill="#166534">高 = f(x, y)</text>
+                <text x="505" y="245" font-size="12" fill="#0f766e">f·dA</text>
+                <text x="600" y="165" font-size="13" fill="#475569">体积微元</text>
+            </svg>
+            <figcaption>图 22-1（教学示意）：二重积分 dA 的几何含义。左：把平面区域 D 划分为小方格 dA，在其中取一点 (ξ, η)；右：每个 dA 上方立一个高为 f(x, y) 的薄柱体，其体积约等于 f(x, y)·dA。所有薄柱体体积求和并令分割无限细，就得到 ∬<sub>D</sub> f dA。</figcaption>
+        </figure>
 
         <p>二重积分的基本性质与定积分一一对应：</p>
         <ul>
@@ -74,7 +141,7 @@
             <li><strong>中值定理</strong>：存在一点 (ξ, η) ∈ D 使得 ∬ f = f(ξ, η) · Area(D)</li>
         </ul>
 
-        <h2>直角坐标下化累次积分</h2>
+        <h2 id="iterated">直角坐标下化累次积分</h2>
 
         <p>二重积分怎么算？答案只有一个：<strong>把它化成两个一重积分依次计算</strong>，这叫<strong>累次积分</strong>（iterated integral）。</p>
 
@@ -85,6 +152,21 @@
         <pre><code>∬<sub>D</sub> f(x, y) dA = ∫<sub>x=a</sub><sup>b</sup> [ ∫<sub>y=y₁(x)</sub><sup>y₂(x)</sup> f(x, y) dy ] dx</code></pre>
 
         <p>先对 y 积分（视 x 为常数），得到关于 x 的函数，再对 x 积分。</p>
+
+        <div class="math-equation" role="group" aria-label="二重积分化为累次积分">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="二重积分化为累次积分，可横向滚动">
+                <math display="block" aria-label="在区域 D 上对 f(x,y) 的二重积分等于先对 y 从 y1(x) 到 y2(x) 积分，再对 x 从 a 到 b 积分">
+                    <mrow>
+                        <munder><mo>&#x222C;</mo><mi>D</mi></munder>
+                        <mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mi>d</mi><mi>A</mi>
+                        <mo>=</mo>
+                        <msubsup><mo>&#x222B;</mo><mi>a</mi><mi>b</mi></msubsup>
+                        <msubsup><mo>&#x222B;</mo><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mrow><msub><mi>y</mi><mn>2</mn></msub><mo>(</mo><mi>x</mi><mo>)</mo></mrow></msubsup>
+                        <mi>f</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>)</mo><mi>d</mi><mi>y</mi><mi>d</mi><mi>x</mi>
+                    </mrow>
+                </math>
+            </div>
+        </div>
 
         <h3>Y 型区域</h3>
 
@@ -112,7 +194,7 @@
             如果两种方式都可以，选择积分表达式更简单的那种。
         </div>
 
-        <h2>积分次序的选择</h2>
+        <h2 id="order">积分次序的选择</h2>
 
         <p>有时按一种次序积分非常困难（甚至无法用初等函数表示），但交换次序后却非常简单。这就是<strong>交换积分次序</strong>（changing order of integration）的技巧。</p>
 
@@ -139,7 +221,7 @@
             注意：交换次序时积分限不是简单互换——你需要重新确定边界函数！
         </div>
 
-        <h2>极坐标变换与雅可比行列式</h2>
+        <h2 id="polar">极坐标变换与雅可比行列式</h2>
 
         <p>当积分区域是圆形、环形或扇形时，直角坐标的描述非常麻烦（边界涉及平方根和反三角函数）。这时候使用<strong>极坐标</strong>（polar coordinates）会大幅简化计算。</p>
 
@@ -215,7 +297,7 @@
             </tbody>
         </table>
 
-        <h2>三重积分的概念与计算</h2>
+        <h2 id="triple">三重积分的概念与计算</h2>
 
         <p>既然二重积分是"曲顶柱体的体积"，那么<strong>三重积分</strong>（triple integral）就是"四维空间中曲顶柱体的超体积"——虽然四维不可想象，但我们可以从物理角度理解：如果 <code>f(x, y, z)</code> 表示空间某点的密度，那么 <code>∭<sub>Ω</sub> f dV</code> 就是物体 Ω 的<strong>总质量</strong>。</p>
 
@@ -248,7 +330,7 @@
             我有个同学在一次考试中，因为把三重积分的次序搞反了，导致计算一个球的体积得到了负数。他死活检查不出错误，最后发现是 z 的积分上限写成了 x 的函数，但球对称情形下应该是一个不含 x 的表达式。记住：<strong>从最内层到最外层，自由变量越来越少</strong>。
         </div>
 
-        <h2>柱坐标与球坐标变换</h2>
+        <h2 id="coords">柱坐标与球坐标变换</h2>
 
         <p>和二重积分类似，三重积分也可以通过坐标变换来简化。常用的两种坐标系是<strong>柱坐标</strong>（cylindrical coordinates）和<strong>球坐标</strong>（spherical coordinates）。</p>
 
@@ -298,18 +380,65 @@
             · 被积函数是多项式 → 直角坐标（因为坐标变换反而会引入根号和三角函数，使积分更复杂）
         </div>
 
+        <div class="widget" id="coord-widget">
+            <p><strong>动手试一下：选一个积分区域，看该用哪套坐标与体积微元。</strong></p>
+            <div class="row">
+                <button type="button" data-c="rect">矩形 / 长方体</button>
+                <button type="button" data-c="disk">圆盘 / 圆柱</button>
+                <button type="button" data-c="ball">球体 / 锥体</button>
+                <button type="button" data-c="poly">多项式被积函数</button>
+            </div>
+            <p id="coord-status" aria-live="polite"></p>
+        </div>
+
         <p>关于坐标变换，我印象最深的是做一道三重积分的题目：计算被平面截取的球体部分的质心。当时我用直角坐标尝试了三次，每次到中间一步积分就复杂到无法继续。后来一位师兄提醒我："你为什么不试试球坐标？球体天然就是球坐标的天下。"我换了球坐标，原来复杂的积分边界变成了简单的常数限，被积函数也变成了初等函数的乘积——十五分钟就解出来了。而之前用直角坐标折腾的三个小时，全是在和带根号的积分限搏斗。</p>
 
         <p>这个故事告诉我们一个深刻的教训：<strong>在多元积分中，选择合适的坐标系比积分技巧本身重要十倍</strong>。选对了坐标系，你的积分限简洁、被积函数简单、计算流畅；选错了坐标系，你会在代数泥潭中越陷越深。</p>
 
         <p>重积分是多元微积分中"积分"这一半的核心。它把一元定积分从"线"推广到了"面"和"体"，让我们能够计算二维区域上的累积量和三维空间中的总质量。下一章我们将进一步推广积分——从平面区域和空间区域推广到<strong>曲线</strong>和<strong>曲面</strong>上。你将看到，积分的舞台可以是一条弯曲的路径（曲线积分）或一张扭曲的曲面（曲面积分），而数学工具也随之变得更加优雅和强大。</p>
 
+        <h2 id="references">参考资料</h2>
+
+        <p>本章的二重/三重积分定义、累次积分、极坐标与雅可比行列式、柱坐标与球坐标变换均与标准高等数学教材一致；图 22-1 与坐标系助手为本章原创的教学示意，体积微元与球体积公式均为确定性结果，不含实验数据。</p>
+
+        <ul>
+            <li>MIT OpenCourseWare，<a href="https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/">18.02SC Multivariable Calculus</a>（多重积分与坐标变换部分）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Multiple_integral">Multiple integral</a>（二重/三重积分与累次积分）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant">Jacobian matrix and determinant</a>（坐标变换与面积/体积缩放）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Gaussian_integral">Gaussian integral</a>（极坐标法求 e^{-x²} 的广义积分）。</li>
+        </ul>
+
+        <script>
+        (function () {
+            var box = document.getElementById('coord-widget');
+            if (!box) { return; }
+            var out = document.getElementById('coord-status');
+            var data = {
+                rect: '矩形 / 长方体区域 → 直角坐标，面积微元 dA = dx dy（三重则 dV = dx dy dz）。',
+                disk: '圆盘 / 圆柱 / 旋转体 → 极坐标（三重用柱坐标），dA = r dr dθ，dV = r dr dθ dz。',
+                ball: '球体 / 锥体 → 球坐标，dV = ρ² sin φ dρ dφ dθ。',
+                poly: '被积函数是多项式且区域为矩形 → 直角坐标最省事，坐标变换反而会引入根号与三角函数的复杂度。'
+            };
+            function render(key) {
+                out.textContent = data[key] || '';
+                Array.prototype.forEach.call(box.querySelectorAll('button[data-c]'), function (b) {
+                    b.setAttribute('aria-pressed', String(b.getAttribute('data-c') === key));
+                });
+            }
+            Array.prototype.forEach.call(box.querySelectorAll('button[data-c]'), function (b) {
+                b.addEventListener('click', function () { render(b.getAttribute('data-c')); });
+            });
+            render('disk');
+        })();
+        </script>
+
         <div class="footer-nav">
             <a href="21.html">← 上一章</a>
             <a href="index.html">📖 返回目录</a>
             <a href="23.html">下一章 →</a>
         </div>
-    </div>
+        </article>
+    </main>
 </div>
 </div>
 </body>
