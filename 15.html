@@ -5,11 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第15章 不定积分的概念</title>
     <link rel="stylesheet" href="theme.css">
+    <style>
+        .main-content img, .main-content svg { max-width: 100%; height: auto; }
+        .main-content pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+        body { overflow-wrap: anywhere; }
+        .article-header .dek { color:#475569; font-size:1.02rem; line-height:1.8; }
+        .page-toc { background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 18px; margin:16px 0 8px; }
+        .page-toc ol { margin:0 0 0 20px; }
+        figure { margin:22px 0; }
+        figure svg { display:block; width:100%; height:auto; background:#fffdf9; border:1px solid #e2e8f0; border-radius:16px; }
+        figure figcaption { font-size:.9rem; color:#475569; margin-top:8px; line-height:1.7; }
+        .math-scroll { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+        .math-scroll:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        .math-scroll math[display="block"] { width:max-content; min-width:100%; font-size:1.15rem; padding:6px 0; }
+        .widget { border:1px solid #c4b5fd; border-radius:18px; padding:16px 18px; margin:20px 0; background:#faf8ff; }
+        .widget output { font-family:"JetBrains Mono",monospace; }
+        .widget .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:10px 0; }
+        .widget button { padding:6px 16px; border-radius:999px; border:1px solid #8b5cf6; background:#fff; color:#5b21b6; font-weight:600; cursor:pointer; }
+        .widget button[aria-pressed="true"] { background:#7c3aed; color:#fff; }
+        .widget button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+        @media (max-width:820px) { .main-content table { display:block; overflow-x:auto; } }
+    </style>
 </head>
 <body>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程目录">
         <h3>📐 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 函数：微积分的语言</a></li>
@@ -41,9 +63,25 @@
             <li><a href="27.html">第27章 常微分方程</a></li>
             <li><a href="28.html">第28章 微积分与机器学习</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>从"反求导"理解不定积分</h2>
+    </nav>
+    <main class="main-content" id="content">
+    <article>
+        <header class="article-header">
+            <h1>不定积分的概念</h1>
+            <p class="dek">不定积分是微分的逆运算：找导数等于被积函数的那个原函数。本章先建立「积分就是猜导数」的理念，讲清原函数不唯一与积分常数 +C 的来历，用一页曲线族图示几何意义，给出基本积分公式表与线性性质，并附一个「猜导数」验证交互。</p>
+            <nav class="page-toc" aria-label="本章目录">
+                <ol>
+                    <li><a href="#inverse">从「反求导」理解不定积分</a></li>
+                    <li><a href="#antiderivative">原函数与积分常数</a></li>
+                    <li><a href="#geometry">不定积分的几何意义：曲线族</a></li>
+                    <li><a href="#table">基本积分公式表</a></li>
+                    <li><a href="#linearity">不定积分的线性性质</a></li>
+                    <li><a href="#direct">直接积分法</a></li>
+                    <li><a href="#references">参考资料</a></li>
+                </ol>
+            </nav>
+        </header>
+        <h2 id="inverse">从"反求导"理解不定积分</h2>
 
         <p>大家好，我是你们的讲师。欢迎来到微积分课程的全新篇章——积分学。接下来这十章，我们将从"求变化率"转向"求累积量"。</p>
 
@@ -51,7 +89,7 @@
 
         <p>但在我当年学的教材里，这个"互逆"的真相被放到了定积分章节才揭示。这意味着我一整个学期都在茫然中学习两种看似独立的运算。今天这堂课，我们要做一件和传统教材不同的事：<strong>在正式学习积分的计算之前，先建立"积分是微分的逆运算"这个核心理念</strong>。这样当你学习后面的各种积分技巧时，你始终知道自己在做什么——你在做<strong>猜导数</strong>的游戏。</p>
 
-        <h2>原函数与积分常数</h2>
+        <h2 id="antiderivative">原函数与积分常数</h2>
 
         <h3>什么是原函数？</h3>
 
@@ -78,6 +116,17 @@
         F(x)   — f(x) 的一个原函数
         C      — 积分常数（constant of integration），任意实数</code></pre>
 
+        <div class="math-equation" role="group" aria-label="不定积分的定义">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="不定积分的定义，可横向滚动">
+                <math display="block" aria-label="f(x) 的不定积分等于它的原函数 F(x) 加上任意常数 C">
+                    <mrow>
+                        <mo>&#x222B;</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi>
+                        <mo>=</mo><mi>F</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><mi>C</mi>
+                    </mrow>
+                </math>
+            </div>
+        </div>
+
         <p>注意这里 <code>dx</code> 的写法不是装饰。它有三重作用：第一，标明积分变量是什么——如果是 <code>∫ 2x dt</code>，那就意味着对 t 积分，结果是 <code>2xt + C</code>，而不是 <code>x^2 + C</code>；第二，它在换元积分法中扮演着关键角色，可以像代数变量一样参与运算；第三，从历史上看，莱布尼茨发明这套符号时就是这么设计的——<code>∫</code> 和 <code>dx</code> 一起使用，表示"对 x 的无穷小量求和"。</p>
 
         <p>从运算的角度看：</p>
@@ -89,7 +138,7 @@
 
         <p>这条性质是你检查积分结果是否正确的最强工具。<strong>求完不定积分后，对结果求导，如果得到被积函数，那么你的答案就是正确的。</strong>这个方法比任何验算技巧都可靠。</p>
 
-        <h2>不定积分的几何意义：曲线族</h2>
+        <h2 id="geometry">不定积分的几何意义：曲线族</h2>
 
         <p>不定积分的几何图像非常直观。想象你在纸上画了一条曲线 <code>y = F(x)</code>。现在想象你把这条曲线整体向上平移 3 个单位，再向下平移 5 个单位——所有这些曲线构成了一个<strong>曲线族</strong>（family of curves），数学上记为 <code>y = F(x) + C</code>。</p>
 
@@ -97,7 +146,29 @@
 
         <p>这个几何图像非常有助于你理解为什么 <code>+C</code> 如此重要：不定积分解出来的不是一个函数，而是一族函数。具体的物理问题常常会给出一个<strong>初始条件</strong>（initial condition），比如 "当 t=0 时 s=0"，让你从这族曲线中确定唯一的一条。这是微分方程求解的基本思想，也是定积分和不定积分的分水岭——定积分是一个具体的数值，而不定积分是一族函数。</p>
 
-        <h2>基本积分公式表</h2>
+        <figure id="fig-family">
+            <svg viewBox="0 0 640 330" role="img" aria-labelledby="fig-family-title fig-family-desc">
+                <title id="fig-family-title">不定积分是一族平行曲线</title>
+                <desc id="fig-family-desc">y = x 平方加 C 在 C 取不同值时得到一族曲线，它们在同一个 x 处有相同的切线斜率。</desc>
+                <line x1="60" y1="280" x2="600" y2="280" stroke="#94a3b8"/>
+                <line x1="320" y1="25" x2="320" y2="305" stroke="#94a3b8"/>
+                <polyline points="200,55 240,180 280,255 320,280 360,255 400,180 440,55" fill="none" stroke="#147f80" stroke-width="2.5"/>
+                <polyline points="200,30 240,155 280,230 320,255 360,230 400,155 440,30" fill="none" stroke="#8b5cf6" stroke-width="2.5"/>
+                <polyline points="200,80 240,205 280,280 320,305 360,280 400,205 440,80" fill="none" stroke="#d06d4d" stroke-width="2.5"/>
+                <line x1="360" y1="30" x2="360" y2="305" stroke="#64748b" stroke-width="1.5" stroke-dasharray="5 4"/>
+                <line x1="340" y1="280" x2="380" y2="230" stroke="#147f80" stroke-width="3"/>
+                <line x1="340" y1="255" x2="380" y2="205" stroke="#8b5cf6" stroke-width="3"/>
+                <line x1="340" y1="305" x2="380" y2="255" stroke="#d06d4d" stroke-width="3"/>
+                <text x="446" y="38" font-size="13" fill="#6d28d9">C = 1</text>
+                <text x="446" y="63" font-size="13" fill="#0f766e">C = 0</text>
+                <text x="446" y="88" font-size="13" fill="#b45309">C = −1</text>
+                <text x="366" y="300" font-size="13" fill="#475569">x = x₀</text>
+                <text x="80" y="300" font-size="13" fill="#475569">同一 x₀ 处切线平行 → 导数都是 f(x₀)</text>
+            </svg>
+            <figcaption>图 15-1（教学示意）：以 ∫ 2x dx = x² + C 为例，C 取 1、0、−1 得到三条纵向平移的曲线。它们在任意同一个 x₀ 处的切线互相平行（加法法则），说明曲线族共享同一个导数 f(x)。</figcaption>
+        </figure>
+
+        <h2 id="table">基本积分公式表</h2>
 
         <p>既然不定积分是求导的逆运算，那么每一个求导公式对应一个积分公式。下面这张表是微积分里最重要的工具之一，你需要对它非常熟悉。</p>
 
@@ -173,7 +244,19 @@
 
         <p>请注意绝对值符号 <code>|x|</code>。这是因为对数函数 <code>ln x</code> 只在 x > 0 时有定义，而 <code>1/x</code> 在 x ≠ 0 时处处有定义。加上绝对值后，<code>ln|x|</code> 在负半轴也有定义，且导数仍然是 <code>1/x</code>。这个细节在很多教材中被一笔带过，但你在做题时如果忽略了绝对值，可能会丢掉半边定义域的解。</p>
 
-        <h2>不定积分的线性性质</h2>
+        <div class="widget" id="guess-widget">
+            <p><strong>动手试一下「猜导数」游戏：选一个被积函数，看它的原函数，并用求导反向验证。</strong></p>
+            <div class="row">
+                <button type="button" data-f="2x">∫ 2x dx</button>
+                <button type="button" data-f="cos">∫ cos x dx</button>
+                <button type="button" data-f="inv">∫ 1/x dx</button>
+                <button type="button" data-f="exp">∫ eˣ dx</button>
+                <button type="button" data-f="sq">∫ x² dx</button>
+            </div>
+            <p id="guess-status" aria-live="polite"></p>
+        </div>
+
+        <h2 id="linearity">不定积分的线性性质</h2>
 
         <p>与导数类似，不定积分满足线性性质，这意味着它可以被"拆开"计算：</p>
 
@@ -192,7 +275,7 @@
 
         <p>注意：在拆分成多个积分时，每个不定积分都会产生一个积分常数。但多个常数加起来仍然是常数，所以我们只需要写一个 <code>+C</code> 就够了。</p>
 
-        <h2>直接积分法</h2>
+        <h2 id="direct">直接积分法</h2>
 
         <p>所谓<strong>直接积分法</strong>，就是利用上面提到的线性性质和基本积分公式表，直接求出不定积分的方法。虽然它听起来太简单，但它是所有更复杂积分技巧的起点。</p>
 
@@ -221,12 +304,48 @@
 
         <p>准备好了吗？下一章我们将学习第一类换元法（凑微分）和第二类换元法（三角代换）。你会惊讶地发现，有了换元法这把新武器后，你能解决的积分问题数量会成倍增长。</p>
 
+        <h2 id="references">参考资料</h2>
+
+        <p>本章的原函数与不定积分定义、基本积分公式表与线性性质均与标准微积分教材一致；图 15-1 与「猜导数」窗体为本章原创的教学示意，只使用 2x、cos x、1/x、eˣ、x² 等标准例，不含实验数据。</p>
+
+        <ul>
+            <li>MIT OpenCourseWare，<a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/">18.01SC Single Variable Calculus</a>（原函数与不定积分部分）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Antiderivative">Antiderivative</a>（原函数的存在性与不唯一性）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Integral">Integral</a>（不定积分与积分常数）。</li>
+        </ul>
+
+        <script>
+        (function () {
+            var box = document.getElementById('guess-widget');
+            if (!box) { return; }
+            var out = document.getElementById('guess-status');
+            var data = {
+                '2x': '∫ 2x dx = x² + C。验证：(x² + C)′ = 2x ✓',
+                cos: '∫ cos x dx = sin x + C。验证：(sin x + C)′ = cos x ✓',
+                inv: '∫ 1/x dx = ln|x| + C。验证：(ln|x| + C)′ = 1/x ✓',
+                exp: '∫ eˣ dx = eˣ + C。验证：(eˣ + C)′ = eˣ ✓',
+                sq: '∫ x² dx = x³/3 + C。验证：(x³/3 + C)′ = x² ✓'
+            };
+            function render(key) {
+                out.textContent = data[key] || '';
+                Array.prototype.forEach.call(box.querySelectorAll('button[data-f]'), function (b) {
+                    b.setAttribute('aria-pressed', String(b.getAttribute('data-f') === key));
+                });
+            }
+            Array.prototype.forEach.call(box.querySelectorAll('button[data-f]'), function (b) {
+                b.addEventListener('click', function () { render(b.getAttribute('data-f')); });
+            });
+            render('2x');
+        })();
+        </script>
+
         <div class="footer-nav">
             <a href="14.html">← 上一章</a>
             <a href="index.html">📖 返回目录</a>
             <a href="16.html">下一章 →</a>
         </div>
-    </div>
+        </article>
+    </main>
 </div>
 </div>
 </body>
