@@ -5,11 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第9章 求导法则与基本公式</title>
     <link rel="stylesheet" href="theme.css">
+    <style>
+        .main-content img, .main-content svg { max-width: 100%; height: auto; }
+        .main-content pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+        body { overflow-wrap: anywhere; }
+        .article-header .dek { color:#475569; font-size:1.02rem; line-height:1.8; }
+        .page-toc { background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 18px; margin:16px 0 8px; }
+        .page-toc ol { margin:0 0 0 20px; }
+        figure { margin:22px 0; }
+        figure svg { display:block; width:100%; height:auto; background:#fffdf9; border:1px solid #e2e8f0; border-radius:16px; }
+        figure figcaption { font-size:.9rem; color:#475569; margin-top:8px; line-height:1.7; }
+        .math-scroll { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+        .math-scroll:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        .math-scroll math[display="block"] { width:max-content; min-width:100%; font-size:1.15rem; padding:6px 0; }
+        .widget { border:1px solid #c4b5fd; border-radius:18px; padding:16px 18px; margin:20px 0; background:#faf8ff; }
+        .widget output { font-family:"JetBrains Mono",monospace; }
+        .widget .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:10px 0; }
+        .widget button { padding:6px 16px; border-radius:999px; border:1px solid #8b5cf6; background:#fff; color:#5b21b6; font-weight:600; cursor:pointer; }
+        .widget button[aria-pressed="true"] { background:#7c3aed; color:#fff; }
+        .widget button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+        @media (max-width:820px) { .main-content table { display:block; overflow-x:auto; } }
+    </style>
 </head>
 <body>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程目录">
         <h3>📐 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 函数：微积分的语言</a></li>
@@ -41,9 +63,26 @@
             <li><a href="27.html">第27章 常微分方程</a></li>
             <li><a href="28.html">第28章 微积分与机器学习</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>从定义到法则：求导的效率革命</h2>
+    </nav>
+    <main class="main-content" id="content">
+    <article>
+        <header class="article-header">
+            <h1>求导法则与基本公式</h1>
+            <p class="dek">导数定义是把差商极限算出来，而求导法则把这件事变成机械流程：公式表是砖块，四则法则（和差、乘积、商）是水泥，链式法则是脚手架。本章给出完整的公式表与记忆口诀，用一张「洋葱」分层图讲透链式法则，附反函数求导与一个多层复合的拆分交互。</p>
+            <nav class="page-toc" aria-label="本章目录">
+                <ol>
+                    <li><a href="#intro">从定义到法则：求导的效率革命</a></li>
+                    <li><a href="#formulas">基本初等函数的导数公式表</a></li>
+                    <li><a href="#operations">四则求导法则</a></li>
+                    <li><a href="#chain">链式法则：复合函数求导的核心</a></li>
+                    <li><a href="#inverse">反函数的求导法则</a></li>
+                    <li><a href="#practice">综合求导练习</a></li>
+                    <li><a href="#summary">本章小结</a></li>
+                    <li><a href="#references">参考资料</a></li>
+                </ol>
+            </nav>
+        </header>
+        <h2 id="intro">从定义到法则：求导的效率革命</h2>
 
         <p>大家好，我是你们的讲师。上一章里，我们用定义（差商极限）手工求了几个简单函数的导数。做那种计算就像用刀劈柴——每次都要全力以赴。但假如你需要求 <code>f(x) = sin(e^x) · ln(1 + x^2) / (x^3 + 1)</code> 的导数，用定义去求？那将是一场噩梦。</p>
 
@@ -51,7 +90,7 @@
 
         <p>我一直记得我本科时第一次学会链式法则后的感慨：原来复杂的求导可以像剥洋葱一样，一层一层地拆解。之前用定义求 <code>sin x</code> 的导数花了整整四行计算，而有了这些法则之后——看到就能写出答案。这节课我们要做的就是把这套"电锯"交到你手上。</p>
 
-        <h2>基本初等函数的导数公式表</h2>
+        <h2 id="formulas">基本初等函数的导数公式表</h2>
 
         <p>以下是所有基本初等函数的导数公式，这是你需要<strong>烂熟于心</strong>的内容——就像一个程序员必须知道变量声明怎么写一样，这是微积分世界的"语法"。</p>
 
@@ -130,7 +169,7 @@
             三角函数：正弦变余弦，余弦变负弦，正切割方站。
         </div>
 
-        <h2>四则求导法则</h2>
+        <h2 id="operations">四则求导法则</h2>
 
         <p>当你需要求导的函数是两个或多个基本函数的组合时，下面的法则就派上用场了。</p>
 
@@ -171,7 +210,7 @@ y' = [(6x)(x+2) - (3x^2+1)(1)] / (x+2)^2
    = [6x^2 + 12x - 3x^2 - 1] / (x+2)^2
    = [3x^2 + 12x - 1] / (x+2)^2</code></pre>
 
-        <h2>链式法则：复合函数求导的核心</h2>
+        <h2 id="chain">链式法则：复合函数求导的核心</h2>
 
         <p>链式法则（chain rule）是微积分里最重要的求导法则，没有之一。它告诉我们如何求<strong>复合函数</strong>的导数：</p>
 
@@ -206,11 +245,45 @@ dy/dx = f1' · f2' · f3' · ... · fn'
 
 每一层的导数相乘——这就是"链"的含义。</code></pre>
 
+        <div class="math-equation" role="group" aria-label="链式法则">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="链式法则，可横向滚动">
+                <math display="block" aria-label="dy 比 dx 等于 dy 比 du 乘以 du 比 dx，其中 u 等于 g(x)">
+                    <mrow>
+                        <mfrac><mrow><mi>d</mi><mi>y</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac>
+                        <mo>=</mo>
+                        <mfrac><mrow><mi>d</mi><mi>y</mi></mrow><mrow><mi>d</mi><mi>u</mi></mrow></mfrac>
+                        <mo>&#x22C5;</mo>
+                        <mfrac><mrow><mi>d</mi><mi>u</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac>
+                    </mrow>
+                </math>
+            </div>
+        </div>
+
         <div class="warning">
             <strong>链式法则最常见的错误：遗漏内层导数</strong><br>
             这是一个几乎每个学微积分的人都会踩的坑。比如求 <code>y = sin(2x)</code> 的导数，错误答案是 <code>cos(2x)</code>——漏掉了内层 <code>2x</code> 的导数 2。正确答案应该是 <code>2cos(2x)</code>。<br><br>
             我的一个同学在考试时连续三道题都犯了这个错误——他每次都是"只看外层，忘了内层"。考试后他说了一句话我一直记得："我知道链式法则是要乘的，但做题做着做着就忘了内层。"这个问题的根源在于：<strong>练习量不够，肌肉记忆没有形成</strong>。链式法则必须练到"看到复合函数，自动拆层"的程度。
         </div>
+
+        <figure id="fig-onion">
+            <svg viewBox="0 0 720 300" role="img" aria-labelledby="fig-onion-title fig-onion-desc">
+                <title id="fig-onion-title">链式法则的洋葱分层</title>
+                <desc id="fig-onion-desc">复合函数 y = e 的 sin(x 平方) 次方由三层嵌套构成，从外到内每层的导数相乘得到总导数。</desc>
+                <rect x="30" y="35" width="560" height="230" rx="18" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="2"/>
+                <text x="48" y="60" font-size="14" fill="#6d28d9">最外层 f₁(□) = e^□　→　导数 e^□</text>
+                <rect x="70" y="75" width="480" height="160" rx="16" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2"/>
+                <text x="88" y="100" font-size="14" fill="#0369a1">中间层 f₂(○) = sin ○　→　导数 cos ○</text>
+                <rect x="115" y="115" width="380" height="95" rx="14" fill="#fef9c3" stroke="#facc15" stroke-width="2"/>
+                <text x="133" y="140" font-size="14" fill="#854d0e">最内层 f₃(x) = x²　→　导数 2x</text>
+                <text x="133" y="172" font-size="15" fill="#1e293b" font-weight="bold">y = e^(sin(x²))</text>
+                <text x="133" y="196" font-size="13" fill="#475569">从外到内逐层剥开</text>
+                <text x="612" y="90" text-anchor="middle" font-size="22" fill="#64748b">×</text>
+                <text x="612" y="130" text-anchor="middle" font-size="22" fill="#64748b">×</text>
+                <text x="612" y="170" text-anchor="middle" font-size="15" fill="#5b21b6" font-weight="bold">= y′</text>
+                <text x="600" y="215" text-anchor="end" font-size="13" fill="#475569">e^(sin(x²)) · cos(x²) · 2x</text>
+            </svg>
+            <figcaption>图 9-1（教学示意）：链式法则如剥洋葱。从外层 e^□、中层 sin ○、内层 x² 各自的导数相乘，得到 y′ = e^(sin(x²)) · cos(x²) · 2x。层数再多，也只是多乘一项。</figcaption>
+        </figure>
 
         <h3>链式法则的实战例子</h3>
 
@@ -223,7 +296,7 @@ y' = 1/(1 + x^2) · 2x = 2x/(1 + x^2)
 例3：y = (x^2 + 1)^10
 y' = 10(x^2 + 1)^9 · 2x = 20x(x^2 + 1)^9</code></pre>
 
-        <h2>反函数的求导法则</h2>
+        <h2 id="inverse">反函数的求导法则</h2>
 
         <p>如果 <code>y = f(x)</code> 在区间内可导且 <code>f'(x) ≠ 0</code>，那么它的反函数 <code>x = f^(-1)(y)</code> 也可导，且：</p>
 
@@ -241,7 +314,7 @@ dx/dy = 1 / (dy/dx)</code></pre>
 
         <p>看，这正是导数公式表里的结果！</p>
 
-        <h2>综合求导练习</h2>
+        <h2 id="practice">综合求导练习</h2>
 
         <p>让我们综合运用所有法则，求一个略复杂的函数的导数：</p>
 
@@ -270,18 +343,64 @@ y' = (u'v - uv') / v^2
             把这三个问题想清楚了再动笔，你会发现正确率大幅提升。
         </div>
 
-        <h2>本章小结</h2>
+        <div class="widget" id="chain-widget">
+            <p><strong>动手试一下：选一个复合函数，看它被拆成哪几层、各层导数如何相乘。</strong></p>
+            <div class="row">
+                <button type="button" data-k="exp3">y = e³ˣ</button>
+                <button type="button" data-k="log">y = ln(1+x²)</button>
+                <button type="button" data-k="pow">y = (x²+1)¹⁰</button>
+                <button type="button" data-k="sin2">y = sin(2x)</button>
+            </div>
+            <p id="chain-status" aria-live="polite"></p>
+        </div>
+
+        <h2 id="summary">本章小结</h2>
 
         <p>本章我们建立了一套完整的求导体系：基本初等函数的导数公式表是"砖块"，四则求导法则是"水泥"，链式法则是"脚手架"。有了这三件法宝，你可以求任何初等函数的导数。记得那个"剥洋葱"的比喻吗？从外到内，一层一层，每层乘上这层的导数——只要做到这一点，链式法则就永远不会出错。</p>
 
         <p>下一章我们将进入更实际的场景：隐函数和参数方程的求导。当函数关系不是显式写成的 <code>y = f(x)</code> 形式时，我们该如何求导？比如圆的方程 <code>x^2 + y^2 = 1</code>，这里 y 并没有被显式解出来——这就是隐函数求导的用武之地。</p>
+
+        <h2 id="references">参考资料</h2>
+
+        <p>本章的导数公式表、四则求导法则、链式法则与反函数求导法则均与标准微积分教材一致；图 9-1 与分层演示窗体为本章原创的教学示意，只使用 e³ˣ、ln(1+x²)、(x²+1)¹⁰、sin(2x) 等标准例题，不含实验数据。</p>
+
+        <ul>
+            <li>MIT OpenCourseWare，<a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/">18.01SC Single Variable Calculus</a>（求导法则部分）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Chain_rule">Chain rule</a>（链式法则的表述与证明）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Product_rule">Product rule</a>（乘法法则的几何与极限推导）。</li>
+        </ul>
+
+        <script>
+        (function () {
+            var box = document.getElementById('chain-widget');
+            if (!box) { return; }
+            var out = document.getElementById('chain-status');
+            var data = {
+                exp3: '外层 e^□ 导数 e^□，内层 3x 导数 3 → y′ = e³ˣ · 3 = 3e³ˣ。',
+                log: '外层 ln □ 导数 1/□，内层 1+x² 导数 2x → y′ = 1/(1+x²) · 2x = 2x/(1+x²)。',
+                pow: '外层 □¹⁰ 导数 10□⁹，内层 x²+1 导数 2x → y′ = 10(x²+1)⁹ · 2x = 20x(x²+1)⁹。',
+                sin2: '外层 sin □ 导数 cos □，内层 2x 导数 2 → y′ = cos(2x) · 2 = 2cos(2x)。'
+            };
+            function render(key) {
+                out.textContent = data[key] || '';
+                Array.prototype.forEach.call(box.querySelectorAll('button[data-k]'), function (b) {
+                    b.setAttribute('aria-pressed', String(b.getAttribute('data-k') === key));
+                });
+            }
+            Array.prototype.forEach.call(box.querySelectorAll('button[data-k]'), function (b) {
+                b.addEventListener('click', function () { render(b.getAttribute('data-k')); });
+            });
+            render('exp3');
+        })();
+        </script>
 
         <div class="footer-nav">
             <a href="08.html">← 上一章</a>
             <a href="index.html">📖 返回目录</a>
             <a href="10.html">下一章 →</a>
         </div>
-    </div>
+        </article>
+    </main>
 </div>
 </div>
 </body>
