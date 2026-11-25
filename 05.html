@@ -5,11 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第5章 函数的连续性</title>
     <link rel="stylesheet" href="theme.css">
+    <style>
+        .main-content img, .main-content svg { max-width: 100%; height: auto; }
+        .main-content pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+        body { overflow-wrap: anywhere; }
+        .article-header .dek { color:#475569; font-size:1.02rem; line-height:1.8; }
+        .page-toc { background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 18px; margin:16px 0 8px; }
+        .page-toc ol { margin:0 0 0 20px; }
+        figure { margin:22px 0; }
+        figure svg { display:block; width:100%; height:auto; background:#fffdf9; border:1px solid #e2e8f0; border-radius:16px; }
+        figure figcaption { font-size:.9rem; color:#475569; margin-top:8px; line-height:1.7; }
+        .math-scroll { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+        .math-scroll:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        .math-scroll math[display="block"] { width:max-content; min-width:100%; font-size:1.15rem; padding:6px 0; }
+        .widget { border:1px solid #c4b5fd; border-radius:18px; padding:16px 18px; margin:20px 0; background:#faf8ff; }
+        .widget output { font-family:"JetBrains Mono",monospace; }
+        .widget .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:10px 0; }
+        .widget button { padding:6px 16px; border-radius:999px; border:1px solid #8b5cf6; background:#fff; color:#5b21b6; font-weight:600; cursor:pointer; }
+        .widget button[aria-pressed="true"] { background:#7c3aed; color:#fff; }
+        .widget button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+        @media (max-width:820px) { .main-content table { display:block; overflow-x:auto; } }
+    </style>
 </head>
 <body>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程目录">
         <h3>📐 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 函数：微积分的语言</a></li>
@@ -41,9 +63,26 @@
             <li><a href="27.html">第27章 常微分方程</a></li>
             <li><a href="28.html">第28章 微积分与机器学习</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>连续：极限等于函数值的那一刻</h2>
+    </nav>
+    <main class="main-content" id="content">
+    <article>
+        <header class="article-header">
+            <h1>函数的连续性</h1>
+            <p class="dek">连续就是「极限等于函数值」：极限存在、函数值存在、两者相等，三条缺一不可。本章用一页左右连续与间断点分类图示，把可去、跳跃、无穷、振荡四类间断点讲清，给出初等函数连续性定理与「直接代入求极限」的红利，并配一个左右极限判别交互。</p>
+            <nav class="page-toc" aria-label="本章目录">
+                <ol>
+                    <li><a href="#continuous">连续：极限等于函数值的那一刻</a></li>
+                    <li><a href="#three">连续函数的三要素</a></li>
+                    <li><a href="#onesided">左右连续</a></li>
+                    <li><a href="#type1">第一类间断点</a></li>
+                    <li><a href="#type2">第二类间断点</a></li>
+                    <li><a href="#algebra">连续函数的四则运算与复合</a></li>
+                    <li><a href="#elementary">初等函数的连续性定理</a></li>
+                    <li><a href="#references">参考资料</a></li>
+                </ol>
+            </nav>
+        </header>
+        <h2 id="continuous">连续：极限等于函数值的那一刻</h2>
 
         <p>大家好，我是你们的讲师。前面三章我们都在和"极限"打交道。但你可能一直在想一个问题：极限考察的是"趋近但不等于"——我们允许函数在 x₀ 点没有定义，仍然可以讨论极限。但现实世界中，大部分物理量是<strong>连续变化</strong>的：温度不会从 20°C 瞬间跳到 100°C，汽车的速度不会从 0 突然变成 60 km/h（加速度可以很大，但不可能无穷大）。</p>
 
@@ -51,7 +90,7 @@
 
         <p>连续性跟极限只有一字之差：如果说极限关心的是"x 趋近 x₀ 时 f(x) 的趋势"，那么连续性就是在极限的基础上附加了一个条件——<strong>这个趋势必须等于 f(x₀) 本身</strong>。换句话说，连续就是"极限等于函数值"。</p>
 
-        <h2>连续函数的三要素</h2>
+        <h2 id="three">连续函数的三要素</h2>
 
         <p>一个函数 f(x) 在点 x₀ 处连续，需要同时满足三个条件：</p>
 
@@ -65,6 +104,17 @@
 
         <p>用 ε-δ 语言来写连续的定义也很简洁：对任意 ε > 0，存在 δ > 0，使得当 |x - x₀| &lt; δ 时，总有 |f(x) - f(x₀)| &lt; ε。注意这里的条件和极限定义的差别：极限定义要求 0 &lt; |x - x₀| &lt; δ（去心邻域，排除了 x₀ 本身），而连续定义允许 |x - x₀| &lt; δ（包含 x₀）。这是因为连续要求 f(x₀) 本身有意义且参与比较。</p>
 
+        <div class="math-equation" role="group" aria-label="连续的定义式">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="连续的定义式，可横向滚动">
+                <math display="block" aria-label="当 x 趋于 x0 时 f(x) 的极限等于 f 在 x0 处的函数值">
+                    <mrow>
+                        <munder><mo movablelimits="true">lim</mo><mrow><mi>x</mi><mo>→</mo><msub><mi>x</mi><mn>0</mn></msub></mrow></munder>
+                        <mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo>
+                    </mrow>
+                </math>
+            </div>
+        </div>
+
         <div class="highlight">
             <strong>极限 vs. 连续：一字之差</strong><br>
             极限：<code>0 &lt; |x - x₀| &lt; δ → |f(x) - L| &lt; ε</code>（不关心 x₀ 点）<br>
@@ -72,7 +122,7 @@
             一个经典的记忆法：连续 = 极限存在 + 函数值存在 + 两者相等。
         </div>
 
-        <h2>左右连续</h2>
+        <h2 id="onesided">左右连续</h2>
 
         <p>与左极限、右极限对应，我们也有<strong>左连续</strong>和<strong>右连续</strong>的概念：</p>
 
@@ -94,7 +144,7 @@
 
         <p>连续要求 <code>1 = a + b</code>，即 b = 1 - a。这时 a 可以是任意值，只要满足这个关系，函数就在 x = 1 处连续。</p>
 
-        <h2>第一类间断点</h2>
+        <h2 id="type1">第一类间断点</h2>
 
         <p>如果函数在某点不连续，该点就是一个<strong>间断点</strong>。间断点按其性质分为两大类，先看<strong>第一类间断点</strong>：左极限和右极限都<strong>存在</strong>。</p>
 
@@ -143,7 +193,33 @@
             </tbody>
         </table>
 
-        <h2>第二类间断点</h2>
+        <figure id="fig-disc">
+            <svg viewBox="0 0 720 270" role="img" aria-labelledby="fig-disc-title fig-disc-desc">
+                <title id="fig-disc-title">间断点的三种典型形态</title>
+                <desc id="fig-disc-desc">左是可去间断点，曲线在此有一个空点；中是跳跃间断点，左右两段不相等；右是无穷间断点，函数值在渐近线两侧趋向无穷大。</desc>
+                <line x1="30" y1="210" x2="230" y2="210" stroke="#94a3b8"/>
+                <line x1="40" y1="60" x2="40" y2="215" stroke="#94a3b8"/>
+                <path d="M50 200 Q140 90 220 150" fill="none" stroke="#7461ba" stroke-width="2.5"/>
+                <circle cx="140" cy="122" r="5" fill="#fffdf9" stroke="#7461ba" stroke-width="2.5"/>
+                <text x="118" y="245" font-size="13" fill="#475569">可去间断点</text>
+                <line x1="270" y1="210" x2="470" y2="210" stroke="#94a3b8"/>
+                <line x1="280" y1="60" x2="280" y2="215" stroke="#94a3b8"/>
+                <line x1="285" y1="160" x2="370" y2="160" stroke="#147f80" stroke-width="2.5"/>
+                <line x1="370" y1="100" x2="455" y2="100" stroke="#147f80" stroke-width="2.5"/>
+                <circle cx="370" cy="160" r="4.5" fill="#147f80"/>
+                <circle cx="370" cy="100" r="4.5" fill="#fffdf9" stroke="#147f80" stroke-width="2.5"/>
+                <text x="358" y="245" font-size="13" fill="#475569">跳跃间断点</text>
+                <line x1="510" y1="210" x2="710" y2="210" stroke="#94a3b8"/>
+                <line x1="520" y1="60" x2="520" y2="215" stroke="#94a3b8"/>
+                <line x1="610" y1="55" x2="610" y2="215" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6 4"/>
+                <path d="M540 205 Q595 190 605 70" fill="none" stroke="#d06d4d" stroke-width="2.5"/>
+                <path d="M625 70 Q635 190 690 205" fill="none" stroke="#d06d4d" stroke-width="2.5"/>
+                <text x="595" y="245" font-size="13" fill="#475569">无穷间断点</text>
+            </svg>
+            <figcaption>图 5-1（教学示意）：三类间断点的图像特征。可去型只差一个点（空心圆）；跳跃型左右极限存在但不相等；无穷型在渐近线（红虚线）两侧冲向 ±∞。振荡型（如 sin(1/x)）无法用单幅图像完整呈现。</figcaption>
+        </figure>
+
+        <h2 id="type2">第二类间断点</h2>
 
         <p>第二类间断点更"暴力"——左极限和右极限<strong>至少有一个不存在</strong>。常见有两种：</p>
 
@@ -174,7 +250,19 @@
             这个教训是：<strong>间断点不仅仅是纯数学概念——在数值计算中，它们是实实在在的 bug 来源</strong>。如果你的数值算法在某点附近表现异常，先检查被操作函数在该点是否连续。
         </div>
 
-        <h2>连续函数的四则运算与复合</h2>
+        <div class="widget" id="disc-widget">
+            <p><strong>动手试一下：选一个函数，看它在 x = 0 处的左、右极限如何决定间断点的类别。</strong></p>
+            <div class="row">
+                <button type="button" data-fn="cont">f(x) = x²</button>
+                <button type="button" data-fn="removable">f(x) = sin x / x</button>
+                <button type="button" data-fn="jump">f(x) = |x| / x</button>
+                <button type="button" data-fn="infinite">f(x) = 1 / x</button>
+                <button type="button" data-fn="oscillate">f(x) = sin(1/x)</button>
+            </div>
+            <p id="disc-status" aria-live="polite"></p>
+        </div>
+
+        <h2 id="algebra">连续函数的四则运算与复合</h2>
 
         <p>连续性在四则运算和复合下表现良好：</p>
 
@@ -187,7 +275,7 @@
 
         <p>特别地，多项式和有理函数在其定义域内都是连续的。这得益于幂函数 <code>x^n</code> 的连续性和四则运算法则的保持性。</p>
 
-        <h2>初等函数的连续性定理</h2>
+        <h2 id="elementary">初等函数的连续性定理</h2>
 
         <p>现在我们可以给出一个非常重要的结论——<strong>初等函数的连续性定理</strong>：</p>
 
@@ -216,12 +304,48 @@
 
         <p>下一章，我们将把连续函数<strong>限制在闭区间上</strong>，研究这一特殊场景下的几个重要定理。你会发现：一旦函数在闭区间上连续，它会展现出一些全局性的、出乎意料的好性质。这些性质不仅是理论分析的基石，在实际应用中（如方程求根、数值逼近）也有重要意义。</p>
 
+        <h2 id="references">参考资料</h2>
+
+        <p>本章的连续定义、间断点分类与初等函数连续性定理均与标准微积分教材一致；图 5-1 与间断点判别窗体为本章原创的教学示意，只使用 sin x/x、|x|/x、1/x、sin(1/x) 等标准反例，不含实验数据。</p>
+
+        <ul>
+            <li>MIT OpenCourseWare，<a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/">18.01SC Single Variable Calculus</a>（连续性与间断点部分）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Continuous_function">Continuous function</a>（连续的定义与基本性质）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Classification_of_discontinuities">Classification of discontinuities</a>（四类间断点）。</li>
+        </ul>
+
+        <script>
+        (function () {
+            var box = document.getElementById('disc-widget');
+            if (!box) { return; }
+            var out = document.getElementById('disc-status');
+            var data = {
+                cont: '左极限 = 右极限 = f(0) = 0，三者相等：在 x = 0 处连续。',
+                removable: '左极限 = 右极限 = 1，但 f(0) 无定义：可去间断点（补充 f(0)=1 即连续）。',
+                jump: '左极限 = −1，右极限 = +1，不相等：第一类跳跃间断点。',
+                infinite: '左极限 → −∞，右极限 → +∞，都不存在：第二类无穷间断点。',
+                oscillate: 'x→0 时 sin(1/x) 在 −1 与 1 间无限振荡，极限不存在：第二类振荡间断点。'
+            };
+            function render(key) {
+                out.textContent = data[key] || '';
+                Array.prototype.forEach.call(box.querySelectorAll('button[data-fn]'), function (b) {
+                    b.setAttribute('aria-pressed', String(b.getAttribute('data-fn') === key));
+                });
+            }
+            Array.prototype.forEach.call(box.querySelectorAll('button[data-fn]'), function (b) {
+                b.addEventListener('click', function () { render(b.getAttribute('data-fn')); });
+            });
+            render('removable');
+        })();
+        </script>
+
         <div class="footer-nav">
             <a href="04.html">← 上一章</a>
             <a href="index.html">📖 返回目录</a>
             <a href="06.html">下一章 →</a>
         </div>
-    </div>
+        </article>
+    </main>
 </div>
 </div>
 </body>
