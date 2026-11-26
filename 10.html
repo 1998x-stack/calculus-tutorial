@@ -5,11 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第10章 隐函数与参数方程求导</title>
     <link rel="stylesheet" href="theme.css">
+    <style>
+        .main-content img, .main-content svg { max-width:100%; height:auto; }
+        .main-content pre { white-space:pre-wrap; overflow-wrap:anywhere; }
+        body { overflow-wrap:anywhere; }
+        .article-header .dek { color:#475569; font-size:1.02rem; line-height:1.8; }
+        .page-toc { background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 18px; margin:16px 0 8px; }
+        .page-toc ol { margin:0 0 0 20px; }
+        figure { margin:22px 0; }
+        figure svg { display:block; width:100%; height:auto; background:#fffdf9; border:1px solid #e2e8f0; border-radius:16px; }
+        figure figcaption { font-size:.9rem; color:#475569; margin-top:8px; line-height:1.7; }
+        .math-scroll { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+        .math-scroll:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        .math-scroll math[display="block"] { width:max-content; min-width:100%; font-size:1.15rem; padding:6px 0; }
+        .widget { border:1px solid #c4b5fd; border-radius:18px; padding:16px 18px; margin:20px 0; background:#faf8ff; }
+        .widget output { font-family:"JetBrains Mono",monospace; }
+        .widget .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:10px 0; }
+        .widget button { padding:6px 16px; border-radius:999px; border:1px solid #8b5cf6; background:#fff; color:#5b21b6; font-weight:600; cursor:pointer; }
+        .widget button[aria-pressed="true"] { background:#7c3aed; color:#fff; }
+        .widget button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+        @media (max-width:820px) { .main-content table { display:block; overflow-x:auto; } }
+    </style>
 </head>
 <body>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程目录">
         <h3>📐 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 函数：微积分的语言</a></li>
@@ -41,9 +63,26 @@
             <li><a href="27.html">第27章 常微分方程</a></li>
             <li><a href="28.html">第28章 微积分与机器学习</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>当 y 不再孤独</h2>
+    </nav>
+    <main class="main-content" id="content">
+    <article>
+        <header class="article-header">
+            <h1>隐函数与参数方程求导</h1>
+            <p class="dek">当 y 不再单独站在等号左边，求导的方法也要跟着变。本章讲清三件事：对 F(x, y) = 0 两边同时对 x 求导（把 y 当作 x 的函数）、用对数求导法处理幂指与连乘除函数、以及参数方程的 dy/dx = (dy/dt)/(dx/dt)。配一幅隐函数切线示意图、两条 MathML 公式与一个单位圆切线斜率交互。</p>
+            <nav class="page-toc" aria-label="本章目录">
+                <ol>
+                    <li><a href="#intro">当 y 不再孤独</a></li>
+                    <li><a href="#explicit">显函数 vs 隐函数</a></li>
+                    <li><a href="#implicit">隐函数求导的基本方法</a></li>
+                    <li><a href="#log">对数求导法</a></li>
+                    <li><a href="#param">参数方程求导</a></li>
+                    <li><a href="#rates">相关变化率问题</a></li>
+                    <li><a href="#summary">本章小结</a></li>
+                    <li><a href="#references">参考资料</a></li>
+                </ol>
+            </nav>
+        </header>
+        <h2 id="intro">当 y 不再孤独</h2>
 
         <p>大家好，我是你们的讲师。在前两章里，我们学的所有求导都有一个共同点：函数都是<strong>显式</strong>写成的 <code>y = f(x)</code> 形式——y 在等式左边孤零零地站着，右边是 x 的表达式。但现实世界并不总是这么"配合"。</p>
 
@@ -51,7 +90,7 @@
 
         <p>我曾帮过一个物理系的朋友推导一个机械臂的运动轨迹，表达式里同时混着 x 和 y，根本解不出 y = f(x) 的形式。当时我用隐函数求导法，几分钟就搞定了——他惊讶地说："原来不需要解出 y 也能求导！"事实也正是如此：在很多时候，<strong>保持隐式反而比显式更方便</strong>。</p>
 
-        <h2>显函数 vs 隐函数</h2>
+        <h2 id="explicit">显函数 vs 隐函数</h2>
 
         <p>先搞清楚基本概念：</p>
 
@@ -92,7 +131,7 @@
             </tbody>
         </table>
 
-        <h2>隐函数求导的基本方法</h2>
+        <h2 id="implicit">隐函数求导的基本方法</h2>
 
         <p>隐函数求导的核心思想很简单：<strong>方程两边同时对 x 求导，然后把 y 看作 x 的函数</strong>。也就是说，每当遇到含有 y 的项，就把它当作复合函数来处理——先对 y 求导，再乘以 dy/dx。</p>
 
@@ -114,6 +153,41 @@ d/dx (y^2) = 2y · dy/dx
 dy/dx = -x / y</code></pre>
 
         <p>结果中居然还含有 y！这是隐函数求导的一个特点——导数表达式里通常同时含有 x 和 y。这在几何上很容易理解：对于圆 <code>x^2 + y^2 = 1</code>，给定同一个 x 值，上半圆（y > 0）和下半圆（y < 0）的切线斜率是相反的——这正是公式中分母 y 的符号在起作用。</p>
+
+        <div class="math-equation" role="group" aria-label="单位圆的隐函数导数">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="单位圆隐函数导数，可横向滚动">
+                <math display="block" aria-label="由 x 平方加 y 平方等于 1 两边求导，得到 dy/dx 等于负 x 除以 y">
+                    <mrow>
+                        <mfrac><mrow><mi>d</mi><mi>y</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac>
+                        <mo>=</mo><mo>−</mo>
+                        <mfrac><mi>x</mi><mi>y</mi></mfrac>
+                    </mrow>
+                </math>
+            </div>
+        </div>
+
+        <figure id="fig-implicit">
+            <svg viewBox="0 0 720 320" role="img" aria-labelledby="fig-implicit-title fig-implicit-desc">
+                <title id="fig-implicit-title">单位圆上隐函数求导的几何意义</title>
+                <desc id="fig-implicit-desc">圆心在原点的单位圆，圆上一点 P 坐标为 x y，半径 OP 与切线互相垂直；切线斜率为负 x 除以 y，即 dy/dx。同一条竖直线与上半圆、下半圆相交时斜率互为相反数。</desc>
+                <line x1="150" y1="160" x2="570" y2="160" stroke="#94a3b8"/>
+                <line x1="360" y1="20" x2="360" y2="300" stroke="#94a3b8"/>
+                <circle cx="360" cy="160" r="110" fill="none" stroke="#7c3aed" stroke-width="2.5"/>
+                <line x1="330" y1="114" x2="500" y2="16" stroke="#d06d4d" stroke-width="2"/>
+                <line x1="360" y1="160" x2="415" y2="65" stroke="#147f80" stroke-width="1.8"/>
+                <line x1="415" y1="65" x2="415" y2="160" stroke="#cbd5e1" stroke-dasharray="4 3"/>
+                <line x1="415" y1="65" x2="360" y2="65" stroke="#cbd5e1" stroke-dasharray="4 3"/>
+                <circle cx="415" cy="65" r="5" fill="#1e293b"/>
+                <text x="424" y="60" font-size="13" fill="#1e293b">P (x, y)</text>
+                <text x="486" y="30" font-size="13" fill="#d06d4d">切线</text>
+                <text x="368" y="94" font-size="12" fill="#147f80">半径 OP</text>
+                <text x="342" y="180" font-size="13" fill="#1e293b">O</text>
+                <text x="420" y="150" font-size="12" fill="#64748b">x</text>
+                <text x="366" y="60" font-size="12" fill="#64748b">y</text>
+                <text x="150" y="300" font-size="13" fill="#475569">切线斜率 dy/dx = −x/y，与半径垂直</text>
+            </svg>
+            <figcaption>图 10-1（教学示意）：隐函数求导的几何意义。以单位圆为例，半径 OP 与切线垂直，切线斜率由 <code>dy/dx = −x/y</code> 给出；当 y 变号（上半圆下半圆）时斜率也变号。定性示意，不含实验数据。</figcaption>
+        </figure>
 
         <h3>更复杂的例子</h3>
 
@@ -144,7 +218,7 @@ dy/dx = [3x^2 - y·cos(xy)] / [x·cos(xy) + e^y]</code></pre>
             这其实就是链式法则的直接应用——y 是 x 的函数。
         </div>
 
-        <h2>对数求导法</h2>
+        <h2 id="log">对数求导法</h2>
 
         <p>对数求导法（logarithmic differentiation）是隐函数求导的一个巧妙应用。当函数是幂指函数形式（比如 <code>y = x^x</code>）或连乘除形式（比如 <code>y = (x+1)^3·(x+2)^4 / (x+3)^5</code>）时，先取对数再求导，能大幅简化计算。</p>
 
@@ -183,7 +257,7 @@ dy/dx = y · [3/(x+1) + 4/(x+2) - 5/(x+3)]</code></pre>
             我大学时参加数学竞赛，遇到一道题让求 <code>y = (sin x)^(tan x)</code> 的导数。赛场上有不少人直接开始用链式法则硬算，结果越算越乱。实际上，这题只需要两步：取对数 → 隐函数求导。前后不到一分钟就能出结果。这件事让我深刻体会到：<strong>解题不是比谁力气大，而是比谁会转化问题</strong>。
         </div>
 
-        <h2>参数方程求导</h2>
+        <h2 id="param">参数方程求导</h2>
 
         <h3>一阶导数</h3>
 
@@ -194,6 +268,21 @@ y = ψ(t)</code></pre>
 
         <p>那么 <code>dy/dx</code>（切线斜率）如何求？核心思想是：<code>dy/dx = (dy/dt) / (dx/dt)</code>。只要 t 的导数分别存在且 <code>dx/dt ≠ 0</code>。</p>
 
+        <div class="math-equation" role="group" aria-label="参数方程的求导公式">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="参数方程求导公式，可横向滚动">
+                <math display="block" aria-label="参数方程的导数 dy/dx 等于 dy/dt 除以 dx/dt">
+                    <mrow>
+                        <mfrac><mrow><mi>d</mi><mi>y</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac>
+                        <mo>=</mo>
+                        <mfrac>
+                            <mrow><mi>d</mi><mi>y</mi><mo>/</mo><mi>d</mi><mi>t</mi></mrow>
+                            <mrow><mi>d</mi><mi>x</mi><mo>/</mo><mi>d</mi><mi>t</mi></mrow>
+                        </mfrac>
+                    </mrow>
+                </math>
+            </div>
+        </div>
+
         <pre><code>例：圆的参数方程 x = cos t, y = sin t, t ∈ [0, 2π)
 
 dx/dt = -sin t
@@ -203,6 +292,39 @@ dy/dx = (dy/dt) / (dx/dt) = cos t / (-sin t) = -cot t
 
 注意 t = 0 或 t = π 时，sin t = 0，dx/dt = 0，导数为无穷大——
 这对应圆上左右两端的竖直切线。</code></pre>
+
+        <div class="widget" id="param-widget">
+            <p><strong>动手试一下：单位圆的参数方程 x = cos t, y = sin t。选一个参数 t，看该点的坐标与切线斜率 dy/dx = −cot t。</strong></p>
+            <div class="row">
+                <button type="button" data-t="30">t = 30°</button>
+                <button type="button" data-t="90">t = 90°</button>
+                <button type="button" data-t="150">t = 150°</button>
+                <button type="button" data-t="240">t = 240°</button>
+            </div>
+            <p id="param-status" aria-live="polite"></p>
+        </div>
+
+        <script>
+        (function () {
+            var box = document.getElementById('param-widget');
+            if (!box) { return; }
+            var out = document.getElementById('param-status');
+            function render(t) {
+                var r = t * Math.PI / 180;
+                var x = Math.cos(r), y = Math.sin(r);
+                var slope = Math.abs(y) < 1e-9 ? '不存在（竖直切线）' : (-x / y).toFixed(3);
+                out.textContent = 't = ' + t + '°：(x, y) = (' + x.toFixed(3) + ', ' + y.toFixed(3) +
+                    ')，dy/dx = −x/y = ' + slope + '。';
+                Array.prototype.forEach.call(box.querySelectorAll('button[data-t]'), function (b) {
+                    b.setAttribute('aria-pressed', String(Number(b.getAttribute('data-t')) === t));
+                });
+            }
+            Array.prototype.forEach.call(box.querySelectorAll('button[data-t]'), function (b) {
+                b.addEventListener('click', function () { render(Number(b.getAttribute('data-t'))); });
+            });
+            render(30);
+        })();
+        </script>
 
         <h3>参数方程的二阶导数陷阱</h3>
 
@@ -232,7 +354,7 @@ d^2y/dx^2 = d/dt(dy/dx) / dx/dt
             一个帮助记忆的方式：<code>d^2y/dx^2</code> 可以理解为 <code>d/dx (dy/dx)</code>。既然 <code>dy/dx</code> 是 t 的函数，而 <code>d/dx = (d/dt) / (dx/dt)</code>，所以就有了上面的公式。
         </div>
 
-        <h2>相关变化率问题</h2>
+        <h2 id="rates">相关变化率问题</h2>
 
         <p>相关变化率（related rates）是隐函数求导在现实问题中的直接应用。核心思路是：两个物理量（比如圆的半径和面积）通过一个方程相关联，当一个量变化时，另一个量也以某种速率变化。我们通过对方程求导来建立两个变化率之间的关系。</p>
 
@@ -273,18 +395,30 @@ dr/dt = 1/π ≈ 0.318 cm/s</code></pre>
             有一个同学的答案让我哭笑不得——他算出了 <code>400 km/h</code>。但他没意识到，飞机刚刚经过正上方那一瞬间，距离的变化率是 <strong>0</strong>（因为距离在这个时刻达到最小值，最小值的导数为 0）。他犯的错误是忽略了"正上方"这个关键条件，直接用勾股定理求导时漏掉了关键步骤。这个故事告诉我们：相关变化率问题中，<strong>"先列方程再求导"的顺序绝对不能颠倒</strong>。
         </div>
 
-        <h2>本章小结</h2>
+        <h2 id="summary">本章小结</h2>
 
         <p>这一章我们大大扩展了求导的"作战范围"。隐函数求导让我们能够处理那些无法写成 <code>y = f(x)</code> 形式的方程；对数求导法巧妙地化解了幂指函数和连乘除函数的求导难题；参数方程求导处理了用参数 t 间接描述的函数关系；而相关变化率则展示了隐函数求导在现实问题中的巨大威力。</p>
 
         <p>下一章我们将对导数做进一步的深化——进入<strong>高阶导数与微分</strong>的领域。你会发现：仅仅求一次导往往不够，对位移求导得到速度，再求导得到加速度——这就是二阶导数最直观的物理意义。而微分则给我们提供了一个全新的视角：dy = f'(x)dx，它不仅是计算工具，更是一种思维方式。</p>
+
+        <h2 id="references">参考资料</h2>
+
+        <p>本章的隐函数求导、对数求导法、参数方程求导与相关变化率方法均与标准微积分教材一致；图 10-1 与参数方程控件为本章原创的教学示意，所用例子均为 <code>x²+y²=1</code>、<code>x^x</code>、单位圆参数方程这类标准例题，不含实验数据。</p>
+
+        <ul>
+            <li>MIT OpenCourseWare，<a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/">18.01SC Single Variable Calculus</a>（隐函数求导与相关变化率部分）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Implicit_function">Implicit function</a>（隐函数）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Logarithmic_differentiation">Logarithmic differentiation</a>（对数求导法）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Parametric_derivative">Parametric derivative</a>（参数方程求导）。</li>
+        </ul>
 
         <div class="footer-nav">
             <a href="09.html">← 上一章</a>
             <a href="index.html">📖 返回目录</a>
             <a href="11.html">下一章 →</a>
         </div>
-    </div>
+    </article>
+    </main>
 </div>
 </div>
 </body>
