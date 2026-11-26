@@ -5,11 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第7章 极限计算综合实战</title>
     <link rel="stylesheet" href="theme.css">
+    <style>
+        .main-content img, .main-content svg { max-width:100%; height:auto; }
+        .main-content pre { white-space:pre-wrap; overflow-wrap:anywhere; }
+        body { overflow-wrap:anywhere; }
+        .article-header .dek { color:#475569; font-size:1.02rem; line-height:1.8; }
+        .page-toc { background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 18px; margin:16px 0 8px; }
+        .page-toc ol { margin:0 0 0 20px; }
+        figure { margin:22px 0; }
+        figure svg { display:block; width:100%; height:auto; background:#fffdf9; border:1px solid #e2e8f0; border-radius:16px; }
+        figure figcaption { font-size:.9rem; color:#475569; margin-top:8px; line-height:1.7; }
+        .math-scroll { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+        .math-scroll:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        .math-scroll math[display="block"] { width:max-content; min-width:100%; font-size:1.15rem; padding:6px 0; }
+        .widget { border:1px solid #c4b5fd; border-radius:18px; padding:16px 18px; margin:20px 0; background:#faf8ff; }
+        .widget output { font-family:"JetBrains Mono",monospace; }
+        .widget .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:10px 0; }
+        .widget button { padding:6px 16px; border-radius:999px; border:1px solid #8b5cf6; background:#fff; color:#5b21b6; font-weight:600; cursor:pointer; }
+        .widget button[aria-pressed="true"] { background:#7c3aed; color:#fff; }
+        .widget button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+        @media (max-width:820px) { .main-content table { display:block; overflow-x:auto; } }
+    </style>
 </head>
 <body>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程目录">
         <h3>📐 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 函数：微积分的语言</a></li>
@@ -41,15 +63,33 @@
             <li><a href="27.html">第27章 常微分方程</a></li>
             <li><a href="28.html">第28章 微积分与机器学习</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>极限计算的"武林秘籍"</h2>
+    </nav>
+    <main class="main-content" id="content">
+    <article>
+        <header class="article-header">
+            <h1>极限计算综合实战</h1>
+            <p class="dek">本章不引入新概念，只把前六章的工具整理成一套可执行的解题体系：先识别七种未定式，再针对 0/0、∞/∞ 与幂指型分别选用等价替换、因式分解、有理化或取对数。配一幅等价无穷小几何示意图、幂指型取对数的 MathML 公式，以及一个「等价替换陷阱」判别交互。</p>
+            <nav class="page-toc" aria-label="本章目录">
+                <ol>
+                    <li><a href="#toolbox">极限计算的“武林秘籍”</a></li>
+                    <li><a href="#indeterminate">七种未定式一览</a></li>
+                    <li><a href="#zerozero">0/0 型的处理策略</a></li>
+                    <li><a href="#infinity">∞/∞ 型的处理</a></li>
+                    <li><a href="#power">幂指型未定式</a></li>
+                    <li><a href="#equiv">等价无穷小替换的时机</a></li>
+                    <li><a href="#mistakes">常见错误与踩坑汇总</a></li>
+                    <li><a href="#challenge">综合挑战题</a></li>
+                    <li><a href="#references">参考资料</a></li>
+                </ol>
+            </nav>
+        </header>
+        <h2 id="toolbox">极限计算的“武林秘籍”</h2>
 
         <p>大家好，我是你们的讲师。前四章中，我们学习了数列极限、函数极限、无穷小理论和两个重要极限。从第2章到第6章，从离散到连续，从 ε-N 到 ε-δ，从无穷小的阶到闭区间上的连续函数——这些概念层叠构建，但最终都指向同一个能力：<strong>计算极限</strong>。</p>
 
         <p>本章就是一次综合演练。我们不引入新概念，而是把所有前四章的极限计算工具整理成一套<strong>实战体系</strong>。就像学武术一样——前几章你学会了各种招式，本章教你如何根据"对手"的出招选择合适的应对策略。</p>
 
-        <h2>七种未定式一览</h2>
+        <h2 id="indeterminate">七种未定式一览</h2>
 
         <p>什么是未定式？当你直接代入求极限时，如果得到某些特定形式的"不确定结果"，就需要进一步分析。最常见的未定式有七种：</p>
 
@@ -102,7 +142,7 @@
 
         <p>七种未定式中，<strong>0/0 型和 ∞/∞ 型是核心</strong>。后面的五种都可以通过代数变换转化为这两种。而幂指型（1^∞、∞^0、0^0）的通用处理手段是取对数。</p>
 
-        <h2>0/0 型的处理策略</h2>
+        <h2 id="zerozero">0/0 型的处理策略</h2>
 
         <p>0/0 型是极限计算中遇到最多的类型，处理手段也最丰富。按照优先级排列：</p>
 
@@ -120,6 +160,25 @@
         好：lim (e^x - 1) / (x·sin x) → 替换 e^x-1 ~ x, sin x ~ x → lim x/(x·x) = ∞
         坏：lim (sin x - x)/x^3 → 直接替换 sin x ~ x → (x-x)/x^3 = 0（错误！）
         对：此例需要泰勒展开或洛必达法则，正确结果 = -1/6</code></pre>
+
+        <figure id="fig-equiv">
+            <svg viewBox="0 0 720 310" role="img" aria-labelledby="fig-equiv-title fig-equiv-desc">
+                <title id="fig-equiv-title">等价无穷小的几何意义：sin x、tan x 与 y=x 在原点相切</title>
+                <desc id="fig-equiv-desc">直角坐标系中，直线 y=x 与曲线 sin x、tan x 都经过原点，并在原点附近几乎重合；tan x 在虚线上方微微上翘，sin x 在下方微微下沉，它们与 y=x 的差异是高阶无穷小。</desc>
+                <line x1="100" y1="250" x2="680" y2="250" stroke="#94a3b8"/>
+                <line x1="250" y1="40" x2="250" y2="275" stroke="#94a3b8"/>
+                <line x1="250" y1="250" x2="620" y2="60" stroke="#94a3b8" stroke-width="2" stroke-dasharray="7 5"/>
+                <path d="M250 250 Q420 150 620 40" fill="none" stroke="#d06d4d" stroke-width="2.5"/>
+                <path d="M250 250 Q420 210 620 110" fill="none" stroke="#147f80" stroke-width="2.5"/>
+                <circle cx="250" cy="250" r="4.5" fill="#1e293b"/>
+                <text x="586" y="52" font-size="13" fill="#64748b">y = x</text>
+                <text x="598" y="30" font-size="13" fill="#d06d4d">tan x</text>
+                <text x="600" y="130" font-size="13" fill="#147f80">sin x</text>
+                <text x="228" y="268" font-size="13" fill="#1e293b">O</text>
+                <text x="112" y="292" font-size="13" fill="#475569">三者在 x→0 处一阶等价：sin x ~ tan x ~ x</text>
+            </svg>
+            <figcaption>图 7-1（教学示意）：等价无穷小的几何意义。虚线 y = x 与两条曲线在原点的切线相同，所以 x → 0 时一阶项都是 x；tan x 在上方、sin x 在下方，二者之差（tan x − sin x ~ x³/2）属于高阶无穷小，这正是「减法中不能随便替换」的几何原因。定性示意，不含实验数据。</figcaption>
+        </figure>
 
         <h3>策略二：因式分解</h3>
 
@@ -141,7 +200,7 @@
 
         <p>当三角函数出现且有 sin(□)/□ 或 tan(□)/□ 的形式时，考虑用 <code>lim sin x/x = 1</code>。</p>
 
-        <h2>∞/∞ 型的处理</h2>
+        <h2 id="infinity">∞/∞ 型的处理</h2>
 
         <p>∞/∞ 型的核心思想是"抓大头"——分子分母同时除以增长最快的项。</p>
 
@@ -164,11 +223,33 @@
             这个直觉在数列极限中也成立：<code>lim (n² + n) / (2n² - n³)</code> → 分母的最高次是 n³，分子是 n²，所以 = 0。
         </div>
 
-        <h2>幂指型未定式</h2>
+        <h2 id="power">幂指型未定式</h2>
 
         <p>1^∞、∞^0、0^0 这三种统称为<strong>幂指型未定式</strong>（底数和指数都含 x）。它们的统一处理方法是<strong>取对数</strong>：</p>
 
         <p>设 <code>y = f(x)^g(x)</code>，对两边取自然对数：<code>ln y = g(x) · ln f(x)</code>。</p>
+
+        <div class="math-equation" role="group" aria-label="幂指型未定式取对数公式">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="幂指型未定式取对数公式，可横向滚动">
+                <math display="block" aria-label="y 等于 f(x) 的 g(x) 次方，两边取自然对数得 ln y 等于 g(x) 乘以 ln f(x)，若 ln y 的极限为 M 则原极限 y 等于 e 的 M 次方">
+                    <mrow>
+                        <mi>y</mi><mo>=</mo>
+                        <msup>
+                            <mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow>
+                            <mrow><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow>
+                        </msup>
+                        <mo>⟹</mo>
+                        <mi>ln</mi><mi>y</mi><mo>=</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>·</mo><mi>ln</mi><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo>
+                        <mo>,</mo><mspace width="0.6em"></mspace>
+                        <munder><mo movablelimits="true">lim</mo><mrow><mi>x</mi><mo>→</mo><msub><mi>x</mi><mn>0</mn></msub></mrow></munder>
+                        <mi>ln</mi><mi>y</mi><mo>=</mo><mi>M</mi>
+                        <mo>⟹</mo>
+                        <munder><mo movablelimits="true">lim</mo><mrow><mi>x</mi><mo>→</mo><msub><mi>x</mi><mn>0</mn></msub></mrow></munder>
+                        <mi>y</mi><mo>=</mo><msup><mi>e</mi><mi>M</mi></msup>
+                    </mrow>
+                </math>
+            </div>
+        </div>
         <p>问题转化为求 <code>lim g(x)·ln f(x)</code> 的极限——这变成了 0·∞ 型。求出这个极限值 M 后，原极限就是 <code>e^M</code>。</p>
 
         <p><strong>例：</strong><code>lim_{x→0⁺} x^x</code>（0^0 型）</p>
@@ -199,7 +280,7 @@
         注意：在计算过程中，ln f(x) 本身可能也需要
         用等价无穷小替换（如 ln(1+u) ~ u）。</code></pre>
 
-        <h2>等价无穷小替换的时机</h2>
+        <h2 id="equiv">等价无穷小替换的时机</h2>
 
         <p>等价无穷小替换是极限计算中最常用的技巧，也是错误率最高的地方。这里总结几条铁律：</p>
 
@@ -254,7 +335,42 @@
             <strong>铁则：永远不要在减法中直接对两项分别做等价替换，除非你事先证明它们的主要部分不会抵消。</strong>
         </div>
 
-        <h2>常见错误与踩坑汇总</h2>
+        <div class="widget" id="equiv-widget">
+            <p><strong>动手试一下：下面每个极限中，对无穷小直接做等价替换是否安全？</strong>点选后看结论。</p>
+            <div class="row">
+                <button type="button" data-expr="mul">lim (eˣ−1)·cos x / x</button>
+                <button type="button" data-expr="sub">lim (tan x − sin x)/x³</button>
+                <button type="button" data-expr="comp">lim ln(1+sin x)/x</button>
+                <button type="button" data-expr="div">lim (√(1+x)−1)/x</button>
+            </div>
+            <p id="equiv-status" aria-live="polite"></p>
+        </div>
+
+        <script>
+        (function () {
+            var box = document.getElementById('equiv-widget');
+            if (!box) { return; }
+            var out = document.getElementById('equiv-status');
+            var data = {
+                mul: '安全：eˣ−1 与 cos x 都是乘除因式中的无穷小，换 eˣ−1 ~ x 得 lim cos x = 1。',
+                sub: '不安全：tan x − sin x 的主要部分 x 互相抵消，替换会丢掉 x³/2 的高阶项，正确结果 1/2。',
+                comp: '安全：可先换内层 ln(1+sin x) ~ sin x ~ x，再得极限 1。',
+                div: '安全：分子是乘除因式，√(1+x)−1 ~ x/2，得极限 1/2（有理化结果一致）。'
+            };
+            function render(k) {
+                out.textContent = data[k] || '';
+                Array.prototype.forEach.call(box.querySelectorAll('button[data-expr]'), function (b) {
+                    b.setAttribute('aria-pressed', String(b.getAttribute('data-expr') === k));
+                });
+            }
+            Array.prototype.forEach.call(box.querySelectorAll('button[data-expr]'), function (b) {
+                b.addEventListener('click', function () { render(b.getAttribute('data-expr')); });
+            });
+            render('sub');
+        })();
+        </script>
+
+        <h2 id="mistakes">常见错误与踩坑汇总</h2>
 
         <p>从多年的教学经验中，我整理出了极限计算中最常见的五个错误：</p>
 
@@ -273,7 +389,7 @@
         <p><strong>错误 5："局部"当成"整体"</strong></p>
         <p>例如 <code>lim_{x→0} x·sin(1/x)</code>，有人会写成 <code>lim x · lim sin(1/x)</code>，然后说 <code>lim sin(1/x)</code> 不存在，所以原极限不存在。这是错误的，因为四则运算法则要求每个因子的极限都存在——不能先拆分再判断。</p>
 
-        <h2>综合挑战题</h2>
+        <h2 id="challenge">综合挑战题</h2>
 
         <p>下面是一组综合题，涵盖了本章讨论的所有技巧。建议先自己动手算，再看解答思路：</p>
 
@@ -317,12 +433,23 @@
 
         <p>从下一章开始，我们将正式踏入微积分的第二个重要领域——<strong>导数</strong>。如果说极限是微积分的基础语言，那导数就是这个语言最重要的词汇之一。它将教会你如何度量"变化的速度"——而这是我们理解和预测世界运行规律的核心能力。</p>
 
+        <h2 id="references">参考资料</h2>
+
+        <p>本章的七种未定式、等价无穷小替换规则与幂指型取对数技巧均与标准微积分教材一致；图 7-1 与等价替换判别窗体为本章原创的教学示意，所用极限均为 <code>sin x/x</code>、<code>tan x − sin x</code> 这类标准反例，不含实验数据。</p>
+
+        <ul>
+            <li>MIT OpenCourseWare，<a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/">18.01SC Single Variable Calculus</a>（极限计算与未定式部分）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Indeterminate_form">Indeterminate form</a>（七种未定式）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Infinitesimal">Infinitesimal</a>（等价无穷小与阶的比较）。</li>
+        </ul>
+
         <div class="footer-nav">
             <a href="06.html">← 上一章</a>
             <a href="index.html">📖 返回目录</a>
             <a href="08.html">下一章 →</a>
         </div>
-    </div>
+    </article>
+    </main>
 </div>
 </div>
 </body>
