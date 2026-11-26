@@ -5,11 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第16章 换元积分法</title>
     <link rel="stylesheet" href="theme.css">
+    <style>
+        .main-content img, .main-content svg { max-width:100%; height:auto; }
+        .main-content pre { white-space:pre-wrap; overflow-wrap:anywhere; }
+        body { overflow-wrap:anywhere; }
+        .article-header .dek { color:#475569; font-size:1.02rem; line-height:1.8; }
+        .page-toc { background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 18px; margin:16px 0 8px; }
+        .page-toc ol { margin:0 0 0 20px; }
+        figure { margin:22px 0; }
+        figure svg { display:block; width:100%; height:auto; background:#fffdf9; border:1px solid #e2e8f0; border-radius:16px; }
+        figure figcaption { font-size:.9rem; color:#475569; margin-top:8px; line-height:1.7; }
+        .math-scroll { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+        .math-scroll:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        .math-scroll math[display="block"] { width:max-content; min-width:100%; font-size:1.15rem; padding:6px 0; }
+        .widget { border:1px solid #c4b5fd; border-radius:18px; padding:16px 18px; margin:20px 0; background:#faf8ff; }
+        .widget output { font-family:"JetBrains Mono",monospace; }
+        .widget .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:10px 0; }
+        .widget button { padding:6px 16px; border-radius:999px; border:1px solid #8b5cf6; background:#fff; color:#5b21b6; font-weight:600; cursor:pointer; }
+        .widget button[aria-pressed="true"] { background:#7c3aed; color:#fff; }
+        .widget button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+        @media (max-width:820px) { .main-content table { display:block; overflow-x:auto; } }
+    </style>
 </head>
 <body>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程目录">
         <h3>📐 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 函数：微积分的语言</a></li>
@@ -41,9 +63,25 @@
             <li><a href="27.html">第27章 常微分方程</a></li>
             <li><a href="28.html">第28章 微积分与机器学习</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>换元法的核心思想：反向链式法则</h2>
+    </nav>
+    <main class="main-content" id="content">
+    <article>
+        <header class="article-header">
+            <h1>换元积分法</h1>
+            <p class="dek">换元法是链式法则的逆运算：把复合函数的内部当作新变量 u，让积分回到基本公式。本章讲清两类换元——第一类「凑微分」与第二类「三角代换」，给出常见凑微分模式表与三种三角代换表，配一幅三角代换直角三角形示意图、换元公式的 MathML 与一个「选对换元」判别交互。</p>
+            <nav class="page-toc" aria-label="本章目录">
+                <ol>
+                    <li><a href="#core">换元法的核心思想：反向链式法则</a></li>
+                    <li><a href="#type1">第一类换元：凑微分法</a></li>
+                    <li><a href="#patterns">常见凑微分模式总结</a></li>
+                    <li><a href="#trig">第二类换元：三角代换</a></li>
+                    <li><a href="#reciprocal">倒代换技巧</a></li>
+                    <li><a href="#strategy">如何选择换元策略</a></li>
+                    <li><a href="#references">参考资料</a></li>
+                </ol>
+            </nav>
+        </header>
+        <h2 id="core">换元法的核心思想：反向链式法则</h2>
 
         <p>大家好，我是你们的讲师。</p>
 
@@ -53,13 +91,27 @@
 
         <p>换元法分为两大类：<strong>第一类换元法</strong>（凑微分法）和<strong>第二类换元法</strong>（主要是三角代换）。两类方法的本质相同——都是做变量替换——但应用场景和操作技巧有显著区别。我们先从最简单的凑微分法讲起。</p>
 
-        <h2>第一类换元：凑微分法</h2>
+        <h2 id="type1">第一类换元：凑微分法</h2>
 
         <p>凑微分法的核心思想是：把被积函数的一部分"塞进"微分号 <code>d</code> 里面，使得整个积分变成 <code>∫ f(u) du</code> 这种基本形式。</p>
 
         <p>形式上，如果 <code>F'(u) = f(u)</code>，且 <code>u = g(x)</code>，那么：</p>
 
         <pre><code>∫ f(g(x)) · g'(x) dx = ∫ f(u) du = F(u) + C = F(g(x)) + C</code></pre>
+
+        <div class="math-equation" role="group" aria-label="第一类换元公式">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="第一类换元公式，可横向滚动">
+                <math display="block" aria-label="f(g(x)) 乘以 g 的导数对 x 的积分，等于 f(u) 对 u 的积分，等于 F(g(x)) 加常数 C">
+                    <mrow>
+                        <mo>∫</mo><mi>f</mi><mo>(</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>)</mo><msup><mi>g</mi><mo>′</mo></msup><mo>(</mo><mi>x</mi><mo>)</mo><mi>d</mi><mi>x</mi>
+                        <mo>=</mo>
+                        <mo>∫</mo><mi>f</mi><mo>(</mo><mi>u</mi><mo>)</mo><mi>d</mi><mi>u</mi>
+                        <mo>=</mo>
+                        <mi>F</mi><mo>(</mo><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>)</mo><mo>+</mo><mi>C</mi>
+                    </mrow>
+                </math>
+            </div>
+        </div>
 
         <p>关键在于，等号左边你要能认出 <code>g'(x) dx</code> 正好可以写成 <code>du</code>。凑微分法的操作步骤如下：</p>
 
@@ -93,7 +145,7 @@
             <strong>小技巧：</strong>凑微分法的关键是"找出内层函数 u = g(x)"。一个常用策略是：观察被积函数中"复杂"的部分，看看它是不是某个更简单函数的复合。例如 <code>e^(x^2)</code> 中的 <code>x^2</code>、<code>sin(3x+5)</code> 中的 <code>3x+5</code>、<code>1/(x^2+1)</code> 中的 <code>x^2+1</code> ——这些"里层"通常就是我们的 <code>u</code>。然后检查导数因子是否出现（差一个常数倍也可以）。如果导数因子完全没出现，那这个方法就行不通，你需要改用其他技巧。
         </div>
 
-        <h2>常见凑微分模式总结</h2>
+        <h2 id="patterns">常见凑微分模式总结</h2>
 
         <p>经过大量练习，我总结了几种最常见的凑微分模式。初学者如果能熟记这些模式，做题速度会大幅提升。</p>
 
@@ -157,7 +209,7 @@
             <strong>一个真实的故事：</strong>我曾经辅导过一位学生，他问了我一个很有意思的问题："为什么换元积分被叫做'凑微分'？难道这些步骤是靠'凑'出来的？"我的回答是——没错，就是靠"凑"的。所谓"凑微分"，就是有意识地调整被积函数的形式，让它匹配已知的积分模式。这需要经验的积累，就像拼图高手能一眼看出哪块拼图该放哪里一样。但好消息是，常见的凑微分模式就那么十几种，反复练习之后，你也会拥有这种"直觉"。
         </div>
 
-        <h2>第二类换元：三角代换</h2>
+        <h2 id="trig">第二类换元：三角代换</h2>
 
         <p>第一类换元法（凑微分）适用于"内层函数的导数恰好出现在被积函数中"的情况。但还有一类积分，它们的主要障碍是<strong>根号</strong>——被积函数中包含 <code>√(a^2 - x^2)</code>、<code>√(a^2 + x^2)</code> 或 <code>√(x^2 - a^2)</code> 这类表达式。根号的存在使得我们无法直接应用基本积分公式，即使凑微分也往往无能为力。</p>
 
@@ -198,6 +250,23 @@
 
         <p>看得更仔细一些：</p>
 
+        <figure id="fig-trig">
+            <svg viewBox="0 0 720 300" role="img" aria-labelledby="fig-trig-title fig-trig-desc">
+                <title id="fig-trig-title">三角代换的辅助直角三角形</title>
+                <desc id="fig-trig-desc">直角三角形，锐角 θ 的对边为 x，斜边为 a，邻边为根号 a 平方减 x 平方。由 sin θ 等于 x 除以 a 可得 θ 及所有三角函数值，用于把积分结果换回变量 x。</desc>
+                <polygon points="180,240 500,240 500,80" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2.5"/>
+                <path d="M180 240 L220 240 M490 240 L490 200" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+                <rect x="472" y="212" width="28" height="28" fill="none" stroke="#7c3aed" stroke-width="1.5"/>
+                <path d="M180 240 m30 0 a30 30 0 0 1 -6 -18" fill="none" stroke="#d06d4d" stroke-width="2"/>
+                <text x="212" y="228" font-size="14" fill="#d06d4d">θ</text>
+                <text x="330" y="262" font-size="14" fill="#1e293b">√(a² − x²)（邻边）</text>
+                <text x="510" y="165" font-size="14" fill="#1e293b">x（对边）</text>
+                <text x="320" y="150" font-size="14" fill="#147f80">a（斜边）</text>
+                <text x="180" y="290" font-size="13" fill="#475569">由 x = a sin θ 构造，不必背公式，直接读图</text>
+            </svg>
+            <figcaption>图 16-1（教学示意）：三角代换的辅助直角三角形。以 <code>x = a sin θ</code> 为例，令对边为 x、斜边为 a，则邻边为 <code>√(a² − x²)</code>；<code>cos θ</code>、<code>tan θ</code> 等都能从图上直接读出，从而把积分结果换回变量 x。定性示意，不含实验数据。</figcaption>
+        </figure>
+
         <pre><code>例：∫ √(4 - x^2) dx
 
         令 x = 2 sin θ，则 dx = 2 cos θ dθ
@@ -228,7 +297,7 @@
             <strong>最容易在这里犯错的地方：</strong>很多人在最后一步"把 θ 代回 x"时会卡住。记住：你不需要总是用反三角函数来代回。画一个直角三角形就可以了——从代换关系 <code>x = a sin θ</code> 得出 <code>sin θ = x/a</code>，那么 θ 的对边就是 x，斜边是 a，邻边就是 <code>√(a^2 - x^2)</code>。然后任何 <code>cos θ</code>、<code>tan θ</code> 都可以从这个三角形里读出来，不用死记硬背公式。
         </div>
 
-        <h2>倒代换技巧</h2>
+        <h2 id="reciprocal">倒代换技巧</h2>
 
         <p>除了三角代换，另一种非常实用的第二类换元是<strong>倒代换</strong>（reciprocal substitution），即令 <code>x = 1/t</code>。这种代换主要适用于被积函数中分母的幂次远高于分子的情况。</p>
 
@@ -247,7 +316,7 @@
 
         <p>倒代换的效果是"翻转"分子和分母的角色，有时能让积分结构变得简单。它特别适合处理有理函数积分中分母幂次明显偏高的情况。</p>
 
-        <h2>如何选择换元策略</h2>
+        <h2 id="strategy">如何选择换元策略</h2>
 
         <p>对于初学者来说，最头痛的问题就是："这道题该用哪种换元法？"这里提供一个决策框架：</p>
 
@@ -258,6 +327,41 @@
             <li><strong>什么方法都试过了还是不行</strong>——可能该用分部积分法了（下一章的内容）。</li>
         </ol>
 
+        <div class="widget" id="sub-widget">
+            <p><strong>动手试一下：点选每个积分，看它最适合哪种换元策略。</strong></p>
+            <div class="row">
+                <button type="button" data-sub="a">∫ 2x·e^(x²) dx</button>
+                <button type="button" data-sub="b">∫ √(9−x²) dx</button>
+                <button type="button" data-sub="c">∫ 1/(x²·√(x²+1)) dx</button>
+                <button type="button" data-sub="d">∫ x·cos x dx</button>
+            </div>
+            <p id="sub-status" aria-live="polite"></p>
+        </div>
+
+        <script>
+        (function () {
+            var box = document.getElementById('sub-widget');
+            if (!box) { return; }
+            var out = document.getElementById('sub-status');
+            var data = {
+                a: '第一类换元（凑微分）：令 u = x²，则 du = 2x dx，原式 = ∫ e^u du = e^(x²) + C。',
+                b: '第二类换元（三角代换）：根号 a²−x² 型，令 x = 3 sin θ，去根号后用倍角公式。',
+                c: '倒代换：分母幂次明显偏高，令 x = 1/t，变为 -∫ t/√(1+t²) dt，再凑微分。',
+                d: '上两者都不适用，用分部积分法：∫ x cos x dx = x sin x + cos x + C。'
+            };
+            function render(k) {
+                out.textContent = data[k] || '';
+                Array.prototype.forEach.call(box.querySelectorAll('button[data-sub]'), function (b) {
+                    b.setAttribute('aria-pressed', String(b.getAttribute('data-sub') === k));
+                });
+            }
+            Array.prototype.forEach.call(box.querySelectorAll('button[data-sub]'), function (b) {
+                b.addEventListener('click', function () { render(b.getAttribute('data-sub')); });
+            });
+            render('a');
+        })();
+        </script>
+
         <p>这个决策框架不是万能的，但对于初学者来说，它能帮你走完 80% 的路。剩下的 20% 需要你通过大量练习积累经验，逐步培养出"看题就知道用什么方法"的直觉。</p>
 
         <div class="highlight">
@@ -266,12 +370,23 @@
 
         <p>下一章我们将学习积分学的另一个重武器——<strong>分部积分法</strong>。当被积函数是两个不同类型函数的乘积时（比如 <code>x·e^x</code> 或 <code>x·sin x</code>），分部积分法就是你的最佳选择。同时我们还会学习如何对<strong>有理函数</strong>进行积分——也就是如何处理两个多项式相除的形式。这些都是积分计算中最实用、也最考验功力的技巧。</p>
 
+        <h2 id="references">参考资料</h2>
+
+        <p>本章的第一类换元（凑微分）、第二类换元（三角代换与倒代换）与换元判别流程均与标准微积分教材一致；图 16-1 与换元判别窗体为本章原创的教学示意，所用例子为 <code>∫2x·e^(x²)dx</code>、<code>∫√(4−x²)dx</code> 这类标准例题，不含实验数据。</p>
+
+        <ul>
+            <li>MIT OpenCourseWare，<a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/">18.01SC Single Variable Calculus</a>（换元积分与三角代换部分）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Integration_by_substitution">Integration by substitution</a>（换元积分法）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Trigonometric_substitution">Trigonometric substitution</a>（三角代换）。</li>
+        </ul>
+
         <div class="footer-nav">
             <a href="15.html">← 上一章</a>
             <a href="index.html">📖 返回目录</a>
             <a href="17.html">下一章 →</a>
         </div>
-    </div>
+    </article>
+    </main>
 </div>
 </div>
 </body>

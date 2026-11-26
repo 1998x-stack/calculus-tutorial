@@ -5,11 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第17章 分部积分法与有理函数积分</title>
     <link rel="stylesheet" href="theme.css">
+    <style>
+        .main-content img, .main-content svg { max-width:100%; height:auto; }
+        .main-content pre { white-space:pre-wrap; overflow-wrap:anywhere; }
+        body { overflow-wrap:anywhere; }
+        .article-header .dek { color:#475569; font-size:1.02rem; line-height:1.8; }
+        .page-toc { background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 18px; margin:16px 0 8px; }
+        .page-toc ol { margin:0 0 0 20px; }
+        figure { margin:22px 0; }
+        figure svg { display:block; width:100%; height:auto; background:#fffdf9; border:1px solid #e2e8f0; border-radius:16px; }
+        figure figcaption { font-size:.9rem; color:#475569; margin-top:8px; line-height:1.7; }
+        .math-scroll { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+        .math-scroll:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        .math-scroll math[display="block"] { width:max-content; min-width:100%; font-size:1.15rem; padding:6px 0; }
+        .widget { border:1px solid #c4b5fd; border-radius:18px; padding:16px 18px; margin:20px 0; background:#faf8ff; }
+        .widget output { font-family:"JetBrains Mono",monospace; }
+        .widget .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:10px 0; }
+        .widget button { padding:6px 16px; border-radius:999px; border:1px solid #8b5cf6; background:#fff; color:#5b21b6; font-weight:600; cursor:pointer; }
+        .widget button[aria-pressed="true"] { background:#7c3aed; color:#fff; }
+        .widget button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+        @media (max-width:820px) { .main-content table { display:block; overflow-x:auto; } }
+    </style>
 </head>
 <body>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程目录">
         <h3>📐 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 函数：微积分的语言</a></li>
@@ -41,9 +63,25 @@
             <li><a href="27.html">第27章 常微分方程</a></li>
             <li><a href="28.html">第28章 微积分与机器学习</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>分部积分公式的推导：来自乘积求导</h2>
+    </nav>
+    <main class="main-content" id="content">
+    <article>
+        <header class="article-header">
+            <h1>分部积分法与有理函数积分</h1>
+            <p class="dek">分部积分来自乘积求导法则的逆用：∫u dv = uv − ∫v du，把难积的部分转成可能更简单的部分；有理函数积分则靠部分分式分解，把复杂分式拆成四种基本分式。配一幅 LIATE 优先级示意图、两条 MathML 公式与一个「谁当 u」判别交互。</p>
+            <nav class="page-toc" aria-label="本章目录">
+                <ol>
+                    <li><a href="#derivation">分部积分公式的推导</a></li>
+                    <li><a href="#liate">u 和 dv 的选择策略：LIATE 原则</a></li>
+                    <li><a href="#cyclic">循环分部积分技巧</a></li>
+                    <li><a href="#partial">有理函数的真分式分解</a></li>
+                    <li><a href="#coeff">待定系数法</a></li>
+                    <li><a href="#four">四种基本分式的积分</a></li>
+                    <li><a href="#references">参考资料</a></li>
+                </ol>
+            </nav>
+        </header>
+        <h2 id="derivation">分部积分公式的推导：来自乘积求导</h2>
 
         <p>大家好，我是你们的讲师。</p>
 
@@ -69,6 +107,20 @@
         更常见的形式是：
         ∫ u dv = u·v - ∫ v du</code></pre>
 
+        <div class="math-equation" role="group" aria-label="分部积分公式">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="分部积分公式，可横向滚动">
+                <math display="block" aria-label="u 对 v 的微分积分等于 u 乘 v 减 v 对 u 的微分积分">
+                    <mrow>
+                        <mo>∫</mo><mi>u</mi><mspace width="0.15em"></mspace><mi>d</mi><mi>v</mi>
+                        <mo>=</mo>
+                        <mi>u</mi><mi>v</mi>
+                        <mo>−</mo>
+                        <mo>∫</mo><mi>v</mi><mspace width="0.15em"></mspace><mi>d</mi><mi>u</mi>
+                    </mrow>
+                </math>
+            </div>
+        </div>
+
         <p>这个公式的妙处在于：它把一个难积的 <code>∫ u dv</code> 转换成了一个可能更容易的 <code>∫ v du</code>。代价是出现了 <code>u·v</code> 这一项——实际上是把积分的难度从一部分转移到了另一部分。</p>
 
         <p>让我们用分部积分法计算 <code>∫ x·e^x dx</code>：</p>
@@ -81,7 +133,7 @@
 
         <p>验证一下：<code>d/dx [e^x(x - 1)] = e^x(x - 1) + e^x·1 = x·e^x</code>，正确！</p>
 
-        <h2>u 和 dv 的选择策略：LIATE 原则</h2>
+        <h2 id="liate">u 和 dv 的选择策略：LIATE 原则</h2>
 
         <p>分部积分法的关键挑战是：面对一个积分 <code>∫ f(x) g(x) dx</code>，到底应该把谁设为 <code>u</code>，把谁设为 <code>dv</code>？选择了不同的分配方式，计算难度可能天差地别。</p>
 
@@ -155,11 +207,67 @@
             <li><code>∫ e^x·sin x dx</code>：E 和 T 相邻，任选一个为 u，但需要循环使用分部积分</li>
         </ul>
 
+        <figure id="fig-liate">
+            <svg viewBox="0 0 720 300" role="img" aria-labelledby="fig-liate-title fig-liate-desc">
+                <title id="fig-liate-title">LIATE 优先级：谁优先当 u</title>
+                <desc id="fig-liate-desc">从上到下的五级阶梯依次为 L 对数、I 反三角、A 代数、T 三角、E 指数。越靠上的函数求导后越趋于简单，因此优先选作 u；越靠下的积分后形式不变，适合当作 dv。</desc>
+                <rect x="150" y="30" width="420" height="40" rx="10" fill="#ede9fe" stroke="#7c3aed"/>
+                <rect x="180" y="80" width="360" height="40" rx="10" fill="#e9e4fb" stroke="#7c3aed"/>
+                <rect x="210" y="130" width="300" height="40" rx="10" fill="#e4def8" stroke="#7c3aed"/>
+                <rect x="240" y="180" width="240" height="40" rx="10" fill="#dfd8f5" stroke="#7c3aed"/>
+                <rect x="270" y="230" width="180" height="40" rx="10" fill="#d9d1f2" stroke="#7c3aed"/>
+                <text x="360" y="56" font-size="15" text-anchor="middle" fill="#4c1d95">L 对数 · 优先设为 u</text>
+                <text x="360" y="106" font-size="15" text-anchor="middle" fill="#4c1d95">I 反三角</text>
+                <text x="360" y="156" font-size="15" text-anchor="middle" fill="#4c1d95">A 代数</text>
+                <text x="360" y="206" font-size="15" text-anchor="middle" fill="#4c1d95">T 三角</text>
+                <text x="360" y="256" font-size="15" text-anchor="middle" fill="#4c1d95">E 指数 · 优先设为 dv</text>
+                <line x1="100" y1="30" x2="100" y2="270" stroke="#94a3b8" stroke-width="2"/>
+                <line x1="100" y1="30" x2="130" y2="30" stroke="#94a3b8" stroke-width="2"/>
+                <text x="40" y="156" font-size="13" fill="#475569">求导变简单 ↑</text>
+            </svg>
+            <figcaption>图 17-1（教学示意）：LIATE 优先级阶梯。排在上面的函数求导后趋于简单（对数 → 代数、反三角 → 代数），适合选作 u；排在下面的指数函数求导、积分形式不变，适合当作 dv。该顺序是经验法则，不是定理。定性示意，不含实验数据。</figcaption>
+        </figure>
+
         <div class="tip">
-            <strong>LIATE 只是一个经验法则，不是定理。</strong>对于 90% 的题目它都管用，但偶尔会有例外。我建议你把它当作"首选策略"而非"唯一策略"。如果按 LIATE 选择后越算越复杂，果断换另一种分配方式试试。
+            <strong>LIATE 只是一个经验法则，不是定理。</strong>对于 90% 的题目它都管用，但偶尔会有例外。我建议你把它当作“首选策略”而非“唯一策略”。如果按 LIATE 选择后越算越复杂，果断换另一种分配方式试试。
         </div>
 
-        <h2>循环分部积分技巧</h2>
+        <div class="widget" id="liate-widget">
+            <p><strong>动手试一下：按 LIATE，下面每个积分该把谁设为 u？</strong></p>
+            <div class="row">
+                <button type="button" data-li="a">∫ x·ln x dx</button>
+                <button type="button" data-li="b">∫ x²·e^x dx</button>
+                <button type="button" data-li="c">∫ arctan x dx</button>
+                <button type="button" data-li="d">∫ e^x·cos x dx</button>
+            </div>
+            <p id="liate-status" aria-live="polite"></p>
+        </div>
+
+        <script>
+        (function () {
+            var box = document.getElementById('liate-widget');
+            if (!box) { return; }
+            var out = document.getElementById('liate-status');
+            var data = {
+                a: 'u = ln x（L 优先于 A），dv = x dx，得 x²ln x/2 − x²/4 + C。',
+                b: 'u = x²（A 优先于 E），dv = e^x dx；连用两次后未分降到 x，结果 e^x(x² − 2x + 2) + C。',
+                c: 'u = arctan x（I 优先于 A，这里 A 是 1），dv = dx，得 x·arctan x − ln(1+x²)/2 + C。',
+                d: 'E 与 T 相邻，u 任选一个均可；需连用两次分部积分后解方程，得 e^x(sin x − cos x)/2 + C。'
+            };
+            function render(k) {
+                out.textContent = data[k] || '';
+                Array.prototype.forEach.call(box.querySelectorAll('button[data-li]'), function (b) {
+                    b.setAttribute('aria-pressed', String(b.getAttribute('data-li') === k));
+                });
+            }
+            Array.prototype.forEach.call(box.querySelectorAll('button[data-li]'), function (b) {
+                b.addEventListener('click', function () { render(b.getAttribute('data-li')); });
+            });
+            render('a');
+        })();
+        </script>
+
+        <h2 id="cyclic">循环分部积分技巧</h2>
 
         <p>有些积分在使用分部积分后，右边依然出现和左边相同形式的积分。这时我们把它看作一个方程，可以<strong>通过代数等式求解</strong>。这就是"循环分部积分"（integration by parts with a循环）。</p>
 
@@ -194,7 +302,7 @@
 
         <p>我第一次看到这个结果时，有点意外——原来自然对数的不定积分这么简洁！后来在工作中处理<strong>信息熵</strong>相关的计算时，经常用到这个结果。信息熵公式 <code>H = -∑ p·log p</code> 的连续版本就涉及 <code>∫ p(x)·ln p(x) dx</code> 形式的积分。如果不熟悉分部积分法，这些应用根本无从下手。</p>
 
-        <h2>有理函数的真分式分解</h2>
+        <h2 id="partial">有理函数的真分式分解</h2>
 
         <p>让我们转向另一个大主题——<strong>有理函数的积分</strong>。有理函数是两个多项式之比 <code>P(x)/Q(x)</code>。如果分子的次数低于分母的次数，就称为<strong>真分式</strong>（proper rational function）；否则是<strong>假分式</strong>，需要通过多项式除法化简为"多项式 + 真分式"的形式。</p>
 
@@ -238,14 +346,13 @@
             </tbody>
         </table>
 
-        <h2>待定系数法</h2>
+        <h2 id="coeff">待定系数法</h2>
 
         <p>部分分式分解中最核心的操作就是确定每个分式前的系数。最常用的方法就是<strong>待定系数法</strong>（method of undetermined coefficients）。</p>
 
         <p>来看一个例子：</p>
 
         <pre><code>求 ∫ 1/(x² - 3x + 2) dx
-
         第一步：分解分母
         x² - 3x + 2 = (x - 1)(x - 2)
 
@@ -267,11 +374,25 @@
         = -ln|x-1| + ln|x-2| + C
         = ln|(x-2)/(x-1)| + C</code></pre>
 
+        <div class="math-equation" role="group" aria-label="部分分式分解式">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="部分分式分解式，可横向滚动">
+                <math display="block" aria-label="1 除以 x 减 1 乘 x 减 2，等于 A 除以 x 减 1 加 B 除以 x 减 2">
+                    <mrow>
+                        <mfrac><mn>1</mn><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>−</mo><mn>2</mn><mo>)</mo></mrow></mfrac>
+                        <mo>=</mo>
+                        <mfrac><mi>A</mi><mrow><mi>x</mi><mo>−</mo><mn>1</mn></mrow></mfrac>
+                        <mo>+</mo>
+                        <mfrac><mi>B</mi><mrow><mi>x</mi><mo>−</mo><mn>2</mn></mrow></mfrac>
+                    </mrow>
+                </math>
+            </div>
+        </div>
+
         <div class="warning">
             <strong>常见错误：</strong>部分分式分解中最常见的错误来自重根的处理。如果分母有 <code>(ax + b)²</code> 这样的重一次因子，你需要设两个项：<code>A/(ax+b) + B/(ax+b)²</code>，而不是只设一项。很多初学者在这里犯错，导致分解不完整，积分结果自然也就错了。我在本科第一次学这部分时，因为漏掉了重根的高次项，算了半天都对不上答案，后来发现这个错误后懊恼不已。
         </div>
 
-        <h2>四种基本分式的积分</h2>
+        <h2 id="four">四种基本分式的积分</h2>
 
         <p>在完成部分分式分解后，我们最终需要积分的无非是以下四类：</p>
 
@@ -306,12 +427,23 @@
 
         <p>下一章我们将进入到积分学的另一个里程碑——<strong>定积分</strong>。前面三章我们一直在学习的都是不定积分（一族函数），而定积分将会给出一个<strong>具体的数值</strong>——曲边梯形的面积。更重要的是，下一章我们将会揭开微积分中最迷人的公式——<strong>牛顿-莱布尼茨公式</strong>，它告诉我们：定积分可以通过原函数在端点处的差值来计算。正是这个公式，把微分和积分联系成了一个统一的整体，这就是"微积分"这个名字的真正含义。</p>
 
+        <h2 id="references">参考资料</h2>
+
+        <p>本章的分部积分公式、LIATE 选择原则、部分分式分解与四种基本分式积分均与标准微积分教材一致；图 17-1 与 LIATE 判别窗体为本章原创的教学示意，所用例子为 <code>∫x·e^x dx</code>、<code>∫1/(x²−3x+2)dx</code> 这类标准例题，不含实验数据。</p>
+
+        <ul>
+            <li>MIT OpenCourseWare，<a href="https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/">18.01SC Single Variable Calculus</a>（分部积分与部分分式部分）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Integration_by_parts">Integration by parts</a>（分部积分法）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Partial_fraction_decomposition">Partial fraction decomposition</a>（部分分式分解）。</li>
+        </ul>
+
         <div class="footer-nav">
             <a href="16.html">← 上一章</a>
             <a href="index.html">📖 返回目录</a>
             <a href="18.html">下一章 →</a>
         </div>
-    </div>
+    </article>
+    </main>
 </div>
 </div>
 </body>
