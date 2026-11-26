@@ -5,11 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第27章 常微分方程</title>
     <link rel="stylesheet" href="theme.css">
+    <style>
+        .main-content img, .main-content svg { max-width:100%; height:auto; }
+        .main-content pre { white-space:pre-wrap; overflow-wrap:anywhere; }
+        body { overflow-wrap:anywhere; }
+        .article-header .dek { color:#475569; font-size:1.02rem; line-height:1.8; }
+        .page-toc { background:#f5f3ff; border:1px solid #ddd6fe; border-radius:16px; padding:12px 18px; margin:16px 0 8px; }
+        .page-toc ol { margin:0 0 0 20px; }
+        figure { margin:22px 0; }
+        figure svg { display:block; width:100%; height:auto; background:#fffdf9; border:1px solid #e2e8f0; border-radius:16px; }
+        figure figcaption { font-size:.9rem; color:#475569; margin-top:8px; line-height:1.7; }
+        .math-scroll { max-width:100%; overflow-x:auto; overflow-y:hidden; }
+        .math-scroll:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        .math-scroll math[display="block"] { width:max-content; min-width:100%; font-size:1.15rem; padding:6px 0; }
+        .widget { border:1px solid #c4b5fd; border-radius:18px; padding:16px 18px; margin:20px 0; background:#faf8ff; }
+        .widget output { font-family:"JetBrains Mono",monospace; }
+        .widget .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:10px 0; }
+        .widget button { padding:6px 16px; border-radius:999px; border:1px solid #8b5cf6; background:#fff; color:#5b21b6; font-weight:600; cursor:pointer; }
+        .widget button[aria-pressed="true"] { background:#7c3aed; color:#fff; }
+        .widget button:focus-visible, a:focus-visible, input:focus-visible { outline:3px solid #147f80; outline-offset:2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+        @media (max-width:820px) { .main-content table { display:block; overflow-x:auto; } }
+    </style>
 </head>
 <body>
 <div class="double-border">
 <div class="container">
-    <div class="sidebar">
+    <nav class="sidebar" aria-label="课程目录">
         <h3>📐 课程目录</h3>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 函数：微积分的语言</a></li>
@@ -41,9 +63,29 @@
             <li><a href="27.html" class="active">第27章 常微分方程</a></li>
             <li><a href="28.html">第28章 微积分与机器学习</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>微分方程：描述变化的方程</h2>
+    </nav>
+    <main class="main-content" id="content">
+    <article>
+        <header class="article-header">
+            <h1>常微分方程</h1>
+            <p class="dek">微分方程问的是“已知函数与导数之间的关系，求函数本身”，是微积分三部曲的终章。本章讲清分类地图、可分离变量、一阶线性与积分因子、伯努利与降阶、二阶常系数齐次/非齐次（特征方程），以及人口与弹簧振动建模。配一幅弹簧-阻尼系统与三种阻尼响应示意图、特征方程与振动方程的 MathML，以及一个阻尼类型判别交互。</p>
+            <nav class="page-toc" aria-label="本章目录">
+                <ol>
+                    <li><a href="#intro">微分方程：描述变化的方程</a></li>
+                    <li><a href="#classification">基本概念与分类</a></li>
+                    <li><a href="#separable">可分离变量的微分方程</a></li>
+                    <li><a href="#linear">一阶线性微分方程与常数变易法</a></li>
+                    <li><a href="#homogeneous">齐次方程与伯努利方程</a></li>
+                    <li><a href="#reduction">可降阶的高阶方程</a></li>
+                    <li><a href="#secondorder">二阶常系数齐次线性方程</a></li>
+                    <li><a href="#nonhomogeneous">二阶常系数非齐次方程</a></li>
+                    <li><a href="#modeling">微分方程建模实例</a></li>
+                    <li><a href="#ml">从微分方程到机器学习</a></li>
+                    <li><a href="#references">参考资料</a></li>
+                </ol>
+            </nav>
+        </header>
+        <h2 id="intro">微分方程：描述变化的方程</h2>
 
         <p>大家好，我是你们的讲师。欢迎来到第27章——常微分方程。</p>
 
@@ -53,7 +95,7 @@
 
         <p>本章我们将系统学习常微分方程（ODE）的核心解法：从最简单的可分离变量方程开始，到一阶线性方程，再到二阶常系数线性方程，最后看看如何用微分方程解决真实世界的建模问题。</p>
 
-        <h2>基本概念与分类</h2>
+        <h2 id="classification">基本概念与分类</h2>
 
         <p>首先，我们需要一张"地图"来认识微分方程这个领域。</p>
 
@@ -92,7 +134,7 @@
 
         <p>这三大分类决定了你应该选择哪种解法。就像一个医生先诊断病情再开药方一样，解微分方程的第一步永远是：<strong>识别它是什么类型</strong>。</p>
 
-        <h2>可分离变量的微分方程</h2>
+        <h2 id="separable">可分离变量的微分方程</h2>
 
         <p>这是最简单的类型——方程可以写成 <code>dy/dx = g(x) · h(y)</code> 的形式，即将 x 和 y 的函数"分离"到等号两边：</p>
 
@@ -115,7 +157,7 @@
 
         <p>这件事的教训是：<strong>微分方程给的是"变化率"的关系，而不是"原始数据"的关系</strong>。你不先解方程就套回归，等于跳过了最重要的数学步骤。</p>
 
-        <h2>一阶线性微分方程与常数变易法</h2>
+        <h2 id="linear">一阶线性微分方程与常数变易法</h2>
 
         <p>一阶线性微分方程的标准形式为：</p>
 
@@ -129,7 +171,7 @@
 
         <p>积分因子法背后的思想是：我们故意构造一个函数 μ，使得左边成为一个完整导数的形式。这个思想在微分方程中反复出现——把"不好积"的表达式变成"好积"的形式。</p>
 
-        <h2>齐次方程与伯努利方程</h2>
+        <h2 id="homogeneous">齐次方程与伯努利方程</h2>
 
         <p><strong>齐次方程</strong>（这里指一阶齐次型，不是线性齐次）是指可以写成 <code>y' = f(y/x)</code> 形式的方程。通过代换 <code>u = y/x</code>，我们可以把它转化为可分离变量方程：<code>u + x · du/dx = f(u)</code>。</p>
 
@@ -143,7 +185,7 @@
         两边乘 -u^2：u' - u = -x   ← 一阶线性！
         用积分因子法解出 u，再代回 y = 1/u 即可。</code></pre>
 
-        <h2>可降阶的高阶方程</h2>
+        <h2 id="reduction">可降阶的高阶方程</h2>
 
         <p>有些高阶方程可以通过巧妙的代换降为一阶。常见的两类：</p>
 
@@ -154,7 +196,7 @@
 
         <p>我刚学微分方程时，第二种降阶法让我困惑了好一阵。为什么要对 y 而不是对 x 求导？直到我用物理直觉来理解才豁然开朗：速度 v = dx/dt，加速度 a = dv/dt = v · dv/dx——加速度等于速度乘以速度对位置的导数。在这种情况下，位置 x 比时间 t 更适合做自变量。这告诉我们：<strong>解微分方程时，选择合适的自变量有时比计算本身更重要</strong>。</p>
 
-        <h2>二阶常系数齐次线性方程</h2>
+        <h2 id="secondorder">二阶常系数齐次线性方程</h2>
 
         <p>这是微分方程理论中最漂亮的一类。标准形式为：</p>
 
@@ -163,6 +205,18 @@
         <p>解法：设 <code>y = e^(rx)</code>，代入得到<strong>特征方程</strong>（characteristic equation）：</p>
 
         <pre><code>r^2 + p · r + q = 0</code></pre>
+
+        <div class="math-equation" role="group" aria-label="特征方程">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="特征方程，可横向滚动">
+                <math display="block" aria-label="二阶常系数齐次线性方程 y 两阶导加 p 倍 y 一阶导加 q 倍 y 等于 0，代入 y 等于 e 的 rx 次方得特征方程 r 平方加 pr 加 q 等于 0">
+                    <mrow>
+                        <msup><mi>y</mi><mo>″</mo></msup><mo>+</mo><mi>p</mi><msup><mi>y</mi><mo>′</mo></msup><mo>+</mo><mi>q</mi><mi>y</mi><mo>=</mo><mn>0</mn>
+                        <mo>⟹</mo>
+                        <msup><mi>r</mi><mn>2</mn></msup><mo>+</mo><mi>p</mi><mi>r</mi><mo>+</mo><mi>q</mi><mo>=</mo><mn>0</mn>
+                    </mrow>
+                </math>
+            </div>
+        </div>
 
         <p>根据判别式 Δ 的符号，通解有三种不同的形式：</p>
 
@@ -195,7 +249,7 @@
 
         <p>第三种情况（复根）尤其值得回味。它告诉我们：即使特征方程出现了虚数，微分方程的解仍然是实函数——虚数部分通过欧拉公式转化为了三角函数。这正是数学中美妙的"巧合"：<strong>振动现象（三角函数）和指数增长/衰减现象，在复平面上竟然是同一个东西的不同投影</strong>。</p>
 
-        <h2>二阶常系数非齐次方程</h2>
+        <h2 id="nonhomogeneous">二阶常系数非齐次方程</h2>
 
         <p>当方程右边多了一个自由项 f(x) 时：</p>
 
@@ -218,7 +272,7 @@
             有一次我在求解 <code>y'' - 2y' + y = e^x</code> 时，发现不管怎么设 <code>y_p = Ae^x</code>，代入后左边都是 0。当时我苦苦思索了半天，最后才意识到：e^x 本身就是齐次解（特征方程 r² - 2r + 1 = 0 有重根 r = 1），所以必须设 <code>y_p = A · x^2 · e^x</code>。一修正，立刻得到正确结果。这是一个经典的"眼高手低"案例——特征根分析不到位，后面做再多也是白费力气。
         </div>
 
-        <h2>微分方程建模实例</h2>
+        <h2 id="modeling">微分方程建模实例</h2>
 
         <h3>人口增长：马尔萨斯模型 vs 逻辑斯蒂模型</h3>
 
@@ -236,6 +290,22 @@
 
         <pre><code>mx'' + cx' + kx = F(t)</code></pre>
 
+        <div class="math-equation" role="group" aria-label="弹簧阻尼系统的振动方程">
+            <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="弹簧阻尼系统的振动方程，可横向滚动">
+                <math display="block" aria-label="质量 m 乘 x 的两阶导数，加阻尼系数 c 乘 x 的一阶导数，加弹性系数 k 乘 x，等于外力 F(t)">
+                    <mrow>
+                        <mi>m</mi><msup><mi>x</mi><mo>″</mo></msup>
+                        <mo>+</mo>
+                        <mi>c</mi><msup><mi>x</mi><mo>′</mo></msup>
+                        <mo>+</mo>
+                        <mi>k</mi><mi>x</mi>
+                        <mo>=</mo>
+                        <mi>F</mi><mo>(</mo><mi>t</mi><mo>)</mo>
+                    </mrow>
+                </math>
+            </div>
+        </div>
+
         <p>其中 m 是质量，c 是阻尼系数，k 是弹性系数，F(t) 是外力。如果 F(t) = 0（自由振动），这就是一个齐次二阶常系数线性方程。特征根的不同情况对应着三种运动形式：</p>
         <ul>
             <li><strong>无阻尼</strong>（c = 0）：简谐振动，特征根为纯虚数。</li>
@@ -244,9 +314,80 @@
             <li><strong>临界阻尼</strong>（c² = 4mk）：最快回归平衡，特征根为重根。</li>
         </ul>
 
+        <figure id="fig-spring">
+            <svg viewBox="0 0 720 320" role="img" aria-labelledby="fig-spring-title fig-spring-desc">
+                <title id="fig-spring-title">弹簧-阻尼系统与三种阻尼响应</title>
+                <desc id="fig-spring-desc">左图：墠面上固定一个弹簧和一个阻尼器，另一端连接质量为 m 的物块，向右位移记为 x。右图：三条衰减曲线分别对应欠阻尼（振荡后衰减）、临界阻尼（最快无振荡回归）与过阻尼（缓慢无振荡回归）。</desc>
+                <line x1="70" y1="70" x2="70" y2="210" stroke="#475569" stroke-width="3"/>
+                <line x1="58" y1="80" x2="70" y2="70" stroke="#94a3b8"/>
+                <line x1="58" y1="120" x2="70" y2="110" stroke="#94a3b8"/>
+                <line x1="58" y1="160" x2="70" y2="150" stroke="#94a3b8"/>
+                <line x1="58" y1="200" x2="70" y2="190" stroke="#94a3b8"/>
+                <path d="M70 110 l14 -12 l14 24 l14 -24 l14 24 l14 -24 l14 24 l14 -12" fill="none" stroke="#7c3aed" stroke-width="2"/>
+                <rect x="170" y="85" width="52" height="50" rx="6" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+                <text x="186" y="115" font-size="14" fill="#4c1d95">m</text>
+                <line x1="70" y1="165" x2="120" y2="165" stroke="#94a3b8" stroke-width="2"/>
+                <rect x="120" y="155" width="22" height="20" fill="#e2e8f0" stroke="#94a3b8"/>
+                <line x1="142" y1="165" x2="170" y2="165" stroke="#94a3b8" stroke-width="2"/>
+                <text x="112" y="200" font-size="12" fill="#64748b">阻尼器 c</text>
+                <line x1="222" y1="110" x2="292" y2="110" stroke="#d06d4d" stroke-width="2" marker-end="url(#aXs)"/>
+                <text x="250" y="102" font-size="13" fill="#d06d4d">x</text>
+                <line x1="360" y1="180" x2="695" y2="180" stroke="#cbd5e1" stroke-dasharray="5 4"/>
+                <line x1="360" y1="40" x2="360" y2="260" stroke="#94a3b8"/>
+                <line x1="360" y1="260" x2="695" y2="260" stroke="#94a3b8"/>
+                <path d="M360 60 C 390 250, 410 90, 440 215 C 462 150, 484 196, 520 172 C 552 156, 574 190, 614 178 C 646 170, 668 182, 695 180" fill="none" stroke="#7c3aed" stroke-width="2.2"/>
+                <path d="M360 60 Q 420 178 500 180 L695 180" fill="none" stroke="#147f80" stroke-width="2.2"/>
+                <path d="M360 60 Q 540 176 695 180" fill="none" stroke="#d06d4d" stroke-width="2.2"/>
+                <text x="520" y="60" font-size="12" fill="#7c3aed">欠阻尼</text>
+                <text x="510" y="140" font-size="12" fill="#147f80">临界阻尼</text>
+                <text x="560" y="200" font-size="12" fill="#d06d4d">过阻尼</text>
+                <text x="600" y="272" font-size="12" fill="#64748b">t</text>
+                <text x="330" y="50" font-size="12" fill="#64748b">x</text>
+                <defs>
+                    <marker id="aXs" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#d06d4d"/></marker>
+                </defs>
+            </svg>
+            <figcaption>图 27-1（教学示意）：左，弹簧-阻尼-质量系统，物块位移记为 x；右，三种阻尼下的响应曲线。欠阻尼振荡后衰减，临界阻尼最快无振荡回归平衡，过阻尼缓慢回归。这三种形状分别对应特征根为共轭复根、重根与两个不等实根。定性示意，不含实验数据。</figcaption>
+        </figure>
+
         <p>如果你设计过汽车减震器（悬挂系统），你就在实际操作这些数学概念——理想的设计是接近临界阻尼，既能快速吸收震动，又不会产生多余的振荡。微分方程不是黑板上的抽象符号，它就写在你的汽车底盘上。</p>
 
-        <h2>从微分方程到机器学习</h2>
+        <div class="widget" id="damp-widget">
+            <p><strong>动手试一下：固定 m = 1、k = 4（则 4mk = 16），看不同阻尼 c 下系统的类型。</strong></p>
+            <div class="row">
+                <button type="button" data-dp="a">c = 0</button>
+                <button type="button" data-dp="b">c = 2</button>
+                <button type="button" data-dp="c">c = 4</button>
+                <button type="button" data-dp="d">c = 8</button>
+            </div>
+            <p id="damp-status" aria-live="polite"></p>
+        </div>
+
+        <script>
+        (function () {
+            var box = document.getElementById('damp-widget');
+            if (!box) { return; }
+            var out = document.getElementById('damp-status');
+            var data = {
+                a: 'c² = 0 < 4mk = 16：无阻尼，特征根为纯虚数 ±2i，解为简谐振动。',
+                b: 'c² = 4 < 4mk = 16：欠阻尼，特征根为共轭复根，解为衰减振荡。',
+                c: 'c² = 16 = 4mk：临界阻尼，特征根为重根，最快无振荡回归平衡。',
+                d: 'c² = 64 > 4mk = 16：过阻尼，特征根为两个负实根，缓慢无振荡回归。'
+            };
+            function render(k) {
+                out.textContent = data[k] || '';
+                Array.prototype.forEach.call(box.querySelectorAll('button[data-dp]'), function (b) {
+                    b.setAttribute('aria-pressed', String(b.getAttribute('data-dp') === k));
+                });
+            }
+            Array.prototype.forEach.call(box.querySelectorAll('button[data-dp]'), function (b) {
+                b.addEventListener('click', function () { render(b.getAttribute('data-dp')); });
+            });
+            render('b');
+        })();
+        </script>
+
+        <h2 id="ml">从微分方程到机器学习</h2>
 
         <p>微分方程是整个微积分课程中离"应用"最近的一章。从物理、工程、生物到经济学，几乎所有描述"变化"的学科都会用到微分方程。你甚至可以在深度学习中找到微分方程的身影——神经ODE（Neural ODE）就是用微分方程来定义神经网络中的连续变换层。</p>
 
@@ -254,12 +395,24 @@
 
         <p>让我用微分方程领域的一句名言作为本章的结尾——物理学家费曼曾说："所有物理学的终极定律都可以写成微分方程的形式。"你现在已经掌握了读懂这些"宇宙的语言"所需的语法。第28章，我们将看看这些语言如何驱动了人工智能的革命。</p>
 
+        <h2 id="references">参考资料</h2>
+
+        <p>本章的可分离变量法、积分因子法、伯努利方程、降阶法与二阶常系数特征方程解法均与标准微积分与常微分方程教材一致；图 27-1 与阻尼判别窗体为本章原创的教学示意，所用例子为放射衰变 <code>dN/dt=−λN</code>、逻辑斯蒂模型 <code>dP/dt=rP(1−P/K)</code> 与弹簧系统这类标准模型，不含实验数据。</p>
+
+        <ul>
+            <li>MIT OpenCourseWare，<a href="https://ocw.mit.edu/courses/18-03sc-differential-equations-fall-2011/">18.03SC Differential Equations</a>（常微分方程完整课程）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Ordinary_differential_equation">Ordinary differential equation</a>（常微分方程）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Linear_differential_equation">Linear differential equation</a>（一阶线性与积分因子）。</li>
+            <li>Wikipedia，<a href="https://en.wikipedia.org/wiki/Damping">Damping</a>（阻尼与振子）。</li>
+        </ul>
+
         <div class="footer-nav">
             <a href="26.html">← 上一章</a>
             <a href="index.html">📖 返回目录</a>
             <a href="28.html">下一章 →</a>
         </div>
-    </div>
+    </article>
+    </main>
 </div>
 </div>
 </body>
