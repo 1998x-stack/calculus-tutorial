@@ -182,6 +182,33 @@
             <li>det(H) = 0 → 需要更高阶分析</li>
         </ul>
 
+        <figure id="fig-hessian">
+            <svg viewBox="0 0 720 300" role="img" aria-labelledby="fig-hess-title fig-hess-desc">
+                <title id="fig-hess-title">Hessian 判别法三种驻点的主截线形状</title>
+                <desc id="fig-hess-desc">极小值点沿 x、y 两方向的截线都向上弯成 ∪；极大值点都向下弯成 ∩；鞍点沿 x 向上弯、沿 y 向下弯。橙点为驻点。</desc>
+                <g><title>极小值点　A&gt;0、AC−B²&gt;0</title><line x1="140" y1="75" x2="140" y2="275" stroke="#94a3b8"/><line x1="55" y1="175" x2="235" y2="175" stroke="#94a3b8"/><line x1="140" y1="175" x2="85" y2="143" stroke="#94a3b8"/><text x="237" y="180" font-size="12" fill="#475569">x</text><text x="76" y="137" font-size="12" fill="#475569">y</text><text x="144" y="71" font-size="12" fill="#475569">f</text></g>
+                <path d="M68,90 Q140,260 212,90" fill="none" stroke="#147f80" stroke-width="2.4"/>
+                <path d="M85,83 Q140,235 195,147" fill="none" stroke="#7461ba" stroke-width="2" stroke-dasharray="6 4"/>
+                <circle cx="140" cy="175" r="4" fill="#d06d4d"/>
+                <text x="140" y="34" text-anchor="middle" font-size="14" font-weight="600" fill="#334155">极小值点　A&gt;0、AC−B²&gt;0</text>
+                <g><title>极大值点　A&lt;0、AC−B²&gt;0</title><line x1="360" y1="75" x2="360" y2="275" stroke="#94a3b8"/><line x1="275" y1="175" x2="455" y2="175" stroke="#94a3b8"/><line x1="360" y1="175" x2="305" y2="143" stroke="#94a3b8"/><text x="457" y="180" font-size="12" fill="#475569">x</text><text x="296" y="137" font-size="12" fill="#475569">y</text><text x="364" y="71" font-size="12" fill="#475569">f</text></g>
+                <path d="M288,260 Q360,90 432,260" fill="none" stroke="#147f80" stroke-width="2.4"/>
+                <path d="M305,203 Q360,115 415,267" fill="none" stroke="#7461ba" stroke-width="2" stroke-dasharray="6 4"/>
+                <circle cx="360" cy="175" r="4" fill="#d06d4d"/>
+                <text x="360" y="34" text-anchor="middle" font-size="14" font-weight="600" fill="#334155">极大值点　A&lt;0、AC−B²&gt;0</text>
+                <g><title>鞍点　AC−B²&lt;0</title><line x1="580" y1="75" x2="580" y2="275" stroke="#94a3b8"/><line x1="495" y1="175" x2="675" y2="175" stroke="#94a3b8"/><line x1="580" y1="175" x2="525" y2="143" stroke="#94a3b8"/><text x="677" y="180" font-size="12" fill="#475569">x</text><text x="516" y="137" font-size="12" fill="#475569">y</text><text x="584" y="71" font-size="12" fill="#475569">f</text></g>
+                <path d="M508,90 Q580,260 652,90" fill="none" stroke="#147f80" stroke-width="2.4"/>
+                <path d="M525,203 Q580,115 635,267" fill="none" stroke="#7461ba" stroke-width="2" stroke-dasharray="6 4"/>
+                <circle cx="580" cy="175" r="4" fill="#d06d4d"/>
+                <text x="580" y="34" text-anchor="middle" font-size="14" font-weight="600" fill="#334155">鞍点　AC−B²&lt;0</text>
+                <line x1="200" y1="288" x2="240" y2="288" stroke="#147f80" stroke-width="2.4"/>
+                <text x="246" y="292" font-size="12" fill="#475569">沿 x 方向截线 f(x,0)</text>
+                <line x1="430" y1="288" x2="470" y2="288" stroke="#7461ba" stroke-width="2" stroke-dasharray="6 4"/>
+                <text x="476" y="292" font-size="12" fill="#475569">沿 y 方向截线 f(0,y)</text>
+            </svg>
+            <figcaption>图 21-1（教学示意）：以驻点 O（橙点）为中心，三种情形的两条主截线。极小值沿 x、y 都上弯（∪、∪），极大值都下弯（∩、∩），鞍点一上一下（∪、∩）。判别量 AC−B² 正是这两条截线曲率的符号之积，所以 AC−B²&gt;0 表示两向一致（极值）、&lt;0 表示两向相反（鞍点）。</figcaption>
+        </figure>
+
         <div class="widget" id="hess-widget">
             <p><strong>动手试一下：在驻点 (0, 0) 处，选一个函数看 AC − B² 判别结论。</strong></p>
             <div class="row">
@@ -340,7 +367,7 @@
                     </marker>
                 </defs>
             </svg>
-            <figcaption>图 21-1（教学示意）：拉格朗日乘数的几何意义。同心椭圆是目标函数 f 的等高线，斜穿的粗曲线是约束 g = 0。在条件极值点 P 处，约束曲线与某条等高线相切，于是 ∇f 与 ∇g 平行。若在 P 处两者不平行（曲线相交），沿约束还能走到更高或更低的等高线。定性示意，不含实验数据。</figcaption>
+            <figcaption>图 21-2（教学示意）：拉格朗日乘数的几何意义。同心椭圆是目标函数 f 的等高线，斜穿的粗曲线是约束 g = 0。在条件极值点 P 处，约束曲线与某条等高线相切，于是 ∇f 与 ∇g 平行。若在 P 处两者不平行（曲线相交），沿约束还能走到更高或更低的等高线。定性示意，不含实验数据。</figcaption>
         </figure>
 
         <h2 id="applications">实际最值问题</h2>
@@ -446,7 +473,7 @@
 
         <h2 id="references">参考资料</h2>
 
-        <p>本章的驻点必要条件、Hessian 判别法（AC − B²）与拉格朗日乘数法均与标准微积分教材一致；图 21-1 与 Hessian 判别窗体为本章原创的教学示意，所用例子为 <code>f = x³−y³+3xy</code>、<code>x²+xy+y²=1</code>、Cobb-Douglas 效用函数这类标准例题，不含实验数据。</p>
+        <p>本章的驻点必要条件、Hessian 判别法（AC − B²）与拉格朗日乘数法均与标准微积分教材一致；图 21-1（Hessian 判别）与图 21-2（拉格朗日乘数）及判别窗体均为本章原创的教学示意，所用例子为 <code>f = x³−y³+3xy</code>、<code>x²+xy+y²=1</code>、Cobb-Douglas 效用函数这类标准例题，不含实验数据。</p>
 
         <ul>
             <li>MIT OpenCourseWare，<a href="https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/">18.02SC Multivariable Calculus</a>（多元极值与拉格朗日乘数法部分）。</li>
